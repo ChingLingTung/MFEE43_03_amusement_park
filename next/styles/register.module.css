@@ -3,18 +3,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  align-content: center;
 }
 .title{
   margin:10px auto;
   text-align: center;
 }
 .formborder{
-  height: 370px;
-  width: 300px;
+  height: 500px;
+  width: 600px;
   border: #F29BA5 2px solid;
   border-radius: 10px;
   margin:10px auto;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -26,6 +28,7 @@
   height: 25px;
   margin: 10px 0px;
   border-radius: 5px;
+  font-family:'Zen Maru Gothic', serif;
   padding-inline-start: 5px;
 }
 .button{
@@ -33,34 +36,52 @@
   border:0;
   background-color: #E4BEC6;
   border-radius: 5px;
-  width: 250px;
+  width: 60px;
   height: 25px;
   margin: 10px 0px;
   color: #fff;
   font-family:'Zen Maru Gothic', serif;
   cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
 }
 .flex{
-  display: flex;
-  justify-content: space-between;
-}
-.google_login{
-  outline-style: none;
-  border:0;
-  background-color: #ffffff;
-  border: #000000 1px solid;
-  border-radius: 5px;
-  width: 250px;
-  height: 25px;
-  margin: 10px 0px;
-  font-family:'Zen Maru Gothic', serif;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.column{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.padding30{
+  padding: 30px;
+}
+.red{
+  color: red;
+}
 .img{
   object-fit: fill;
-  width: 20px;
+  height:200px;
+  width: 100%;
+  margin:20px 2px;
+}
+.nickname{
+  outline-style: none;
+  border:0;
+  border-bottom: #E4BEC6 1px solid;
+  width: 100px;
+  height: 25px;
+  margin: 10px 0px;
+  font-family:'Zen Maru Gothic', serif;
+  padding-inline-start: 5px;
+}
+.icon{
+  object-fit: fill;
   height:20px;
-  margin:auto 5px;
+  margin:0px 2px;
 }
