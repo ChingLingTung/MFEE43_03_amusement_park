@@ -116,7 +116,11 @@ font-family:'Zen Maru Gothic', serif;
   border-radius: 10px;
 }
 .input{
-  border-radius: 5px;
+  outline-style: none;
+  border:0;
   border: #E4BEC6 1px solid;
-  padding: 5px;
+  height: 25px;
+  margin: 10px 0px;
+  border-radius: 5px;
+  padding-inline-start: 5px;
 }

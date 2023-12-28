@@ -9,27 +9,18 @@
   margin:50px auto;
   text-align: center;
 }
-.formborder{
-  height: 500px;
-  width: 600px;
-  border: #F29BA5 2px solid;
-  border-radius: 10px;
-  margin:10px auto;
+.card{
+  width: 500px;
+  height: 600px;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
-.input{
-  outline-style: none;
-  border:0;
-  border: #E4BEC6 1px solid;
-  width: 250px;
-  height: 25px;
-  margin: 10px 0px;
+.mini_card{
+  width: 630px;
+  height: 130px;
   border-radius: 5px;
-  font-family:'Zen Maru Gothic', serif;
-  padding-inline-start: 5px;
+  margin: 10px;
 }
 .button{
   outline-style: none;
@@ -47,22 +38,22 @@
   align-content: center;
   text-align: center;
 }
-.flex{
+.flex_center{
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+}
+.flex_spacebetween{
+  display: flex;
+  justify-content: space-between;
 }
 .column{
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   align-items: center;
 }
 .padding30{
   padding: 30px;
-}
-.red{
-  color: red;
 }
 .img{
   object-fit: fill;
