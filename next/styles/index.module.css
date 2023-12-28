@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   align-content: center;
+  height: 900px;
 }
 .title{
   margin:50px auto;
@@ -12,27 +13,29 @@
 .card{
   width: 500px;
   height: 600px;
-  border-radius: 5px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
 }
 .mini_card{
+  display: flex;
   width: 630px;
   height: 130px;
   border-radius: 5px;
-  margin: 10px;
+  margin:0 auto ;
 }
 .button{
   outline-style: none;
   border:0;
   background-color: #E4BEC6;
   border-radius: 5px;
-  width: 60px;
+  width: 70px;
   height: 25px;
-  margin: 10px 0px;
   color: #fff;
   font-family:'Zen Maru Gothic', serif;
   cursor: pointer;
+  display:flex;
+  justify-items: center;
   justify-content: center;
   align-items: center;
   align-content: center;
@@ -45,21 +48,36 @@
 }
 .flex_spacebetween{
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 .column{
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  align-content: space-between;
+  margin:0;
 }
 .padding30{
   padding: 30px;
 }
 .img{
   object-fit: fill;
-  height:200px;
+  /* overflow: hidden; */
+  border-radius: 10px;
+  /* height:200px;
   width: 100%;
-  margin:20px 2px;
+  margin:20px 2px; */
+}
+.theme_img{
+  object-fit: fill;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.theme_img2{
+  object-fit: fill;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 .nickname{
   outline-style: none;
@@ -71,8 +89,15 @@
   font-family:'Zen Maru Gothic', serif;
   padding-inline-start: 5px;
 }
-.icon{
+/* .icon{
   object-fit: fill;
   height:20px;
   margin:0px 2px;
-}
+  display:flex;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+} */
+

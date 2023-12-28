@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  height: 900px;
 }
 .title{
   margin:50px auto;
