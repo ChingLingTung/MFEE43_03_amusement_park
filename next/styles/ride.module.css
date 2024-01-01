@@ -1,0 +1,113 @@
+.container{
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center;
+  align-content: center; */
+  height: 900px;
+}
+.title{
+  margin:50px auto;
+  text-align: center;
+}
+.button{
+  outline-style: none;
+  border:0;
+  border-radius: 5px;
+  height: 30px;
+  background-color: #fff;
+  border: #000 2px solid;
+  font-family:'Zen Maru Gothic', serif;
+  cursor: pointer;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 10px;
+}
+.selected_button{
+  outline-style: none;
+  border:0;
+  background-color: #E4BEC6;
+  border-radius: 5px;
+  width: 70px;
+  height: 30px;
+  color: #fff;
+  font-family:'Zen Maru Gothic', serif;
+  display:flex;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+.children_button{
+  outline-style: none;
+  border:0;
+  background-color: #E4BEC6;
+  border-radius: 5px;
+  width: 70px;
+  height: 30px;
+  color: #fff;
+  font-family:'Zen Maru Gothic', serif;
+  cursor: pointer;
+  display:flex;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+.flex_center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}.card_flex{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: first baseline;
+  height: 700px;
+}
+/* .flex_spacebetween{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.column{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-between;
+  margin:0;
+} */
+
+.img{
+  object-fit: fill;
+  border-radius: 10px;
+  border:#E4BEC6 2px solid ;
+  width:250px;
+  height:150px;
+  margin:20px 2px;
+}
+.theme_img{
+  object-fit: fill;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.searchbar{
+  width: 200px;
+  border-radius: 20px;
+  border:#000 2px solid;
+  margin: 0 10px;
+}
+/* .icon{
+  object-fit: fill;
+  height:20px;
+  margin:0px 2px;
+  display:flex;
+  justify-items: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+} */
+
