@@ -7,7 +7,6 @@ import Image from 'next/image';
 export default function Ride() {
   return (
     <>
-      
       <div className={styles.container}>
         <h2 className={styles.title}>設施搜尋</h2>
         <br/>
@@ -18,7 +17,7 @@ export default function Ride() {
           </span>
         </div>
         <div className={styles.flex_center_column}>
-            <div className={styles.search_flex} style={{height:50}}>
+          <div className={styles.search_flex} style={{height:50}}>
             <span className={styles.button} style={{width:50}}>主題</span>
             <span className={styles.children_button} style={{width:70}}>水世界</span>
             <span className={styles.children_button} style={{width:85}}>冒險之旅</span>
@@ -42,6 +41,9 @@ export default function Ride() {
             <span className={styles.button} style={{width:85}}>特殊支援</span>
             <span className={styles.children_button} style={{width:100}}>輪椅可搭乘</span>
           </div>
+        <div className={styles.flex_center}>
+        
+        </div>
           <div className={styles.card_flex}>
             <div>
               <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
