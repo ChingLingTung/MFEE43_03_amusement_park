@@ -110,6 +110,7 @@ a {
 /* ------------ */
 body{
 font-family:'Zen Maru Gothic', serif;
+background-image: url("../public/images/back-pattern-1920x1080.png");
 }
 .formborder{
   border: #F29BA5 2px solid;
