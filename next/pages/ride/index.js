@@ -42,7 +42,7 @@ export default function Ride() {
       </div>
       <div className={styles.container}>
         <div className={styles.theme_img}>
-          {/* <Image className={styles.theme_img} src={'/../../images/w1.jpg'} resizeMode={'cover'} style={{width:'100%',height:200}} /> */}
+          <img className={styles.theme_img} src={'/../../images/w1.jpg'} style={{width:'100%',height:200}} />
         </div>
         <div className={styles.flex_center}>
           <img src='/../../images/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
@@ -50,7 +50,6 @@ export default function Ride() {
           <img src='/../../images/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
         </div>
       </div>
-        {/* https://stackoverflow.com/questions/45187785/react-native-how-to-make-image-width-100-percent-and-vertical-top */}
     </>
   )
 }

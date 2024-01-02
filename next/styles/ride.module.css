@@ -78,7 +78,7 @@
   margin:20px 2px;
 }
 .theme_img{
-  object-fit: fill;
+  object-fit: cover;
   width: 100%;
   height: 250px;
 }
