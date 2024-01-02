@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '@/styles/ride_detail.module.css'
-import { AiOutlineSchedule } from "react-icons/ai";
+import { FaRegCalendarDays } from "react-icons/fa6";
 import { FaTicketAlt } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import Link from 'next/link'
@@ -21,7 +21,7 @@ export default function RideDetail() {
             <p>特殊支援：無</p>
             <p>設備維護狀況：目前開放中，可正常使用。</p>
             <p>下次維護時間：2024/2/20</p>
-            <p><AiOutlineSchedule/>完整維護排程</p>
+            <p><FaRegCalendarDays />完整維護排程</p>
             <p>快速通關：本設施為快速通關套票可選擇的設施之一</p>
             <p><FaTicketAlt />適用的快速通關票券</p>
           </div>

@@ -38,6 +38,25 @@
   height:450px;
   margin:20px 10px;
 }
+.space_between{
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+}
+.food_img{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: first baseline;
+  padding: 0 300px;
+}
+.mini_img{
+  object-fit: cover;
+  width: 280px;
+  height: 200px;
+  border-radius: 10px;
+  margin: 10px;
+}
 .card_flex{
   display: flex;
   flex-wrap: wrap;
