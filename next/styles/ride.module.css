@@ -26,7 +26,7 @@
 .selected_button{
   outline-style: none;
   border:0;
-  background-color: #E4BEC6;
+  background-color: #e48fa2;
   border-radius: 5px;
   width: 70px;
   height: 30px;
@@ -42,11 +42,12 @@
 .children_button{
   outline-style: none;
   border:0;
-  background-color: #E4BEC6;
+  background-color: #fff;
+  border: #e48fa2 2px solid;
   border-radius: 5px;
   width: 70px;
   height: 30px;
-  color: #fff;
+  color:#e48fa2;
   font-family:'Zen Maru Gothic', serif;
   cursor: pointer;
   display:flex;
@@ -55,11 +56,29 @@
   align-items: center;
   align-content: center;
   text-align: center;
+  margin: 0 10px;
+}
+.flex_center_column{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .flex_center{
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  position: relative;
+}
+.search_flex{
+  width: 600px;
+  display: flex;
+  margin: 5px 10px;
+  align-items: center;
+  justify-content: start;
+  text-align: center;
 }
 .card_flex{
   display: flex;
@@ -83,11 +102,14 @@
   height: 250px;
 }
 .searchbar{
-  width: 200px;
+  width: 250px;
   border-radius: 20px;
   border:#000 2px solid;
-  margin: 0 10px;
+  line-height: 2.5;
+  text-indent: 40px;
+  font-size: 14px;
 }
+
 .card_size{
   height:430px;
   width:380px;
