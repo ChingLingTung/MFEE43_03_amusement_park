@@ -4,31 +4,13 @@
   /* justify-content: center; */
   align-items: center;
   align-content: center;
-  /* height: 1200px; */
 }
 .title{
   margin:10px auto;
   margin-bottom: 40px;
-  /* text-align: center; */
+
 }
-/* .card{
-  width: 500px;
-  height: 600px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 0px 5px gray;
-  background-color: #fff;
-}
-.mini_card{
-  display: flex;
-  width: 630px;
-  height: 130px;
-  border-radius: 10px;
-  margin:0 auto ;
-  box-shadow: 0px 0px 5px gray;
-  background-color: #fff;
-} */
+
 .button{
   outline-style: none;
   border:0;

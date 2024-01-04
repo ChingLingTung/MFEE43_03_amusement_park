@@ -33,7 +33,7 @@ export default function ShowDetail() {
       {seat.map((row, i) => (
         <div key={i}>
           {row.map((cell, j) => (
-            <span className={styles.seat} key={j}>{cell}</span>
+            <span className={styles.seat} key={j} style={cell? {} : {opacity:0}}>{cell? cell : "0"}</span>
           ))}
         </div>
       ))}
