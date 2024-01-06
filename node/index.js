@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import cors from "cors";
 import mysql_session from "express-mysql-session";
 import bcrypt from "bcryptjs";
+import  jwt  from "jsonwebtoken";
+import loginRouter from "./routes/login.js"
 
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
@@ -39,15 +41,30 @@ app.use((req, res, next) => {
   res.locals.toDateTimeString = (d) => dayjs(d).format("YYYY-MM-DD HH:mm:ss");
 
   res.locals.session = req.session;  // 讓 templates 可以取用 session
+  const auth = req.get("Authorization");
+  // 處理token，將Authorization的值去掉Bearer 只取單純的token值
+  if(auth && auth.indexOf("Bearer ")===0){
+    const token = auth.slice(7);
+    // 避免因為token錯誤報錯，用try catch包起來但不對錯誤的token做任何處理
+    try{
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      // console.log({payload});
+
+      // 將token的登入狀態傳遞下去供其他需要驗證登入的網頁使用
+      res.locals.jwt = payload;
+    }catch(ex){}
+  }
+  // 測試用
+  // res.locals.jwt = { id: 1, email: "DrinkAllDay@iSpan.com" };
   next();
 });
 // 定義路由
 // 首頁在最上面
-// app.get("/", (req, res) => {
-//   res.locals.title = "首頁 | " + res.locals.title;
+app.get("/", (req, res) => {
+  res.locals.title = "首頁 | " + res.locals.title;
 
-//   res.render("home", { name: process.env.DB_NAME });
-// });
+  res.render("home", { name: process.env.DB_NAME });
+});
 
 app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   let u = req.url.slice(3).split("?")[0];
@@ -65,18 +82,18 @@ app.get("/try-sess", (req, res) => {
 app.get("/login", async (req, res) => {
   res.render("login");
 });
-app.post("/login", async (req, res) => {
+app.post("/login-jwt", async (req, res) => {
   const output = {
     success: false,
     code: 0,
     postData: req.body,
   };
-  if (!req.body.email || !req.body.password) {
+  if (!req.body.user_account || !req.body.user_password) {
     // 資料不足
     output.code = 410;
     return res.json(output);
   }
-  const sql = "SELECT * FROM members WHERE email=?";
+  const sql = "SELECT * FROM user WHERE user_account=?";
   const [rows] = await db.query(sql, [req.body.email]);
 
   if (!rows.length) {
@@ -85,7 +102,7 @@ app.post("/login", async (req, res) => {
     return res.json(output);
   }
   const row = rows[0];
-  const pass = await bcrypt.compare(req.body.password, row.password);
+  const pass = await bcrypt.compare(req.body.user_password, row.user_password);
   if (!pass) {
     // 密碼是錯的
     output.code = 420;
@@ -97,15 +114,27 @@ app.post("/login", async (req, res) => {
   // 設定 session
   req.session.admin = {
     id: row.id,
-    email: row.email,
-    nickname: row.nickname,
+    email: row.user_account,
+    nickname: row.user_nickname,
   };
-  output.member = req.session.admin;
+  output.user = req.session.admin;
   res.json(output);
 });
 app.get("/logout", async (req, res) => {
   delete req.session.admin;
   res.redirect('/');
+});
+
+app.get("/try-jw1", async(req,res)=>{
+  // jwt 加密(.env的設定中再加一項)
+  const token = jwt.sign({id:1, account: "DrinkAllDay@iSpan.com"},process.env.JWT_SECRET);
+  res.json({token});
+});
+app.get("/try-jw2", async(req,res)=>{
+  // 解密
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImFjY291bnQiOiJzaGluIiwiaWF0IjoxNzAzNTYxMDU2fQ.ZgaJZX1cNMH-GG99dQJRz-pJGqquf9LTBmgsSw7iPHE";
+  const payload = jwt.verify(token,process.env.JWT_SECRET);
+  res.json({payload});
 });
 
 // 設定靜態內容的資料夾

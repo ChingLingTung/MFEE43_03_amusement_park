@@ -4,30 +4,34 @@
   justify-content: center;
   align-items: center;
   align-content: center;
-  height: 900px;
+  /* height: 900px; */
 }
 .title{
   margin:50px auto;
   text-align: center;
+  font-size: 50px;
 }
 .formborder{
-  height: 500px;
-  width: 600px;
+  height: 900px;
+  width: 1000px;
   border: #F29BA5 2px solid;
   border-radius: 10px;
+  font-size: 30px;
   margin:10px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 .input{
   outline-style: none;
   border:0;
   border: #E4BEC6 1px solid;
-  width: 250px;
-  height: 25px;
-  margin: 10px 0px;
+  font-size: 30px;
+  width: 550px;
+  height: 50px;
+  margin: 20px 0px;
   border-radius: 5px;
   font-family:'Zen Maru Gothic', serif;
   padding-inline-start: 5px;
@@ -37,9 +41,10 @@
   border:0;
   background-color: #E4BEC6;
   border-radius: 5px;
-  width: 60px;
-  height: 25px;
-  margin: 10px 0px;
+  width: 100%;
+  height: 50px;
+  font-size: 30px;
+  margin: 20px 0px;
   color: #fff;
   font-family:'Zen Maru Gothic', serif;
   cursor: pointer;
@@ -52,6 +57,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 .column{
   display: flex;
@@ -67,7 +73,7 @@
 }
 .img{
   object-fit: fill;
-  height:200px;
+  height:300px;
   width: 100%;
   margin:20px 2px;
 }
@@ -75,14 +81,15 @@
   outline-style: none;
   border:0;
   border-bottom: #E4BEC6 1px solid;
-  width: 100px;
-  height: 25px;
+  font-size: 30px;
+  width: 200px;
+  height: 40px;
   margin: 10px 0px;
   font-family:'Zen Maru Gothic', serif;
-  padding-inline-start: 5px;
+  padding-inline-start: 10px;
 }
 .icon{
   object-fit: fill;
-  height:20px;
+  height:40px;
   margin:0px 2px;
 }

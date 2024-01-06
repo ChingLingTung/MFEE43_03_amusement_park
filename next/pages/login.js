@@ -15,7 +15,7 @@ export default function Login() {
             <label>密碼：<br/>
             <input type='password' className={styles.input}/>
             </label>
-            <div>
+            <div style={{marginBottom:50}}>
               忘記密碼
             </div>
             <button type='submit' className={styles.button}>登入</button>
@@ -24,7 +24,7 @@ export default function Login() {
               <span>前往註冊</span>
             </div>
             <br/>
-            <div>----------------或----------------</div>
+            <div>---------------或---------------</div>
             <br/>
             <button type='button' className={styles.google_login}><img className={styles.img} src='../images/google_icon.png'/>快速登入</button>
           </form>

@@ -34,9 +34,20 @@ export const StyleWrapper = styled.div`
   .fc-button {
     background: #de839e;
     border-color:#ffdfe8;
+    font-size: 30px;
   }
   .fc-today-button .fc-button .fc-button-primary {
     background: #ffd2e0;
+    font-size: 40px;
+  }
+  .fc-col-header-cell-cushion{
+    font-size: 30px;
+  }
+  .fc-toolbar-title{
+    font-size: 40px;
+  }
+  .fc-daygrid-day-number{
+    font-size: 30px;
   }
 
 `
@@ -56,7 +67,7 @@ export default function Maintain() {
       </div>
         
       <h2 className={styles.title}>維護時間</h2>
-      <div style={{width:1200,height:1000,padding:200,paddingTop:30}}>
+      <div style={{width:1400,height:1200,padding:200,paddingTop:30}}>
         <StyleWrapper>
           <FullCalendar
           plugins={[ dayGridPlugin ]}
