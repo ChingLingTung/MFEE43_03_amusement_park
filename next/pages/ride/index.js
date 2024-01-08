@@ -3,10 +3,38 @@ import styles from '@/styles/ride.module.css'
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
 import Image from 'next/image';
+import { Layout } from '@/component/layout';
+import Head from 'next/head';
+import { RIDE_LIST } from '@/component/my-const';
+import ThemeContext from '@/context/theme-context';
+import { useRouter } from 'next/router';
+import { useState,useContext,useEffect } from 'react';
+import Link from 'next/link';
 
 export default function Ride() {
+  const [data, setData] = useState({});
+  const router = useRouter();
+  const {theme, setTheme} = useContext(ThemeContext);
+
+  const getListData = async () => {
+    console.log("router.query:", router.query);
+    let page = +router.query.page || 1;
+    if (page < 1) page = 1;
+    try {
+      const r = await fetch(RIDE_LIST + `?page=${page}`);
+      const d = await r.json();
+
+      setData(d);
+    } catch (ex) {}
+  };
+
+  useEffect(() => {
+    getListData();
+  }, [router.query.page]);
+
   return (
     <>
+    <Layout>
       <div className={styles.container}>
         <h2 className={styles.title}>設施搜尋</h2>
         <br/>
@@ -46,40 +74,57 @@ export default function Ride() {
         </div>
           <div className={styles.card_flex}>
             <div>
-              <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
+              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
             </div>
             <div>
-              <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
+              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
             </div>
             <div>
-              <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
+              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
             </div>
             <div>
-              <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
+              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
             </div>
             <div>
-              <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
+              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
             </div>
             <div>
-              <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
+              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
             </div>
             <div>
-              <Image className={styles.img} src={'/../../images/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
+              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
             </div>
+            {data.rows &&
+                  data.rows.map((i) => {
+                    return (
+                      <>
+                      <div style={styles.card_flex}>
+                          <Link href={'#'}>
+                            <div key={i.amusement_ride_id} className={styles.card}>
+                              <Image className={styles.card_img} src={`/../../images/ride/${i.amusement_ride_img}`}/>
+                              <span className={styles.card_title}>{i.amusement_ride_name}</span>
+                            </div>
+                          </Link>
+                      </div>
+                      </>
+                    );
+                  })}
           </div>
         </div>
           
       </div>
       <div className={styles.container}>
         <div className={styles.theme_img}>
-          <img className={styles.theme_img} src={'/../../images/w1.jpg'} style={{width:'100%',height:200}} />
+          <img className={styles.theme_img} src={'/../../images/ride/w1.jpg'} style={{width:'100%',height:200}} />
         </div>
         <div className={styles.flex_center}>
-          <img src='/../../images/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
-          <img src='/../../images/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
-          <img src='/../../images/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
+          <img src='/../../images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
+          <img src='/../../images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
+          <img src='/../../images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
         </div>
       </div>
+      </Layout>
+      <Head><title>設施介紹</title></Head>
     </>
   )
 }

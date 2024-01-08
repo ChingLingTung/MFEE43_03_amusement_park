@@ -1,4 +1,4 @@
-// import "dotenv/config";
+import "dotenv/config";
 import express from "express";
 import session from "express-session";
 import dayjs from "dayjs";
@@ -7,14 +7,16 @@ import mysql_session from "express-mysql-session";
 import bcrypt from "bcryptjs";
 import  jwt  from "jsonwebtoken";
 import loginRouter from "./routes/login.js"
+import rideRouter from "./routes/ride.js";
+import db from "./utils/connect-mysql.js";
 
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
-import db from "./utils/connect-mysql.js";
+
 
 const app = express();
 
-// app.set("view engine", "ejs");
+app.set("view engine", "ejs");
 
 // top-level middlewares
 app.use(cors());
@@ -73,6 +75,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   res.send({ u });
 });
 
+app.use("/ride", rideRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
   req.session.n++;

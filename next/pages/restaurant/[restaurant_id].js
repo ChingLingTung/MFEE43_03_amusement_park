@@ -13,7 +13,7 @@ export default function RestaurantDetail() {
     <>
         <h2 className={styles.title}>餐廳名稱</h2>
         <div className={styles.flex_center}>
-          <img className={styles.img} src='/../../images/tf1-1.webp'/>
+          <img className={styles.img} src='/../../images/reataurant/teatime/tf1-1.webp'/>
           <div style={{width:600, lineHeight:2}}>
             <p>類型：午茶點心</p>
             <p><FaUtensils /> 菜單</p>
@@ -26,10 +26,10 @@ export default function RestaurantDetail() {
           </div>
         </div>
         <div className={styles.food_img}>
-          <img className={styles.mini_img} src='/../../images/tf1-2.webp'/>
-          <img className={styles.mini_img} src='/../../images/tf1-3.webp'/>
-          <img className={styles.mini_img} src='/../../images/tf1-4.jpg'/>
-          <img className={styles.mini_img} src='/../../images/tf1-5.jpg'/>
+          <img className={styles.mini_img} src='/../../images/reataurant/teatime/tf1-2.webp'/>
+          <img className={styles.mini_img} src='/../../images/reataurant/teatime/tf1-3.webp'/>
+          <img className={styles.mini_img} src='/../../images/reataurant/teatime/tf1-4.jpg'/>
+          <img className={styles.mini_img} src='/../../images/reataurant/teatime/tf1-5.jpg'/>
         </div>
         <h2 className={styles.title}>周邊餐廳</h2>
         <div className={styles.card_flex}>
