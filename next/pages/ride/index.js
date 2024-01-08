@@ -35,9 +35,7 @@ export default function Ride() {
   return (
     <>
     <Layout>
-      <div className={styles.container}>
         <h2 className={styles.title}>設施搜尋</h2>
-        <br/>
         <div className={styles.flex_center} style={{height:50}}>
           <span className={styles.flex_center}>
             <FaMagnifyingGlass style={{width:30,height:30.66,padding:5,borderRight:'none', position:'absolute',left:8}}/>
@@ -46,83 +44,57 @@ export default function Ride() {
         </div>
         <div className={styles.flex_center_column}>
           <div className={styles.search_flex} style={{height:50}}>
-            <span className={styles.button} style={{width:50}}>主題</span>
-            <span className={styles.children_button} style={{width:70}}>水世界</span>
-            <span className={styles.children_button} style={{width:85}}>冒險之旅</span>
-            <span className={styles.children_button} style={{width:85}}>慢樂悠遊</span>
+            <span  className={styles.search_flex} style={{width:500}}>
+              <span className={styles.button} style={{width:50}}>主題</span>
+              <span className={styles.children_button} style={{width:70}}>水世界</span>
+              <span className={styles.children_button} style={{width:85}}>冒險之旅</span>
+              <span className={styles.children_button} style={{width:85}}>慢樂悠遊</span>
+            </span>
+            <span  className={styles.search_flex} style={{width:500}}>
+              <span className={styles.button} style={{width:50}}>類型</span>
+              <span className={styles.children_button} style={{width:85}}>兒童友善</span>
+              <span className={styles.children_button} style={{width:85}}>親子同樂</span>
+              <span className={styles.children_button} style={{width:85}}>刺激冒險</span>
+            </span>
           </div>
           <div className={styles.search_flex} style={{height:50}}>
-            <span className={styles.button} style={{width:50}}>類型</span>
-            <span className={styles.children_button} style={{width:85}}>兒童友善</span>
-            <span className={styles.children_button} style={{width:85}}>親子同樂</span>
-            <span className={styles.children_button} style={{width:85}}>刺激冒險</span>
+            <span  className={styles.search_flex} style={{width:500}}>
+              <span className={styles.button} style={{width:85}}>刺激程度</span>
+              <span className={styles.children_button} style={{width:35}}><FaStar /></span>
+              <span className={styles.children_button} style={{width:50}}><FaStar /><FaStar /></span>
+              <span className={styles.children_button} style={{width:65}}><FaStar /><FaStar /><FaStar /></span>
+              <span className={styles.children_button} style={{width:80}}><FaStar /><FaStar /><FaStar /><FaStar /></span>
+              <span className={styles.children_button} style={{width:95}}><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /></span>
+            </span>
+            <span  className={styles.search_flex} style={{width:500}}>
+              <span className={styles.button} style={{width:85}}>特殊支援</span>
+              <span className={styles.children_button} style={{width:100}}>輪椅可搭乘</span>
+            </span>
           </div>
-          <div className={styles.search_flex} style={{height:50}}>
-            <span className={styles.button} style={{width:85}}>刺激程度</span>
-            <span className={styles.children_button} style={{width:35}}><FaStar /></span>
-            <span className={styles.children_button} style={{width:50}}><FaStar /><FaStar /></span>
-            <span className={styles.children_button} style={{width:65}}><FaStar /><FaStar /><FaStar /></span>
-            <span className={styles.children_button} style={{width:80}}><FaStar /><FaStar /><FaStar /><FaStar /></span>
-            <span className={styles.children_button} style={{width:95}}><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /></span>
-          </div>
-          <div className={styles.search_flex} style={{height:50}}>
-            <span className={styles.button} style={{width:85}}>特殊支援</span>
-            <span className={styles.children_button} style={{width:100}}>輪椅可搭乘</span>
-          </div>
-        <div className={styles.flex_center}>
-        
-        </div>
           <div className={styles.card_flex}>
-            <div>
-              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
-            </div>
-            <div>
-              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
-            </div>
-            <div>
-              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
-            </div>
-            <div>
-              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
-            </div>
-            <div>
-              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
-            </div>
-            <div>
-              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
-            </div>
-            <div>
-              <Image className={styles.img} src={'/../../images/ride/w1.jpg'} width={250} height={150} style={{marginLeft:10,marginRight:10}}/>
-            </div>
             {data.rows &&
                   data.rows.map((i) => {
-                    return (
-                      <>
-                      <div style={styles.card_flex}>
+                  return (
+                      
+                      <div key={i.amusement_ride_id}>
                           <Link href={'#'}>
-                            <div key={i.amusement_ride_id} className={styles.card}>
-                              <Image className={styles.card_img} src={`/../../images/ride/${i.amusement_ride_img}`}/>
+                            <div  className={styles.card}>
+                              <Image className={styles.card_img} src={`/images/ride/${i.amusement_ride_img}`} alt={i.amusement_ride_img} width={150} height={150}/>
                               <span className={styles.card_title}>{i.amusement_ride_name}</span>
                             </div>
                           </Link>
                       </div>
-                      </>
+                      
                     );
-                  })}
+                  })} 
+          </div>
+          <div className={styles.theme_img}>
+            <img className={styles.theme_img} src={'/images/ride/w1.jpg'} style={{width:'100%',height:200}} alt='' />
+          </div>
+          <div className={styles.flex_center}>
+            <img src='/images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card} alt=''/>
           </div>
         </div>
-          
-      </div>
-      <div className={styles.container}>
-        <div className={styles.theme_img}>
-          <img className={styles.theme_img} src={'/../../images/ride/w1.jpg'} style={{width:'100%',height:200}} />
-        </div>
-        <div className={styles.flex_center}>
-          <img src='/../../images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
-          <img src='/../../images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
-          <img src='/../../images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card}/>
-        </div>
-      </div>
       </Layout>
       <Head><title>設施介紹</title></Head>
     </>
