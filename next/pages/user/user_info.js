@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "@/context/auth-context";
 import { useRouter } from "next/router";
-import { USER } from "@/component/my-const";
+import { USER } from "@/component/ride-const";
 import { Layout } from "@/component/layout";
 
 export default function Profile() {

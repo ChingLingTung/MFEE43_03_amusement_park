@@ -5,7 +5,7 @@ import { FaStar } from "react-icons/fa6";
 import Image from 'next/image';
 import { Layout } from '@/component/layout';
 import Head from 'next/head';
-import { RIDE_LIST } from '@/component/my-const';
+import { RIDE_LIST } from '@/component/ride-const';
 import ThemeContext from '@/context/theme-context';
 import { useRouter } from 'next/router';
 import { useState,useContext,useEffect } from 'react';

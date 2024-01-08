@@ -73,42 +73,37 @@ const getListData = async (req) => {
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
   let keyword = req.query.keyword? req.query.keyword.trim(): "";
-  let keyword_ = db.escape(`%{keyword}%`);
+  let keyword_ = db.escape(`%${keyword}%`);
   
   let qs = {};  // 用來把 query string 的設定傳給 template
 
-  // 日期的搜尋(在某個日期後的搜尋)
-  // 設定開始日期startDate用於搜尋某日期以後的資料
-  let startDate = req.query.startDate ? req.query.startDate.trim() : "";
-  // 先把資料轉換成dayjs格式
-  const startDateD =dayjs(startDate);
-  // 如果符合資料格式再轉成YYYY-MM-DD的呈現形式，不符合格式則設定空字串
-  if (startDateD.isValid()) {
-    startDate = startDateD.format("YYYY-MM-DD");
-  } else {
-    startDate = "";
-  }
+  // // 日期的搜尋(在某個日期後的搜尋)
+  // // 設定開始日期startDate用於搜尋某日期以後的資料
+  // let startDate = req.query.startDate ? req.query.startDate.trim() : "";
+  // // 先把資料轉換成dayjs格式
+  // const startDateD =dayjs(startDate);
+  // // 如果符合資料格式再轉成YYYY-MM-DD的呈現形式，不符合格式則設定空字串
+  // if (startDateD.isValid()) {
+  //   startDate = startDateD.format("YYYY-MM-DD");
+  // } else {
+  //   startDate = "";
+  // }
 
-  // 日期的搜尋(在某個日期前的搜尋)
-  let endDate = req.query.endDate ? req.query.endDate.trim() : "";
-  const endDateD = dayjs(endDate);
-  if (endDateD.isValid()) {
-    endDate = endDateD.format("YYYY-MM-DD");
-  } else {
-    endDate = "";
-  }
+  // // 日期的搜尋(在某個日期前的搜尋)
+  // let endDate = req.query.endDate ? req.query.endDate.trim() : "";
+  // const endDateD = dayjs(endDate);
+  // if (endDateD.isValid()) {
+  //   endDate = endDateD.format("YYYY-MM-DD");
+  // } else {
+  //   endDate = "";
+  // }
 
   // 設定綜合的where子句
-  let where = `WHERE 1`;
+  let where = `WHERE 1 `;
   // 關鍵字搜尋只有一欄的情況下要用符合任一的or
   if(keyword){
-    where += ` AND (\`name\` LIKE ${keyword_} OR \`mobile\` LIKE ${keyword_} ) `;
-  }
-  if (startDate) {
-    where += ` AND birthday >= '${startDate}' `;
-  }
-  if (endDate) {
-    where += ` AND birthday <= '${endDate}' `;
+    qs.keyword = keyword;
+    where += ` AND (\`amusement_ride_name\` LIKE ${keyword_}) `;
   }
 
   let totalRows = 0;
@@ -133,7 +128,7 @@ const getListData = async (req) => {
     output.info = `頁碼值小於 1`;
     return output;
   }
-const t_sql = "SELECT COUNT(1) totalRows FROM amusement_ride";
+const t_sql = `SELECT COUNT(1) totalRows FROM amusement_ride ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -143,7 +138,7 @@ const t_sql = "SELECT COUNT(1) totalRows FROM amusement_ride";
       return {...output, totalRows, totalPages};
     }
 
-    const sql = `SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC 
+    const sql = `SELECT * FROM amusement_ride ${where} ORDER BY amusement_ride_id DESC 
     LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };

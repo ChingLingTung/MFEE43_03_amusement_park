@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '@/styles/login.module.css';
 import Head from "next/head";
 import { useContext, useState } from "react";
-import { LOGIN } from "@/component/my-const";
+import { LOGIN } from "@/component/ride-const";
 import AuthContext from "@/context/auth-context";
 import { useRouter } from "next/router";
 export default function Login() {
