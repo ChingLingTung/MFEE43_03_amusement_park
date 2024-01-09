@@ -51,7 +51,7 @@
   align-items: center;
   margin: 0 5px;
 }
-.selected_button{
+.selected_children_button{
   outline-style: none;
   border:0;
   background-color: #e48fa2;
@@ -65,6 +65,7 @@
   justify-content: center;
   align-items: center;
   align-content: center;
+  margin: 0 10px;
   text-align: center;
 }
 .children_button{
