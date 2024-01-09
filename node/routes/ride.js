@@ -6,11 +6,11 @@ import dayjs from "dayjs";
 
 const router = express.Router();
 
-// router.get("/", async (req, res) => {
-//   const sql = "SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC";
-//   const [rows] = await db.query(sql);
-//   res.json(rows);
-// });
+router.get("/", async (req, res) => {
+  const sql = "SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC";
+  const [rows] = await db.query(sql);
+  res.json(rows);
+});
 
 // router.get("/", async (req, res) => {
 //   const perPage = 20; // 每頁固定20筆資料
@@ -53,26 +53,26 @@ const router = express.Router();
 //   });
 
 // 設定要在近其他頁面前要先登入，沒登入會跳轉到登入頁面
-// router.use((req, res, next) => {
-//   const u = req.url.split("?")[0]; // 用split擷取路徑
-//   console.log({ u });
-//   if (req.method === "GET" && u === "/") {
-//     return next();
-//   }
+router.use((req, res, next) => {
+  const u = req.url.split("?")[0]; // 用split擷取路徑
+  console.log({ u });
+  if (req.method === "GET" && u === "/") {
+    return next();
+  }
 //   // 如果session裡沒有登入的資訊
 //   if (!req.session.admin) {
 //     // 跳轉到登入頁面
 //     return res.redirect("/login");
 //   }
-//   next();
-// });
+  next();
+});
 
 const getListData = async (req) => {
   const perPage = 20; // 每頁幾筆
   // 用戶決定要看第幾頁
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
-  let keyword = req.query.keyword? req.query.keyword.trim(): "";
+  let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
   let keyword_ = db.escape(`%${keyword}%`);
   
   let qs = {};  // 用來把 query string 的設定傳給 template
@@ -117,17 +117,17 @@ const getListData = async (req) => {
     rows,
     totalRows,
     totalPages,
-
+    qs,
     redirect: "",
     info: "",
   };
 
-  if (page < 1) {
-    // 如果頁數小於一，頁面轉向到第一頁
-    output.redirect = `?page=1`;
-    output.info = `頁碼值小於 1`;
-    return output;
-  }
+  // if (page < 1) {
+  //   // 如果頁數小於一，頁面轉向到第一頁
+  //   output.redirect = `?page=1`;
+  //   output.info = `頁碼值小於 1`;
+  //   return output;
+  // }
 const t_sql = `SELECT COUNT(1) totalRows FROM amusement_ride ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);

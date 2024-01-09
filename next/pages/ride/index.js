@@ -13,21 +13,24 @@ import Link from 'next/link';
 export default function Ride() {
   const [data, setData] = useState({});
   const router = useRouter();
-  // const [keyword, setKeyword] = useState("");
-  const [value, setValue] = useState("");
+  const [keyword, setKeyword] = useState("");
   const [classValue, setClassValue]=useState("ride_children_button__ZA1aw")
   const [option, setOption] = useState("");
   const getListData = async () => {
-    console.log("router.query:", router.query);
+    const usp = new URLSearchParams(router.query)
+    // console.log("router.query:", router.query);
     let page = +router.query.page || 1;
+    let keyword = router.query.keyword || ''
 
     if (page < 1) page = 1;
     try {
-      const r = await fetch(RIDE_LIST + `?page=${page}`);
+      const r = await fetch(RIDE_LIST + `?${usp.toString()}`);
       const d = await r.json();
-      console.log(value)
+      // console.log(value)
       setData(d);
-    } catch (ex) {}
+    } catch (ex) {
+      console.log(ex)
+    }
   };
   // const getListData = async () => {
   //   // console.log("router.query:", router.query);
@@ -44,56 +47,9 @@ export default function Ride() {
   //     console.log(ex)
   //   }
   // };
-
-//   const getListData = async () => {
-//     const usp = new URLSearchParams(router.query)
-
-//     //console.log('router.query:', router.query)
-//     let page = +router.query.page || 1
-
-//     // 關鍵字搜尋
-//     let keyword = router.query.keyword || ''
-
-
-
-//     if (page < 1) page = 1
-//     try {
-//       const r = await fetch(BLOG_LIST + `?${usp.toString()}`)
-//       const d = await r.json()
-//       console.log(d)
-//       setData(d)
-//     } catch (ex) {
-//       console.log(ex)
-//     }
-//   }
-
-// return (
-//     <>
-// <input
-//                       type="search"
-//                       className={styles['bg-search']}
-//                       id="bg-search"
-//                       placeholder="請輸入搜尋關鍵字"
-//                       name="keyword"
-//                       onChange={(e) => {
-//                         // setKeyword(e.currentTarget.value)
-
-//                         router.push(
-//                           {
-//                             pathname: '/blog',
-//                             query: { ...router.query, keyword: e.target.value },
-//                           },
-//                           undefined,
-//                           { scroll: false }
-//                         )
-//                       }}
-//                     />
-
-// <>
-// }
   useEffect(() => {
     getListData();
-  }, [router.query.page]);
+  },[keyword]);
 
   return (
     <>
@@ -102,9 +58,18 @@ export default function Ride() {
         <div className={styles.flex_center} style={{height:50}}>
           <span className={styles.flex_center}>
             <FaMagnifyingGlass style={{width:30,height:30.66,padding:5,borderRight:'none', position:'absolute',left:8}}/>
-            <input name='ride_name' className={styles.searchbar} type={'text'} placeholder={'請輸入設施名稱'} 
-            value={value} 
-            onChange={(e) => {setValue(e.target.value);console.log(e.target.value)}}
+            <input name='ride_name' className={styles.searchbar} type={'text'} placeholder={'請輸入設施名稱'}  
+            onChange={(e) => {
+              setKeyword(e.currentTarget.value);
+              router.push(
+                          {
+                            pathname: '/ride',
+                            query: { ...router.query, keyword: e.target.value },
+                          },
+                          undefined,
+                          { scroll: false }
+                        )
+            }}
             // onChange={(e) => {setKeyword(e.currentTarget.value)
             //   router.push(
             //               {
