@@ -129,12 +129,6 @@ app.get("/try-db", async (req, res) => {
   res.json(results);
 });
 
-app.get("/yahoo", async (req, res) => {
-  const r = await fetch("https://tw.yahoo.com/");
-  const txt = await r.text();
-  res.send(txt);
-});
-/*
 app.get("/login", async (req, res) => {
   res.render("login");
 });
@@ -180,18 +174,6 @@ app.get("/logout", async (req, res) => {
   delete req.session.admin;
   res.redirect('/');
 });
-app.get("/try-jw1", async(req,res)=>{
-  // jwt 加密(.env的設定中再加一項)
-  const token = jwt.sign({id:1, account: "DrinkAllDay@iSpan.com"},process.env.JWT_SECRET);
-  res.json({token});
-});
-app.get("/try-jw2", async(req,res)=>{
-  // 解密
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImFjY291bnQiOiJzaGluIiwiaWF0IjoxNzAzNTYxMDU2fQ.ZgaJZX1cNMH-GG99dQJRz-pJGqquf9LTBmgsSw7iPHE";
-  const payload = jwt.verify(token,process.env.JWT_SECRET);
-  res.json({payload});
-});
-
 // 設定靜態內容的資料夾
 app.use(express.static("public"));
 app.use("/bootstrap", express.static("node_modules/bootstrap/dist"));
@@ -199,11 +181,14 @@ app.use("/jquery", express.static("node_modules/jquery/dist"));
 
 // *************** 404 page *** 所有的路由都要放在此之前
 app.use((req, res) => {
-  res.status(404).send(`<h1>你迷路了嗎</h1>`);
+  res.status(404).send(`<h1>404 Not Found</h1>`);
 });
 
 const port = process.env.WEB_PORT || 3001;
 
 app.listen(port, () => {
   console.log(`express server: ${port}`);
-});*/
+});
+
+
+

@@ -70,16 +70,6 @@ export default function Ride() {
                           { scroll: false }
                         )
             }}
-            // onChange={(e) => {setKeyword(e.currentTarget.value)
-            //   router.push(
-            //               {
-            //                 pathname: '/ride',
-            //                 query: { ...router.query, keyword: e.target.value },
-            //               },
-            //               undefined,
-            //               { scroll: false }
-            //             )
-            //           }}
 
 
               />
