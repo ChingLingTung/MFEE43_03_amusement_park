@@ -19,7 +19,7 @@ import detailRouter from './routes/detail.js';
 
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
-import db from "./utils/connect-mysql.js";
+
 
 const app = express();
 
