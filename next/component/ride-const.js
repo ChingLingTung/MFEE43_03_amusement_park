@@ -6,10 +6,6 @@ export const RIDE_GET_ONE = API_SERVER + "/ride/api/details";
 
 export const SHOW_LIST = API_SERVER + "/show/api";
 
-<<<<<<< HEAD
-=======
-
->>>>>>> ride
 export const SHOW_GET_ONE = API_SERVER + "/show/api/details";
 
 
