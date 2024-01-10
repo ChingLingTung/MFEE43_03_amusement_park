@@ -86,16 +86,16 @@ export default function Home() {
           </div>
         </div>
         <div>
-        <Image className={styles.theme_img} src={'/../images/w1.jpg'} width={1000} height={600}/>
+        <Image className={styles.theme_img} src={'/images/ride/w2.jpg'} width={1000} height={600}/>
         </div>
       </div>
       <div className={styles.flex_spacebetween} style={{marginTop:200}}>
         <div>
-        <Image className={styles.theme_img2} src={'/../images/w1.jpg'} width={1000} height={600}/>
+        <Image className={styles.theme_img2} src={'/images/ride/i8.jpg'} width={1000} height={600}/>
         </div>
         <div className={styles.flex_center} style={{width:800}}>
           <div>
-            <h2 style={{textAlign:'center',lineHeight:5}}>水世界</h2>
+            <h2 style={{textAlign:'center',lineHeight:5}}>冒險之旅</h2>
             <p>從適合一家大小的悠閒設施到刺激的設施一應俱全！</p>
           </div>
         </div>
@@ -103,21 +103,21 @@ export default function Home() {
       <div className={styles.flex_spacebetween} style={{marginTop:200}}>
         <div className={styles.flex_center} style={{width:800}}>
           <div>
-            <h2 style={{textAlign:'center',lineHeight:5}}>水世界</h2>
+            <h2 style={{textAlign:'center',lineHeight:5}}>慢樂悠遊</h2>
             <p>從適合一家大小的悠閒設施到刺激的設施一應俱全！</p>
           </div>
         </div>
         <div>
-        <Image className={styles.theme_img} src={'/../images/w1.jpg'} width={1000} height={600}/>
+        <Image className={styles.theme_img} src={'/images/ride/s2.jpg'} width={1000} height={600}/>
         </div>
       </div>
       <div className={styles.flex_spacebetween} style={{marginTop:200}}>
         <div>
-        <Image className={styles.theme_img2} src={'/../images/w1.jpg'} width={1000} height={600}/>
+        <Image className={styles.theme_img2} src={'/images/ride/b1.jpg'} width={1000} height={600}/>
         </div>
         <div className={styles.flex_center} style={{width:800}}>
           <div>
-            <h2 style={{textAlign:'center',lineHeight:5}}>水世界</h2>
+            <h2 style={{textAlign:'center',lineHeight:5}}>樂高天堂</h2>
             <p>從適合一家大小的悠閒設施到刺激的設施一應俱全！</p>
           </div>
         </div>
