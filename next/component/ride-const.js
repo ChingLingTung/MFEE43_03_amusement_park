@@ -2,6 +2,14 @@ export const API_SERVER = "http://localhost:3002";
 
 export const RIDE_LIST = API_SERVER + "/ride/api";
 
+export const RIDE_GET_ONE = API_SERVER + "/ride/api/details";
+
+export const SHOW_LIST = API_SERVER + "/show/api";
+
+
+export const SHOW_GET_ONE = API_SERVER + "/show/api/details";
+
+
 
 
 // export const AB_ADD = API_SERVER + "/address-book/add";  // method: POST

@@ -10,68 +10,65 @@
   margin:50px auto;
   text-align: center;
 }
-.card{
-  width: 500px;
-  height: 600px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 0px 5px gray;
-  background-color: #fff;
-}
-.mini_card{
-  display: flex;
-  width: 630px;
-  height: 130px;
-  border-radius: 10px;
-  margin:0 auto ;
-  box-shadow: 0px 0px 5px gray;
-  background-color: #fff;
-}
 .button{
   outline-style: none;
   border:0;
-  background-color: #E4BEC6;
   border-radius: 5px;
-  width: 70px;
-  height: 25px;
-  color: #fff;
+  height: 30px;
+  background-color: #fff;
+  border: #000 2px solid;
   font-family:'Zen Maru Gothic', serif;
   cursor: pointer;
   display:flex;
-  justify-items: center;
   justify-content: center;
   align-items: center;
-  align-content: center;
-  text-align: center;
-  font-weight: 300;
+  margin: 0 10px;
 }
+
 .flex_center{
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
-.flex_spacebetween{
+
+.img{
+  object-fit: cover;
+  border-radius: 10px;
+  border:#E4BEC6 3px solid ;
+  width:600px;
+  height:450px;
+  margin:20px 10px;
+}
+.card_flex{
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: first baseline;
+  padding: 0 300px;
 }
-.column{
+.card{
+  width: 300px;
+  height: 400px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-content: space-between;
-  margin:0;
+  margin:10px 10px;
+  box-shadow: 0px 0px 5px gray;
+  background-color: #fff;
 }
-.img{
-  object-fit: fill;
+.card_img{
+  object-fit: cover;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+  width:300px;
+  height:200px;
 }
-.mini_img{
-  object-fit: fill;
-  border-bottom-left-radius: 10px;
-  border-top-left-radius: 10px;
+.card_title{
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 2;
 }
+
+
 
 
