@@ -1,0 +1,130 @@
+import Layout from "@/components/Layout";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import dayjs from "dayjs";
+import { AB_LIST, AB_DEL_ONE } from "@/components/product-const";
+import { useRouter } from "next/router";
+
+export default function ABIndex() {
+  // console.log("window.location.href:", window.location.href);
+  const [data, setData] = useState({});
+  const router = useRouter();
+
+  const getListData = async () => {
+    console.log("router.query:", router.query);
+    let page = +router.query.page || 1;
+    if (page < 1) page = 1;
+    try {
+      const r = await fetch(AB_LIST + `?page=${page}`);
+      const d = await r.json();
+
+      setData(d);
+    } catch (ex) {}
+  };
+
+  useEffect(() => {
+    getListData();
+  }, [router.query.page]);
+
+  const removeItemAndReload = async (product_id) => {
+    console.log({ product_id });
+
+    const r = await fetch(AB_DEL_ONE + "/" + product_id, {
+      method: "DELETE",
+    });
+    const result = await r.json();
+
+    if (result.success) {
+      // alert("完成刪除")
+      // router.reload(); 避免重載
+      getListData();
+    }
+  };
+
+  return (
+    <>
+      <Layout>
+        <div className="row">
+          <div className="col">
+            <nav aria-label="Page navigation example">
+              <ul className="pagination">
+                {data.success && data.totalPages
+                  ? Array(11)
+                      .fill(1)
+                      .map((v, i) => {
+                        const p = data.page - 5 + i;
+                        if (p < 1 || p > data.totalPages) return null;
+                        return (
+                          <li
+                            key={p}
+                            className={
+                              p === data.page ? "page-item active" : "page-item"
+                            }
+                          >
+                            <Link className="page-link" href={"?page=" + p}>
+                              {p}
+                            </Link>
+                          </li>
+                        );
+                      })
+                  : null}
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <table className="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>
+                    <i className="fa-solid fa-trash"></i>
+                  </th>
+                  <th>產品編號</th>
+                  <th>庫存編號</th>
+                  <th>產品名稱</th>
+                  <th>產品價格</th>
+                  <th>產品描述</th>
+                  <th>
+                    <i className="fa-solid fa-square-pen"></i>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.rows &&
+                  data.rows.map((i) => {
+                    return (
+                      <tr key={i.product_id}>
+                        <td>
+                          <div
+                            style={{
+                              cursor: "pointer",
+                              display: "inline-block",
+                              color: "brown",
+                            }}
+                            onClick={() => removeItemAndReload(i.product_id)}
+                          >
+                            <i className="fa-solid fa-trash"></i>
+                          </div>
+                        </td>
+                        <td>{i.product_id}</td>
+                        <td>{i.pdstock_id}</td>
+                        <td>{i.product_name}</td>
+                        <td>{i.product_price}</td>
+                        <td>{i.product_description}</td>
+                        <td>
+                          <Link href={`/product-list/edit/${i.product_id}`}>
+                            <i className="fa-solid fa-square-pen"></i>
+                          </Link>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Layout>
+    </>
+  );
+}

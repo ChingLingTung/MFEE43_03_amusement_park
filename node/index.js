@@ -2,17 +2,24 @@ import "dotenv/config";
 import express from "express";
 import session from "express-session";
 import dayjs from "dayjs";
+import moment from "moment-timezone";
 import cors from "cors";
 import mysql_session from "express-mysql-session";
 import bcrypt from "bcryptjs";
+
 import  jwt  from "jsonwebtoken";
 import loginRouter from "./routes/login.js"
 import rideRouter from "./routes/ride.js";
 import db from "./utils/connect-mysql.js";
+import upload from "./utils/upload-imgs.js";
+import sales from "./data/sales.json" assert { type: "json" };
+import admin2Router from "./routes/admin2.js";
+import productListRouter from "./routes/product.js";
+import detailRouter from './routes/detail.js';
 
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
-
+import db from "./utils/connect-mysql.js";
 
 const app = express();
 
@@ -36,7 +43,7 @@ app.use(
 
 // 自訂頂層 middleware
 app.use((req, res, next) => {
-  res.locals.title = "網站名稱";
+  res.locals.title = "豬豬的網站";
   res.locals.pageName = "";
 
   res.locals.toDateString = (d) => dayjs(d).format("YYYY-MM-DD");
@@ -67,6 +74,13 @@ app.get("/", (req, res) => {
 
   res.render("home", { name: process.env.DB_NAME });
 });
+app.get("/json-sales", (req, res) => {
+  res.locals.title = "JSON資料 | " + res.locals.title;
+  res.locals.pageName = "json-sales";
+
+  res.render("json-sales", { sales });
+});
+
 
 app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   let u = req.url.slice(3).split("?")[0];
@@ -74,14 +88,51 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 
   res.send({ u });
 });
-
 app.use("/ride", rideRouter);
+app.use("/admins", admin2Router);
+app.use("/product", productListRouter);
+app.use("/detail", detailRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
   req.session.n++;
   res.json(req.session);
 });
 
+app.get("/try-moment", (req, res) => {
+  const fm = "YYYY-MM-DD HH:mm:ss";
+  const m1 = moment();
+  const m2 = moment("12-10-11");
+  const m3 = moment("12-10-11", "DD-MM-YY");
+  const d1 = dayjs();
+  const d2 = dayjs("2023-11-15");
+  const a1 = new Date();
+  const a2 = new Date("2023-11-15");
+
+  res.json({
+    m1: m1.format(fm),
+    m2: m2.format(fm),
+    m3: m3.format(fm),
+    m1a: m1.tz("Europe/Berlin").format(fm),
+    d1: d1.format(fm),
+    d2: d2.format(fm),
+    a1,
+    a2,
+  });
+});
+
+app.get("/try-db", async (req, res) => {
+  const [results, fields] = await db.query(
+    `SELECT * FROM \`categories\` LIMIT 5`
+  );
+  res.json(results);
+});
+
+app.get("/yahoo", async (req, res) => {
+  const r = await fetch("https://tw.yahoo.com/");
+  const txt = await r.text();
+  res.send(txt);
+});
+/*
 app.get("/login", async (req, res) => {
   res.render("login");
 });
@@ -127,7 +178,6 @@ app.get("/logout", async (req, res) => {
   delete req.session.admin;
   res.redirect('/');
 });
-
 app.get("/try-jw1", async(req,res)=>{
   // jwt 加密(.env的設定中再加一項)
   const token = jwt.sign({id:1, account: "DrinkAllDay@iSpan.com"},process.env.JWT_SECRET);
@@ -147,11 +197,11 @@ app.use("/jquery", express.static("node_modules/jquery/dist"));
 
 // *************** 404 page *** 所有的路由都要放在此之前
 app.use((req, res) => {
-  res.status(404).send(`<h1>404 Not Found</h1>`);
+  res.status(404).send(`<h1>你迷路了嗎</h1>`);
 });
 
 const port = process.env.WEB_PORT || 3001;
 
 app.listen(port, () => {
   console.log(`express server: ${port}`);
-});
+});*/

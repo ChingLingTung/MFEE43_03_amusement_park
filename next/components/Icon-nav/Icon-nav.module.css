@@ -1,0 +1,12 @@
+.icon-nav{
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 100px 0px 0px 0px;
+}
+
+.icon-nav img{
+  width: 110px;
+  /* margin: 30px; */
+}
