@@ -3,81 +3,77 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/show.module.css'
 import { FaChevronRight } from "react-icons/fa6";
+import { Layout } from '@/component/layout';
+import { SHOW_LIST } from '@/component/ride-const';
+import { useRouter } from 'next/router';
+import { useState,useContext,useEffect } from 'react';
+import Link from 'next/link';
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+export default function Show() {
+  const [data, setData] = useState({});
+  const router = useRouter();
+  const getListData = async () => {
+    
+    try {
+      const r = await fetch(SHOW_LIST);
+      const d = await r.json();
+      // console.log(value)
+      setData(d);
+    } catch (ex) {
+      console.log(ex)
+    }
+  };
+  useEffect(() => {
+    getListData();
+  },[]);
   return (
     <>
-      <div className={styles.container}>
-        <h2 className={styles.title}>表演節目</h2>
-        <div className={styles.flex_center}>
-          <div className={styles.card} style={{marginRight:10}}>
-            <div>
-              <Image className={styles.img} src={'/../images/newyear.jpg'} width={500} height={350}/>
-            </div>
-            <div className={styles.column} style={{width:500,height:250,padding:5}}>
-              <h3>節目名稱</h3>
-              <div className={styles.flex_spacebetween} style={{height:25}}>
-                <p>日期</p>
-                <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
-              </div>
-            </div>
-          </div>
-          <div className={styles.column} style={{width:630,height:600,marginLeft:10}}>
-            
-            <div className={styles.mini_card}>
-              <div>
-                <Image className={styles.mini_img} src={'/../images/newyear.jpg'} width={250} height={130}/>
-              </div>
-              <div style={{width:380,height:130}} className={styles.column}>
-                <h4 style={{paddingLeft:5}}>節目名稱</h4>
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
-                  <p>日期</p>
-                  <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
+      <Layout>
+        <div className={styles.container}>
+          <h2 className={styles.title}>表演節目</h2>
+          <div className={styles.card_flex}>
+          {/* {data.rows &&
+            data.rows.map((i)=>{
+              return (
+                <div key={i.show_id}>
+                  <Link href={`/show/details/${i.amusement_ride_id}`}>
+                    <div className={styles.card}>
+                      <img className={styles.card_img} src={`/images/show/${i.show_pic}`}/>
+                      <div style={{padding:5}}>
+                        <div className={styles.card_title}>{i.show_name}</div>
+                        <div>{i.show_info}{i.show_info2}</div>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
+              )
+            })
+          } */}
+            <div className={styles.card}>
+              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
+              <div style={{padding:5}}>
+                <div className={styles.card_title}>設施名稱</div>
+                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
               </div>
             </div>
-            <div className={styles.mini_card}>
-              <div>
-                <Image className={styles.mini_img} src={'/../images/newyear.jpg'} width={250} height={130}/>
-              </div>
-              <div style={{width:380,height:130}} className={styles.column}>
-                <h4 style={{paddingLeft:5}}>節目名稱</h4>
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
-                  <p>日期</p>
-                  <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
-                </div>
+            <div className={styles.card}>
+              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
+              <div style={{padding:5}}>
+                <div className={styles.card_title}>設施名稱</div>
+                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
               </div>
             </div>
-            <div className={styles.mini_card}>
-              <div>
-                <Image className={styles.mini_img} src={'/../images/newyear.jpg'} width={250} height={130}/>
-              </div>
-              <div style={{width:380,height:130}} className={styles.column}>
-                <h4 style={{paddingLeft:5}}>節目名稱</h4>
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
-                  <p>日期</p>
-                  <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
-                </div>
-              </div>
-            </div>
-            <div className={styles.mini_card}>
-              <div>
-                <Image className={styles.mini_img} src={'/../images/newyear.jpg'} width={250} height={130}/>
-              </div>
-              <div style={{width:380,height:130}} className={styles.column}>
-                <h4 style={{paddingLeft:5}}>節目名稱</h4>
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
-                  <p>日期</p>
-                  <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
-                </div>
+            <div className={styles.card}>
+              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
+              <div style={{padding:5}}>
+                <div className={styles.card_title}>設施名稱</div>
+                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-
+      </Layout>
+      <Head><title>表演列表</title></Head>
     </>
   )
 }

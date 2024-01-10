@@ -245,7 +245,7 @@ export default function Ride() {
                   return (
                       
                       <div key={i.amusement_ride_id}>
-                          <Link href={'#'}>
+                          <Link href={`/ride/details/${i.amusement_ride_id}`}>
                             <div  className={styles.card}>
                               <Image className={styles.card_img} src={`/images/ride/${i.amusement_ride_img}`} alt={i.amusement_ride_img} width={150} height={150}/>
                               <span className={styles.card_title}>{i.amusement_ride_name}</span>
@@ -257,10 +257,28 @@ export default function Ride() {
                   })} 
           </div>
           <div className={styles.theme_img}>
-            <img className={styles.theme_img} src={'/images/ride/w1.jpg'} style={{width:'100%',height:200}} alt='' />
+            <img className={styles.theme_img} src={'/images/ride/w1.jpg'} style={{width:'100%',height:200,marginTop:100}} alt='' />
           </div>
-          <div className={styles.flex_center}>
+          <div className={styles.flex_center} style={{marginTop:50,marginBottom:100}}>
             <img src='/images/ride/w1.jpg' width='380px' height='430px' className={styles.slide_card} alt=''/>
+          </div>
+          <div className={styles.theme_img}>
+            <img className={styles.theme_img} src={'/images/ride/i9.jpg'} style={{width:'100%',height:200}} alt='' />
+          </div>
+          <div className={styles.flex_center}  style={{marginTop:50,marginBottom:100}}>
+            <img src='/images/ride/i9.jpg' width='380px' height='430px' className={styles.slide_card} alt=''/>
+          </div>
+          <div className={styles.theme_img}>
+            <img className={styles.theme_img} src={'/images/ride/s1.jpg'} style={{width:'100%',height:200}} alt='' />
+          </div>
+          <div className={styles.flex_center}  style={{marginTop:50,marginBottom:100}}>
+            <img src='/images/ride/s3.jpg' width='380px' height='430px' className={styles.slide_card} alt=''/>
+          </div>
+          <div className={styles.theme_img}>
+            <img className={styles.theme_img} src={'/images/ride/b2.jpg'} style={{width:'100%',height:200}} alt='' />
+          </div>
+          <div className={styles.flex_center}  style={{marginTop:50,marginBottom:100}}>
+            <img src='/images/ride/b4.jpg' width='380px' height='430px' className={styles.slide_card} alt=''/>
           </div>
         </div>
       </Layout>

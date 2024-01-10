@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const sql = "SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC";
+  const sql = "SELECT * FROM amusement_ride ORDER BY amusement_ride_id";
   const [rows] = await db.query(sql);
   res.json(rows);
 });
@@ -169,39 +169,56 @@ router.get("/api", async (req, res) => {
   res.json( await getListData(req) );
 });
 
-router.get("/ride_add", async (req, res) => {
-  res.locals.pageName = "ride_add";
-  res.render("rides/ride_add");
-});
-router.post("/ride_add", upload.none(), async (req, res) => {
-  const output = {
-    success: false,
-    postData: req.body, // 除錯用
-  };
+// 取得單筆的資料
+router.get("/api/details/:amusement_ride_id", async (req, res) => {
+  const amusement_ride_id = +req.params.amusement_ride_id;
 
-  const {amusement_ride_name, amusement_ride_img, amusement_ride_longitude, amusement_ride_latitude, ride_category_id, thriller_rating, created_at, ride_support_id, theme_id, amusement_ride_description } = req.body;
 
-  const sql = "INSERT INTO `amusement_ride`(`amusement_ride_name`, `amusement_ride_img`, `amusement_ride_longitude`, `amusement_ride_latitude`, `ride_category_id`, `thriller_rating`, `created_at`, `ride_support_id`, `theme_id`, `amusement_ride_description`) VALUES (?, ?, ?, ?, ?, ?, NOW(),?, ?, ?)";
-
-  try{
-    const [result] = await db.query(sql, [
-      amusement_ride_name, 
-      amusement_ride_img, 
-      amusement_ride_longitude, 
-      amusement_ride_latitude,
-      ride_category_id, 
-      thriller_rating, 
-      created_at, 
-      ride_support_id, 
-      theme_id, 
-      amusement_ride_description
-    ]);
-    output.result = result;
-    // 用布林值判斷資料是否有被修改(affectedRows是被影響的資料筆數，!!將值轉換成布林值供判斷)
-    output.success = !! result.affectedRows;
-  } catch (ex) {
-    output.exception = ex;
+  const sql = `SELECT * FROM amusement_ride JOIN ride_category ON amusement_ride.ride_category_id=ride_category.ride_category_id JOIN ride_support ON amusement_ride.ride_support_id=ride_support.ride_support_id JOIN theme ON amusement_ride.theme_id=theme.theme_id WHERE amusement_ride_id=?`;
+  const [rows] = await db.query(sql, [amusement_ride_id]);
+  if (!rows.length) {
+    return res.json({success: false});
   }
+  const row = rows[0];
+  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+
+  res.json({success: true, row});
+});
+
+
+// router.get("/ride_add", async (req, res) => {
+//   res.locals.pageName = "ride_add";
+//   res.render("rides/ride_add");
+// });
+// router.post("/ride_add", upload.none(), async (req, res) => {
+//   const output = {
+//     success: false,
+//     postData: req.body, // 除錯用
+//   };
+
+//   const {amusement_ride_name, amusement_ride_img, amusement_ride_longitude, amusement_ride_latitude, ride_category_id, thriller_rating, created_at, ride_support_id, theme_id, amusement_ride_description } = req.body;
+
+//   const sql = "INSERT INTO `amusement_ride`(`amusement_ride_name`, `amusement_ride_img`, `amusement_ride_longitude`, `amusement_ride_latitude`, `ride_category_id`, `thriller_rating`, `created_at`, `ride_support_id`, `theme_id`, `amusement_ride_description`) VALUES (?, ?, ?, ?, ?, ?, NOW(),?, ?, ?)";
+
+//   try{
+//     const [result] = await db.query(sql, [
+//       amusement_ride_name, 
+//       amusement_ride_img, 
+//       amusement_ride_longitude, 
+//       amusement_ride_latitude,
+//       ride_category_id, 
+//       thriller_rating, 
+//       created_at, 
+//       ride_support_id, 
+//       theme_id, 
+//       amusement_ride_description
+//     ]);
+//     output.result = result;
+//     // 用布林值判斷資料是否有被修改(affectedRows是被影響的資料筆數，!!將值轉換成布林值供判斷)
+//     output.success = !! result.affectedRows;
+//   } catch (ex) {
+//     output.exception = ex;
+//   }
   
 
   /*必須一個欄位對應一個欄位，欄位多或少都會報錯
@@ -219,65 +236,65 @@ router.post("/ride_add", upload.none(), async (req, res) => {
     "warningStatus": 0,
     "changedRows": 0    # 修改時真正有變動的資料筆數
     }*/
-  res.json(output);
-});
+//   res.json(output);
+// });
 
 // 設定編輯功能
-router.get("/ride_edit/:amusement_ride_id", async (req, res) => {
-  res.locals.pageName = "ride_edit";
-  const amusement_ride_id = +req.params.amusement_ride_id;
-  res.locals.title = "編輯 | " + res.locals.title;
-  const sql = ` SELECT * FROM amusement_ride WHERE amusement_ride_id=?`;
-  const [rows] = await db.query(sql, [amusement_ride_id]);
-  if (!rows.length) {
-    return res.redirect(req.baseUrl);
-  }
-  const row = rows[0];
+// router.get("/ride_edit/:amusement_ride_id", async (req, res) => {
+//   res.locals.pageName = "ride_edit";
+//   const amusement_ride_id = +req.params.amusement_ride_id;
+//   res.locals.title = "編輯 | " + res.locals.title;
+//   const sql = ` SELECT * FROM amusement_ride WHERE amusement_ride_id=?`;
+//   const [rows] = await db.query(sql, [amusement_ride_id]);
+//   if (!rows.length) {
+//     return res.redirect(req.baseUrl);
+//   }
+//   const row = rows[0];
 
-  res.render("rides/ride_edit", row);
-});
+//   res.render("rides/ride_edit", row);
+// });
 
-router.put("/ride_edit/:amusement_ride_id", async (req, res) => {
-  const output = {
-    success: false,
-    postData: req.body,
-    result: null,
-  };
-  // 用trim()將內容去除頭尾的空白，解決textarea不更動內容就會自動增加空白的問題(textarea會呈現空白的效果導致程式碼換行)
-  // 表單檢查
-  req.body.amusement_ride_description = req.body.amusement_ride_description.trim();
-  const sql = `UPDATE amusement_ride SET ? WHERE amusement_ride_id=?`;
-  const [result] = await db.query(sql, [req.body, req.body.amusement_ride_id]);
-  output.result = result;
-  // changedRows布林值判斷資料是否有更新
-  output.success = !!result.changedRows;
+// router.put("/ride_edit/:amusement_ride_id", async (req, res) => {
+//   const output = {
+//     success: false,
+//     postData: req.body,
+//     result: null,
+//   };
+//   // 用trim()將內容去除頭尾的空白，解決textarea不更動內容就會自動增加空白的問題(textarea會呈現空白的效果導致程式碼換行)
+//   // 表單檢查
+//   req.body.amusement_ride_description = req.body.amusement_ride_description.trim();
+//   const sql = `UPDATE amusement_ride SET ? WHERE amusement_ride_id=?`;
+//   const [result] = await db.query(sql, [req.body, req.body.amusement_ride_id]);
+//   output.result = result;
+//   // changedRows布林值判斷資料是否有更新
+//   output.success = !!result.changedRows;
 
-  res.json(output);
-});
+//   res.json(output);
+// });
 
 
 
-// 設定刪除功能
-router.delete("/:amusement_ride_id", async (req, res) => {
-  const output = {
-    success: false,
-    result: null,
-  };
+// // 設定刪除功能
+// router.delete("/:amusement_ride_id", async (req, res) => {
+//   const output = {
+//     success: false,
+//     result: null,
+//   };
 
-  // +轉換成字串
-  // 如果amusement_ride_id不存在或小於一直接離開並以JSON檔回傳錯誤訊息output
-  const amusement_ride_id = +req.params.amusement_ride_id;
-  if (!amusement_ride_id || amusement_ride_id < 1) {
-    return res.json(output);
-  }
+//   // +轉換成字串
+//   // 如果amusement_ride_id不存在或小於一直接離開並以JSON檔回傳錯誤訊息output
+//   const amusement_ride_id = +req.params.amusement_ride_id;
+//   if (!amusement_ride_id || amusement_ride_id < 1) {
+//     return res.json(output);
+//   }
 
-  // 如果amusement_ride_id存在且大於等於1才執行
-  const sql = ` DELETE FROM amusement_ride WHERE amusement_ride_id=${amusement_ride_id}`;
-  const [result] = await db.query(sql);
-  output.result = result;
-  output.success = !! result.affectedRows;
-  res.json(output);
-});
+//   // 如果amusement_ride_id存在且大於等於1才執行
+//   const sql = ` DELETE FROM amusement_ride WHERE amusement_ride_id=${amusement_ride_id}`;
+//   const [result] = await db.query(sql);
+//   output.result = result;
+//   output.success = !! result.affectedRows;
+//   res.json(output);
+// });
 
 
 export default router;

@@ -142,13 +142,13 @@
 }
 
 .card_size{
-  height:430px;
-  width:380px;
+  height:600px;
+  width:450px;
 }
 .slide_card{
   object-fit:cover;
-  width:380px;
-  height:430px;
+  width:450px;
+  height:600px;
   margin: 50px 40px;
   border: 5px solid #E4BEC6;
   border-top-right-radius:50% ;

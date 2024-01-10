@@ -10,6 +10,7 @@ import bcrypt from "bcryptjs";
 import  jwt  from "jsonwebtoken";
 import loginRouter from "./routes/login.js"
 import rideRouter from "./routes/ride.js";
+import showRouter from "./routes/show.js"
 import db from "./utils/connect-mysql.js";
 import upload from "./utils/upload-imgs.js";
 import sales from "./data/sales.json" assert { type: "json" };
@@ -92,6 +93,7 @@ app.use("/ride", rideRouter);
 app.use("/admins", admin2Router);
 app.use("/product", productListRouter);
 app.use("/detail", detailRouter);
+app.use("/show", showRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
   req.session.n++;
