@@ -53,7 +53,7 @@ export default function Login() {
                       onChange={(e) => setPassword(e.target.value)} 
                       className={styles.input}/>
             </label>
-            <div style={{marginBottom:50}}>
+            <div style={{marginBottom:10}}>
               忘記密碼
             </div>
             <button type='submit' className={styles.button}>登入</button>
