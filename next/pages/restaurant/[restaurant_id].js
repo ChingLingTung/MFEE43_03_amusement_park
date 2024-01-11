@@ -35,21 +35,21 @@ export default function RestaurantDetail() {
         <h2 className={styles.title}>周邊餐廳</h2>
         <div className={styles.card_flex}>
           <div className={styles.card}>
-            <img className={styles.card_img} src='/../../images/tf1-1.webp'/>
+            <img className={styles.card_img} src='/images/restaurant/teatime/street_churros/food/street_churros_food1.webp'/>
             <div style={{padding:5}}>
               <div className={styles.card_title}>餐廳名稱</div>
               <div>餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述</div>
             </div>
           </div>
           <div className={styles.card}>
-            <img className={styles.card_img} src='/../../images/tf1-1.webp'/>
+            <img className={styles.card_img} src='/images/restaurant/teatime/street_churros/food/street_churros_food1.webp'/>
             <div style={{padding:5}}>
               <div className={styles.card_title}>餐廳名稱</div>
               <div>餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述</div>
             </div>
           </div>
           <div className={styles.card}>
-            <img className={styles.card_img} src='/../../images/tf1-1.webp'/>
+            <img className={styles.card_img} src='/images/restaurant/teatime/street_churros/food/street_churros_food1.webp'/>
             <div style={{padding:5}}>
               <div className={styles.card_title}>餐廳名稱</div>
               <div>餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述</div>
