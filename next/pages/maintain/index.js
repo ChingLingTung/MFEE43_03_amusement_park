@@ -4,9 +4,8 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import styled from "@emotion/styled"
-import { FaScrewdriverWrench } from "react-icons/fa6";
-import interactionPlugin from '@fullcalendar/interaction'
-import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+// import interactionPlugin from '@fullcalendar/interaction'
+// import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import Head from 'next/head';

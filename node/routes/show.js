@@ -110,8 +110,8 @@ router.get("/api/details/:show_id", async (req, res) => {
     return res.json({success: false});
   }
   const row = rows[0];
-  row.start = dayjs(row.start).format("YYYY-MM-DD HH:MM");
-  row.finish = dayjs(row.finish).format("YYYY-MM-DD HH:MM");
+  row.start = dayjs(row.start).format("YYYY-MM-DD HH:mm");
+  row.finish = dayjs(row.finish).format("YYYY-MM-DD HH:mm");
 
   res.json({success: true, row});
 });
