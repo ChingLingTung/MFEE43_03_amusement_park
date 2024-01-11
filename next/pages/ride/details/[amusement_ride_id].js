@@ -58,7 +58,7 @@ export default function RideDetail() {
               <div style={{width:600, lineHeight:2}}>
                 <p>設施簡介：</p>
                 <p>{getData.amusement_ride_description}</p>
-                <p style={{color:"red"}}>刺激程度：<FaStar /><FaStar /><FaStar /></p>
+                <p>刺激程度：{new Array(getData.thriller_rating).fill(<FaStar />)}</p>
                 <p>適合：{getData.ride_category_name}</p>
                 <p>身高限制：{getData.height_requirement}</p>
                 <p>特殊支援：{getData.ride_support_name}</p>
