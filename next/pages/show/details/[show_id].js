@@ -26,6 +26,7 @@ export default function ShowDetail() {
     show_info:"", 
     show_info2:"", 
     show_group:"", 
+    show_day:"", 
   });
   const router = useRouter();
   useEffect(() => {
@@ -66,6 +67,8 @@ export default function ShowDetail() {
           
           <h3 style={{marginBottom:20}}>表演資訊</h3>
           <div style={{lineHeight:2}}>
+            <p>演出團隊：{getData.show_group}</p>
+            <p>演出日期：{getData.show_day}</p>
             <p>演出時間：{getData.start} 至 {getData.finish}</p>
             <p>演出地點：樂高天堂主題館旁的演藝廳</p>
             <p>表演簡介：</p>
