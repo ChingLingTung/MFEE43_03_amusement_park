@@ -1,5 +1,11 @@
 import React from 'react'
 import styles from '@/styles/show_detail.module.css'
+import Head from 'next/head';
+import {SHOW_GET_ONE} from '@/component/ride-const'
+import { useState,useEffect } from 'react';
+import { useRouter } from 'next/router'
+import Link from 'next/link';
+
 
 export default function ShowDetail() {
   const seat = [
@@ -13,22 +19,60 @@ export default function ShowDetail() {
     ["H1","H2","H3","H4","H5","","H6","H7","H8","","H9","H10","H11","H12","H13"],
     ["I1","I2","I3","I4","I5","I6","I7","I8","I9","I10","I11","I12","I13","I14","I15"],
   ];
+  const [getData, setGetData] = useState({
+    show_id:"",
+    show_name:"",
+    show_pic:"", 
+    show_info:"", 
+    show_info2:"", 
+    show_group:"", 
+  });
+  const router = useRouter();
+  useEffect(() => {
+    const show_id = +router.query.show_id;
+    console.log({show_id, raw: router.query.show_id });
+    // 有抓到值時
+    if (router.query.show_id !== undefined) {
+      if (!show_id) {
+        router.push("/show"); //show_id 是 NaN 就跳到列表頁
+      } else {
+        // 取得單筆資料
+        fetch(SHOW_GET_ONE + "/" + show_id)
+          .then((r) => r.json())
+          .then((data) => {
+            if (!data.success) {
+              router.push("/show"); // 沒拿到資料, 跳到列表頁
+            } else {
+              setGetData({ ...data.row });
+            }
+          })
+          .catch((ex) => console.log(ex));
+      }
+    }
+  }, [router.query.show_id]);
   return (
     <>
-    <div className={styles.container}>
-      <div style={{width:1200}}>
-        <img className={styles.img} width='100%' height={300} />
-        <h2 className={styles.title}>表演節目名稱</h2>
-        <h3 style={{marginBottom:20}}>表演資訊</h3>
-        <div style={{lineHeight:2}}>
-          <p>演出日期：113/XX/XX</p>
-          <p>演出時間：XX：XX-XX：XX：XX-XX：XX</p>
-          <p>演出地點：XXXXXXX</p>
+    <div key={getData.show_id}>
+      <div className={styles.container}>
+        <div style={{width:1200}}>
+          <img className={styles.img} width='100%' height={300} src={`/images/show/${getData.show_pic}`} />
+          <div className={styles.space_between}>
+            <h2 className={styles.title}>{getData.show_name}</h2>
+            <Link href={'/show'}>
+              <button className={styles.button} style={{width:150}}>返回列表頁</button>
+            </Link>
+            
+          </div>
+          
+          <h3 style={{marginBottom:20}}>表演資訊</h3>
+          <div style={{lineHeight:2}}>
+            <p>演出時間：{getData.start} 至 {getData.finish}</p>
+            <p>演出地點：樂高天堂主題館旁的演藝廳</p>
+            <p>表演簡介：</p>
+          </div>
+          <p style={{marginTop:7}}>{getData.show_info}{getData.show_info2}</p>
+          <button className={styles.button}>預約</button>
         </div>
-        <p style={{marginTop:7}}>表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述表演相關敘述</p>
-        <button className={styles.button}>預約</button>
-      
-      </div>
       <div>
       {seat.map((row, i) => (
         <div key={i}>
@@ -39,7 +83,10 @@ export default function ShowDetail() {
       ))}
       </div>
       <button style={{width:1200}} className={styles.button}>預約</button>
+      </div>
+      <Head><title>表演詳細資訊</title></Head>
     </div>
+
     </>
   )
 }

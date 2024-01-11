@@ -6,7 +6,7 @@
   align-content: center;
 }
 .title{
-  margin:10px auto;
+  margin-top:10px;
   margin-bottom: 40px;
 
 }
@@ -35,6 +35,10 @@
   justify-content: space-around;
   align-items: center;
 }
+.space_between{
+  display: flex;
+  justify-content: space-between;
+}
 /* .flex_spacebetween{
   display: flex;
   align-items: center;
@@ -48,7 +52,7 @@
   margin:0;
 }
 .img{
-  object-fit: fill;
+  object-fit: cover;
   border-radius: 10px;
   background-color: grey;
 }
