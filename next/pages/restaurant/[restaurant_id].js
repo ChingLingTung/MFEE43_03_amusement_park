@@ -7,6 +7,7 @@ import { FaRegClock } from "react-icons/fa";
 import { FaAngleDown } from "react-icons/fa6";
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import Head from 'next/head';
 
 export default function RestaurantDetail() {
   return (
@@ -55,6 +56,7 @@ export default function RestaurantDetail() {
             </div>
           </div>
         </div>
+      <Head><title>餐廳資訊</title></Head>
     </>
   )
 }

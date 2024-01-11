@@ -4,6 +4,13 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import styled from "@emotion/styled"
+import { FaScrewdriverWrench } from "react-icons/fa6";
+import interactionPlugin from '@fullcalendar/interaction'
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
+import timeGridPlugin from '@fullcalendar/timegrid'
+import multiMonthPlugin from '@fullcalendar/multimonth'
+import Head from 'next/head';
+
 // import { Calendar } from '@fullcalendar/core'
 // import "@fullcalendar/core/main.css";
 // import "@fullcalendar/daygrid/main.css";
@@ -50,6 +57,7 @@ export const StyleWrapper = styled.div`
     font-size: 30px;
   }
 
+
 `
 
 export default function Maintain() {
@@ -70,14 +78,56 @@ export default function Maintain() {
       <div style={{width:1400,height:1200,padding:200,paddingTop:30}}>
         <StyleWrapper>
           <FullCalendar
-          plugins={[ dayGridPlugin ]}
+          plugins={[ 
+            dayGridPlugin,
+            multiMonthPlugin,
+            timeGridPlugin
+            ]}
+            headerToolbar={{
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek'
+          }}
           initialView="dayGridMonth"
+          events={[
+            {title:'', date:'2024-03-03'},
+            {title:'event 2', date:'2024-03-14'}
+          ]}
+          
+        />
+        <FullCalendar
+          plugins={[
+            resourceTimelinePlugin,
+            dayGridPlugin,
+            interactionPlugin,
+            timeGridPlugin,
+            multiMonthPlugin
+          ]}
+          headerToolbar={{
+            left: 'prev,next today',
+            center: 'title',
+            right: 'resourceTimelineWeek,dayGridMonth,timeGridWeek'
+          }}
+          initialView='dayGridMonth'
+          nowIndicator={true}
+          editable={true}
+          selectable={true}
+          selectMirror={true}
+          resources={[
+            { id: 'a', title: 'Auditorium A' },
+            { id: 'b', title: 'Auditorium B', eventColor: 'green' },
+            { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
+          ]}
+          initialEvents={[
+            { title: 'nice event', start: new Date(), resourceId: 'a' }
+          ]}
         />
         </StyleWrapper>
         
       </div>
-    </div>
       
+    </div>
+      <Head><title>維護時間</title></Head>
     </>
   )
 }
