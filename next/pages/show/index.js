@@ -39,7 +39,7 @@ export default function Show() {
                   <Link href={`/show/details/${i.show_id}`}>
                     <div className={styles.card}>
                       <img className={styles.card_img} src={`/images/show/${i.show_pic}`}/>
-                      <div style={{padding:5}}>
+                      <div style={{padding:10}}>
                         <div className={styles.card_title}>{i.show_group}</div>
                         <div className={styles.card_title}>{i.show_name}</div>
                       </div>
