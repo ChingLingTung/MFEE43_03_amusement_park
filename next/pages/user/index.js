@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from '@/styles/user.module.css'
+import Head from 'next/head'
 
 export default function User() {
   return (
@@ -43,6 +44,7 @@ export default function User() {
           </div>
         </div>
       </div>
+      <Head><title>會員中心</title></Head>
     </>
   )
 }

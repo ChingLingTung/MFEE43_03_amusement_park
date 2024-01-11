@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from '@/styles/ride.module.css'
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { FaStar } from "react-icons/fa6";
 import Image from 'next/image';
 import { Layout } from '@/component/layout';
 import Head from 'next/head';
@@ -9,13 +8,16 @@ import { RIDE_LIST } from '@/component/ride-const';
 import { useRouter } from 'next/router';
 import { useState,useContext,useEffect } from 'react';
 import Link from 'next/link';
+import SearchTheme from '@/component/ride/search_theme';
+import SearchCategory from '@/component/ride/search_category';
+import SearchThillerRating from '@/component/ride/search_thiller_rating';
+import SearchSupport from '@/component/ride/search_support';
 
 export default function Ride() {
   const [data, setData] = useState({});
+  const [search, setSearch] =useState(0)
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
-  const [classValue, setClassValue]=useState("ride_children_button__ZA1aw")
-  const [option, setOption] = useState("");
   const getListData = async () => {
     const usp = new URLSearchParams(router.query)
     // console.log("router.query:", router.query);
@@ -87,157 +89,12 @@ export default function Ride() {
         </div>
         <div className={styles.flex_center_column}>
           <div className={styles.search_flex} style={{height:50}}>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:50}}>主題</span>
-              <span className={classValue} id='theme_1' style={{width:70}} value={option} 
-              onClick={() => {
-                const elements=document.getElementsByClassName("ride_selected_children_button__GjYPq");
-                if(option==="")
-                {
-                  setOption("theme_1");
-                  console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                if(classValue === 'ride_children_button__ZA1aw'){
-                  elements.classValue="ride_children_button__ZA1aw";
-                  setClassValue("ride_selected_children_button__GjYPq");
-                  console.log(classValue);
-                  }else{
-                    setClassValue("ride_children_button__ZA1aw");
-                    console.log(classValue)
-                  }
-                }}>水世界</span>
-              <span className={classValue} id='theme_2' style={{width:85}} value={option} onClick={() => {
-                if(option==="")
-                {setOption('theme_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                const elements=document.getElementsByClassName(styles.selected_children_button);
-                if(classValue === 'ride_children_button__ZA1aw'){
-                  elements.classValue="ride_children_button__ZA1aw";
-                  setClassValue("ride_selected_children_button__GjYPq");
-                  console.log(classValue);
-                  }else{
-                    setClassValue("ride_children_button__ZA1aw");
-                    console.log(classValue)
-                  }
-                }}>冒險之旅</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('theme_3');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>慢樂悠遊</span>
-                <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('theme_4');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>樂高天堂</span>
-            </span>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:50}}>類型</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('category_1');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>兒童友善</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('category_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>親子同樂</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('category_3');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>刺激冒險</span>
-            </span>
+            <SearchTheme />
+            <SearchCategory/>
           </div>
           <div className={styles.search_flex} style={{height:50}}>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:85}}>刺激程度</span>
-              <span className={styles.children_button} style={{width:35}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_1');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /></span>
-              <span className={styles.children_button} style={{width:50}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /></span>
-              <span className={styles.children_button} style={{width:65}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_3');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /><FaStar /></span>
-              <span className={styles.children_button} style={{width:80}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_4');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /><FaStar /><FaStar /></span>
-              <span className={styles.children_button} style={{width:95}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_5');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /></span>
-            </span>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:85}}>特殊支援</span>
-              <span className={styles.children_button} style={{width:100}} onClick={() => {
-                if(option==="")
-                {setOption('support_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>輪椅可搭乘</span>
-            </span>
+            <SearchThillerRating/>
+            <SearchSupport/>
           </div>
           <div className={styles.card_flex}>
             {data.rows &&

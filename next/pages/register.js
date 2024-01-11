@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from '@/styles/register.module.css';
+import Head from 'next/head';
 
 export default function Login() {
   return (
@@ -55,6 +56,7 @@ export default function Login() {
           </form>
         </div>
       </div>
+      <Head><title>註冊</title></Head>
     </>
   )
 }
