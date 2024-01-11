@@ -47,14 +47,21 @@ export const StyleWrapper = styled.div`
     background: #ffd2e0;
     font-size: 30px;
   }
-  .fc-col-header-cell-cushion{
-    font-size: 25px;
+  .fc-event{
+    background:#ffd2e0;
+    border:none
+  }
+  .fc-event-time .fc-event-title{
+    color:#0000;
   }
   .fc-toolbar-title{
     font-size: 30px;
   }
-  .fc-daygrid-day-number{
-    font-size: 25px;
+  .fc-daygrid-event-dot{
+    border-color: #820041;
+  }
+  .fc-v-event .fc-event-main{
+    color:#820041;
   }
 
 
@@ -86,12 +93,12 @@ export default function Maintain() {
             headerToolbar={{
             left: 'prev,next today',
             center: 'title',
-            right: 'dayGridMonth,timeGridWeek'
+            right: 'dayGridMonth,timeGridWeek,multiMonthYear'
           }}
           initialView="dayGridMonth"
           events={[
-            {title:'', date:'2024-03-03'},
-            {title:'event 2', date:'2024-03-14'}
+            {title:'🛠️', date:'2024-03-03'},
+            {title:'設施名稱', start:'2024-03-14 09:00', end:'2024-03-14 12:00'}
           ]}
           
         />

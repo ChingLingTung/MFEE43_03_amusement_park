@@ -100,19 +100,5 @@ const getListData = async (req) => {
     res.json( await getListData(req) );
   });
 
-  // 取得單筆的資料
-router.get("/api/:maintenance_id", async (req, res) => {
-  const show_id = +req.params.show_id;
 
-
-  const sql = `SELECT * FROM maintenance WHERE amusement_ride_name=?`;
-  const [rows] = await db.query(sql, [show_id]);
-  if (!rows.length) {
-    return res.json({success: false});
-  }
-  const row = rows[0];
-  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
-
-  res.json({success: true, row});
-});
 export default router;
