@@ -41,20 +41,20 @@ export const StyleWrapper = styled.div`
   .fc-button {
     background: #de839e;
     border-color:#ffdfe8;
-    font-size: 30px;
+    font-size: 25px;
   }
   .fc-today-button .fc-button .fc-button-primary {
     background: #ffd2e0;
-    font-size: 40px;
+    font-size: 30px;
   }
   .fc-col-header-cell-cushion{
-    font-size: 30px;
+    font-size: 25px;
   }
   .fc-toolbar-title{
-    font-size: 40px;
+    font-size: 30px;
   }
   .fc-daygrid-day-number{
-    font-size: 30px;
+    font-size: 25px;
   }
 
 
@@ -95,7 +95,7 @@ export default function Maintain() {
           ]}
           
         />
-        <FullCalendar
+        {/* <FullCalendar
           plugins={[
             resourceTimelinePlugin,
             dayGridPlugin,
@@ -121,7 +121,7 @@ export default function Maintain() {
           initialEvents={[
             { title: 'nice event', start: new Date(), resourceId: 'a' }
           ]}
-        />
+        /> */}
         </StyleWrapper>
         
       </div>
