@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { Layout } from "@/components/Layout";
-import { AB_DETAIL } from "@/components/product-const";
+import { Layout } from "@/component/Layout";
+import { AB_DETAIL } from "@/component/product-const";
 // import ThemeContext from "@/contexts/ThemeContext";
 import Link from "next/link";
 import { useRouter } from "next/router";

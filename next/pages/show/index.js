@@ -1,0 +1,79 @@
+import Head from 'next/head'
+import Image from 'next/image'
+import { Inter } from 'next/font/google'
+import styles from '@/styles/show.module.css'
+import { FaChevronRight } from "react-icons/fa6";
+import { Layout } from '@/component/Layout';
+import { SHOW_LIST } from '@/component/ride-const';
+import { useRouter } from 'next/router';
+import { useState,useContext,useEffect } from 'react';
+import Link from 'next/link';
+
+export default function Show() {
+  const [data, setData] = useState({});
+  const router = useRouter();
+  const getListData = async () => {
+    
+    try {
+      const r = await fetch(SHOW_LIST);
+      const d = await r.json();
+      // console.log(value)
+      setData(d);
+    } catch (ex) {
+      console.log(ex)
+    }
+  };
+  useEffect(() => {
+    getListData();
+  },[]);
+  return (
+    <>
+      <Layout>
+        <div className={styles.container}>
+          <h2 className={styles.title}>表演節目</h2>
+          <div className={styles.card_flex}>
+          {/* {data.rows &&
+            data.rows.map((i)=>{
+              return (
+                <div key={i.show_id}>
+                  <Link href={`/show/details/${i.amusement_ride_id}`}>
+                    <div className={styles.card}>
+                      <img className={styles.card_img} src={`/images/show/${i.show_pic}`}/>
+                      <div style={{padding:5}}>
+                        <div className={styles.card_title}>{i.show_name}</div>
+                        <div>{i.show_info}{i.show_info2}</div>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              )
+            })
+          } */}
+            <div className={styles.card}>
+              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
+              <div style={{padding:5}}>
+                <div className={styles.card_title}>設施名稱</div>
+                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
+              </div>
+            </div>
+            <div className={styles.card}>
+              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
+              <div style={{padding:5}}>
+                <div className={styles.card_title}>設施名稱</div>
+                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
+              </div>
+            </div>
+            <div className={styles.card}>
+              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
+              <div style={{padding:5}}>
+                <div className={styles.card_title}>設施名稱</div>
+                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Layout>
+      <Head><title>表演列表</title></Head>
+    </>
+  )
+}

@@ -1,7 +1,6 @@
 import '@/styles/globals.css'
-import { ThemeContextProvider } from "@/contexts/ThemeContext";
-import { AuthContextProvider } from "@/contexts/AuthContext";
-
+import { ThemeContextProvider } from "@/context/theme-context";
+import { AuthContextProvider } from "@/context/auth-context";
 export default function App({ Component, pageProps }) {
   return (
     <AuthContextProvider>
@@ -9,5 +8,4 @@ export default function App({ Component, pageProps }) {
         <Component {...pageProps} />
       </ThemeContextProvider>
     </AuthContextProvider>
-  );
-}
+  )}

@@ -13,6 +13,7 @@ public/img
 .idea
 .vscode
 headers.txt
+.env
 package-lock.json
 
 # Compiled Java class files
