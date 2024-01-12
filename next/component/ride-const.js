@@ -6,8 +6,14 @@ export const RIDE_GET_ONE = API_SERVER + "/ride/api/details";
 
 export const SHOW_LIST = API_SERVER + "/show/api";
 
-
 export const SHOW_GET_ONE = API_SERVER + "/show/api/details";
+
+export const SHOP_LIST = API_SERVER + "/shop/api";
+
+export const SHOP_GET_ONE = API_SERVER + "/shop/api/details";
+
+
+
 
 
 
