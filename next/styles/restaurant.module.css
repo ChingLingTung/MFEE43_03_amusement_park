@@ -53,9 +53,8 @@
 .card_flex{
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-content: first baseline;
-  padding: 0 300px;
+  width: 1280px;
+  margin:0 auto;
 }
 .card{
   width: 300px;

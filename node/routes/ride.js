@@ -68,7 +68,7 @@ router.use((req, res, next) => {
 });
 
 const getListData = async (req) => {
-  const perPage = 20; // 每頁幾筆
+  const perPage = 30; // 每頁幾筆
   // 用戶決定要看第幾頁
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)

@@ -12,9 +12,8 @@
 .card_flex{
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  align-content: first baseline;
-  padding: 0 300px;
+  width: 1350px;
+  margin:0 auto;
 }
 .card{
   width: 250px;
@@ -90,7 +89,7 @@
 .flex_center_column{
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: first baseline;
   align-items: center;
   text-align: center;
 }
@@ -108,15 +107,6 @@
   align-items: center;
   justify-content: start;
   text-align: center;
-}
-.card_flex{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: first baseline;
-  height: 100%;
-  padding: 0 200px;
-  margin-bottom: 100px;
 }
 .img{
   object-fit: fill;
