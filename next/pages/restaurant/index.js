@@ -41,7 +41,7 @@ export default function Shop() {
                       <div style={{padding:10}}>
                         <div className={styles.space_between}>
                           <div className={styles.card_title}>{i.shop_name}</div>
-                          <div className={styles.tag}>{i.shop_type_name}</div>
+                          <div className={styles.tag} style={{backgroundColor:i.tag_color}}>{i.shop_type_name}</div>
                         </div>
                         
                       </div>
