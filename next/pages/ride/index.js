@@ -15,7 +15,7 @@ import SearchSupport from '@/component/ride/search_support';
 
 export default function Ride() {
   const [data, setData] = useState({});
-  const [search, setSearch] =useState(0)
+  const [search, setSearch] =useState(false)
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
   const getListData = async () => {
@@ -89,12 +89,12 @@ export default function Ride() {
         </div>
         <div className={styles.flex_center_column}>
           <div className={styles.search_flex} style={{height:50}}>
-            <SearchTheme />
-            <SearchCategory/>
+            <SearchTheme search={search} />
+            <SearchCategory search={search} />
           </div>
           <div className={styles.search_flex} style={{height:50}}>
-            <SearchThillerRating/>
-            <SearchSupport/>
+            <SearchThillerRating search={search}/>
+            <SearchSupport search={search}/>
           </div>
           <div className={styles.card_flex}>
             {data.rows &&
