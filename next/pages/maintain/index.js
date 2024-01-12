@@ -4,30 +4,9 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import styled from "@emotion/styled"
-// import interactionPlugin from '@fullcalendar/interaction'
-// import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import Head from 'next/head';
-
-// import { Calendar } from '@fullcalendar/core'
-// import "@fullcalendar/core/main.css";
-// import "@fullcalendar/daygrid/main.css";
-
-// const calendarEl = document.getElementById('calendar')
-// const calendar = new Calendar(calendarEl, {
-//   plugins: [
-//     interactionPlugin,
-//     dayGridPlugin
-//   ],
-//   initialView: 'timeGridWeek',
-//   editable: true,
-//   events: [
-//     { title: 'Meeting', start: new Date() }
-//   ]
-// })
-
-// calendar.render()
 
 export const StyleWrapper = styled.div`
   .fc th {
@@ -62,11 +41,11 @@ export const StyleWrapper = styled.div`
   .fc-v-event .fc-event-main{
     color:#820041;
   }
-
-
 `
-
 export default function Maintain() {
+  function handleClick() {
+    window.history.go(-1);
+  }
   return (
     <>
     <div className={styles.container}>
@@ -76,7 +55,7 @@ export default function Maintain() {
             <FaMagnifyingGlass style={{width:30,height:30.66,padding:5,borderRight:'none', position:'absolute',left:25,marginTop:5}}/>
             <input name='ride_name' className={styles.searchbar} type={'text'} placeholder={'請輸入設施名稱'}/>
           </span>
-          <button className={styles.button}>返回上一頁</button>
+          <button className={styles.button} onClick={handleClick}>返回上一頁</button>
         </div>
       </div>
         

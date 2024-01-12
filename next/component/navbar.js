@@ -31,7 +31,7 @@ export default function Navbar() {
             </Link>
           </span>
           <span className={styles.option}>
-            <Link href="/ticket">
+            <Link href="/ride">
             <LuRollerCoaster color="white"/>設施介紹
             </Link>
           </span>
