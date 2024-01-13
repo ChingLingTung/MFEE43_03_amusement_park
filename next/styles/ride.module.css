@@ -66,6 +66,7 @@
   align-content: center;
   margin: 0 10px;
   text-align: center;
+  cursor: pointer;
 }
 .children_button{
   outline-style: none;

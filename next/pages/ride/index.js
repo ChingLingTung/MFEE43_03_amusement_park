@@ -6,58 +6,62 @@ import { Layout } from '@/component/layout';
 import Head from 'next/head';
 import { RIDE_LIST } from '@/component/ride-const';
 import { useRouter } from 'next/router';
-import { useState,useContext,useEffect } from 'react';
+import { useState,useContext,useEffect} from 'react';
 import Link from 'next/link';
 import SearchTheme from '@/component/ride/search_theme';
 import SearchCategory from '@/component/ride/search_category';
-import SearchThillerRating from '@/component/ride/search_thiller_rating';
+import SearchThrillerRating from '@/component/ride/search_thriller_rating';
 import SearchSupport from '@/component/ride/search_support';
 
 export default function Ride() {
   const [data, setData] = useState({});
-  const [search, setSearch] =useState(false)
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
+
+  const [dataFromCategory, setDataFromCategory] = useState(0)
+  const [dataFromTheme, setDataFromTheme] = useState(0)
+  const [dataFromThrillerRating, setDataFromThrillerRating] = useState(0)
+  const [dataFromSupport, setDataFromSupport] = useState(0)
+  
   const getListData = async () => {
-    const usp = new URLSearchParams(router.query)
-    // console.log("router.query:", router.query);
-    let page = +router.query.page || 1;
-    let keyword = router.query.keyword || ''
+
+    // const usp = new URLSearchParams(router.query)
+    
+    let page = +router.query.page || 1
 
     if (page < 1) page = 1;
-    try {
-      const r = await fetch(RIDE_LIST + `?${usp.toString()}`);
+    
+      try {
+      const r = await fetch(
+        RIDE_LIST + `?page=${page}` +
+        (keyword==""? '' : `keyword=${keyword}`)+
+        (dataFromTheme===0? '' : '&'+`theme_id=${dataFromTheme}`)+
+        (dataFromCategory===0? '' : '&'+`ride_category_id=${dataFromCategory}`)+
+        (dataFromThrillerRating===0? '' : '&'+`thriller_rating=${dataFromThrillerRating}`)+
+        (dataFromSupport===0? '' : '&'+`ride_support_id=${dataFromSupport}`));
       const d = await r.json();
-      // console.log(value)
+
       setData(d);
     } catch (ex) {
       console.log(ex)
     }
-  };
-  // const getListData = async () => {
-  //   // console.log("router.query:", router.query);
-  //   let page = +router.query.page || 1;
-  //   // 關鍵字搜尋
-  //   let keyword = router.query.keyword || ''
-  //   if (page < 1) page = 1;
-  //   try {
-  //     const r = await fetch(RIDE_LIST + `?${usp.toString()}`);
-  //     const d = await r.json();
-  //     // console.log(value)
-  //     setData(d);
-  //   } catch (ex) {
-  //     console.log(ex)
-  //   }
-  // };
-  useEffect(() => {
-    getListData();
-  },[keyword]);
+    };
+    useEffect(() => {
+      getListData();
+    },[
+      keyword,
+      dataFromTheme,
+      dataFromCategory,
+      dataFromThrillerRating,
+      dataFromSupport
+    ]);
 
   return (
     <>
     <Layout>
         <h2 className={styles.title}>設施搜尋</h2>
         <div className={styles.flex_center} style={{height:50}}>
+        
           <span className={styles.flex_center}>
             <FaMagnifyingGlass style={{width:30,height:30.66,padding:5,borderRight:'none', position:'absolute',left:8}}/>
             <input name='ride_name' className={styles.searchbar} type={'text'} placeholder={'請輸入設施名稱'}  
@@ -87,14 +91,18 @@ export default function Ride() {
               />
           </span>
         </div>
+        {/* <p className={styles.flex_center}>theme:{dataFromTheme}</p>
+        <p className={styles.flex_center}>category:{dataFromCategory}</p>
+        <p className={styles.flex_center}>thrillerRating:{dataFromThrillerRating}</p>
+        <p className={styles.flex_center}>support:{dataFromSupport}</p> */}
         <div className={styles.flex_center_column}>
           <div className={styles.search_flex} style={{height:50}}>
-            <SearchTheme search={search} />
-            <SearchCategory search={search} />
+            <SearchTheme setDataFromTheme={setDataFromTheme} />
+            <SearchCategory  setDataFromCategory={setDataFromCategory}/>
           </div>
           <div className={styles.search_flex} style={{height:50}}>
-            <SearchThillerRating search={search}/>
-            <SearchSupport search={search}/>
+            <SearchThrillerRating setDataFromThrillerRating={setDataFromThrillerRating} />
+            <SearchSupport setDataFromSupport={setDataFromSupport} />
           </div>
           <div className={styles.card_flex}>
             {data.rows &&

@@ -76,34 +76,32 @@ const getListData = async (req) => {
   let keyword_ = db.escape(`%${keyword}%`);
   
   let qs = {};  // 用來把 query string 的設定傳給 template
-
-  // // 日期的搜尋(在某個日期後的搜尋)
-  // // 設定開始日期startDate用於搜尋某日期以後的資料
-  // let startDate = req.query.startDate ? req.query.startDate.trim() : "";
-  // // 先把資料轉換成dayjs格式
-  // const startDateD =dayjs(startDate);
-  // // 如果符合資料格式再轉成YYYY-MM-DD的呈現形式，不符合格式則設定空字串
-  // if (startDateD.isValid()) {
-  //   startDate = startDateD.format("YYYY-MM-DD");
-  // } else {
-  //   startDate = "";
-  // }
-
-  // // 日期的搜尋(在某個日期前的搜尋)
-  // let endDate = req.query.endDate ? req.query.endDate.trim() : "";
-  // const endDateD = dayjs(endDate);
-  // if (endDateD.isValid()) {
-  //   endDate = endDateD.format("YYYY-MM-DD");
-  // } else {
-  //   endDate = "";
-  // }
-
+  let theme_id = req.query.theme_id? req.query.theme_id : '';
+  let ride_category_id = req.query.ride_category_id? req.query.ride_category_id : '';
+  let thriller_rating = req.query.thriller_rating? req.query.thriller_rating : '';
+  let ride_support_id = req.query.ride_support_id? req.query.ride_support_id : '';
   // 設定綜合的where子句
   let where = `WHERE 1 `;
   // 關鍵字搜尋只有一欄的情況下要用符合任一的or
   if(keyword){
     qs.keyword = keyword;
     where += ` AND (\`amusement_ride_name\` LIKE ${keyword_}) `;
+  }
+  if (theme_id !==0 && theme_id !=='') {
+    qs.theme_id = theme_id;
+    where += ` AND theme_id = '${theme_id}' `;
+  }
+  if (ride_category_id !==0 && ride_category_id !=='') {
+    qs.ride_category_id = ride_category_id;
+    where += ` AND ride_category_id = '${ride_category_id}' `;
+  }
+  if (thriller_rating !==0 && thriller_rating !=='') {
+    qs.thriller_rating = thriller_rating;
+    where += ` AND thriller_rating = '${thriller_rating}' `;
+  }
+  if (ride_support_id !==0 && ride_support_id !=='') {
+    qs.ride_support_id = ride_support_id;
+    where += ` AND ride_support_id = '${ride_support_id}' `;
   }
 
   let totalRows = 0;
@@ -146,7 +144,6 @@ const t_sql = `SELECT COUNT(1) totalRows FROM amusement_ride ${where}`;
 
   return output;
 }
-
 
 router.get("/", async (req, res) => {
   const output = await getListData(req);
