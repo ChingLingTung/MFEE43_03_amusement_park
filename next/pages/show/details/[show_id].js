@@ -28,6 +28,10 @@ export default function ShowDetail() {
     show_group:"", 
     show_day:"", 
   });
+  const [toggle,setToggle]=useState(false)
+  const handleToggle=()=>{
+    setToggle(true)
+  }
   const router = useRouter();
   useEffect(() => {
     const show_id = +router.query.show_id;
@@ -74,22 +78,34 @@ export default function ShowDetail() {
             <p>表演簡介：</p>
           </div>
           <p style={{marginTop:7}}>{getData.show_info}{getData.show_info2}</p>
-          <button className={styles.button}>預約</button>
-        </div>
-      <div>
-      {seat.map((row, i) => (
-        <div key={i}>
-          {row.map((cell, j) => (
-            <span className={styles.seat} key={j} style={cell? {} : {opacity:0}}>{cell? cell : "0"}</span>
-          ))}
-        </div>
-      ))}
-      </div>
-      <button style={{width:1200}} className={styles.button}>預約</button>
-      </div>
-      <Head><title>表演詳細資訊</title></Head>
-    </div>
+          {!toggle? (
+            <>
+              <button className={styles.button} onClick={handleToggle}>預約</button>
+            </>
+          )
+          :
+          (
+            <>
+              <div style={{marginLeft:105,marginTop:50}} className={styles.seat_center}>
+              <div>
+                {seat.map((row, i) => (
+                  <div key={i}>
+                    {row.map((cell, j) => (
+                      <span className={styles.seat} key={j} style={cell? {} : {opacity:0}}>{cell? cell : "0"}</span>
+                    ))}
+                  </div>
+                ))}
+              </div>
 
+              </div>
+              
+              <button style={{width:1200}} className={styles.button}>預約</button>
+            </>
+          )}
+            <Head><title>表演詳細資訊</title></Head>
+          </div>
+        </div>
+      </div>
     </>
   )
 }

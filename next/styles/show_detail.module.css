@@ -39,11 +39,7 @@
   display: flex;
   justify-content: space-between;
 }
-/* .flex_spacebetween{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-} */
+
 .column{
   display: flex;
   flex-direction: column;

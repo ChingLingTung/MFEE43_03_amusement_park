@@ -40,12 +40,12 @@ const getListData = async (req) => {
 
   // 設定綜合的where子句
   let where = `WHERE 1 `;
-  // 關鍵字搜尋只有一欄的情況下要用符合任一的or
-  // if(keyword){
-  //   qs.keyword = keyword;
-  //   where += ` AND (\`shop_name\` LIKE ${keyword_}) `;
-  // }
+  let shop_type_id = req.query.shop_type_id? req.query.shop_type_id : '';
 
+  if (shop_type_id !==0 && shop_type_id !== '') {
+    qs.shop_type_id = shop_type_id;
+    where += ` AND shop.shop_type_id = '${shop_type_id}' `;
+  }
   let totalRows = 0;
   let totalPages = 0;
   let rows = [];
@@ -61,7 +61,7 @@ const getListData = async (req) => {
     redirect: "",
     info: "",
   };
-  const t_sql = `SELECT COUNT(1) totalRows FROM shop JOIN shop_type ON shop.shop_id=shop_type.shop_id ${where} ORDER BY shop.shop_id`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM shop JOIN shop_type ON shop.shop_id=shop_type.shop_id ${where} ORDER BY shop.shop_id `;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {

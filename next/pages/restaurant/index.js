@@ -8,14 +8,19 @@ import { SHOP_LIST } from '@/component/ride-const';
 import { useRouter } from 'next/router';
 import { useState,useContext,useEffect } from 'react';
 import Link from 'next/link';
+import SearchShopType from '@/component/shop/search_type';
 
 export default function Shop() {
   const [data, setData] = useState({});
   const router = useRouter();
+  const [dataFromShopType, setDataFromShopType] = useState(0);
+
   const getListData = async () => {
     
     try {
-      const r = await fetch(SHOP_LIST);
+      const r = await fetch(SHOP_LIST + "?" +
+      (dataFromShopType===0? '' : `shop_type_id=${dataFromShopType}`)
+      );
       const d = await r.json();
       setData(d);
     } catch (ex) {
@@ -24,12 +29,14 @@ export default function Shop() {
   };
   useEffect(() => {
     getListData();
-  },[]);
+  },[dataFromShopType]);
   return (
     <>
       <Layout>
         <div className={styles.container}>
           <h2 className={styles.title}>餐廳列表</h2>
+          <p>篩選狀態：{dataFromShopType}</p>
+          <SearchShopType setDataFromShopType={setDataFromShopType}/>
           <div className={styles.card_flex}>
           {data.rows &&
             data.rows.map((i)=>{

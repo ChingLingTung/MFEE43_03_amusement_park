@@ -17,7 +17,6 @@ export default function Ride() {
   const [data, setData] = useState({});
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
-
   const [dataFromCategory, setDataFromCategory] = useState(0)
   const [dataFromTheme, setDataFromTheme] = useState(0)
   const [dataFromThrillerRating, setDataFromThrillerRating] = useState(0)
