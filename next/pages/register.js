@@ -9,7 +9,8 @@ export default function Register() {
     {
       user_name: "",
       user_email: "",
-      hash: "",
+      user_password:"",
+      rePassword:"",
       avatar: "/images/user/profile.png",
       birthday: "",
       phone: "",
@@ -18,18 +19,149 @@ export default function Register() {
       address:""
     }
   );
+
+  // const [getRePassword,setGetRePassword]=useState('');
+  const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
+
+  const changeHandler = (e) => {
+    const { name, id, value } = e.target;
+    console.log({ name, id, value });
+    
+    setDisplayInfo("");
+    setRegisterForm({ ...registerForm, [id]: value });
+    /*
+    setMyForm((old) => {
+      return { ...old, [id]: e.target.value };
+    });
+    */
+  };
+  const [nameError,setNameError]=useState('')
+  const [emailError,setEmailError]=useState('')
+  const [passwordError,setPasswordError]=useState('')
+  const [password2Error,setPassword2Error]=useState('')
+  const [phoneError,setPhoneError]=useState('')
+
+  
+  const checkName = ()=>{
+    if(registerForm.user_name===""){
+      setNameError('姓名為必填')
+    }
+    else{
+      setNameError('')
+    }
+  }
+  const checkEmail = () =>{
+    
+    const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+    if(registerForm.user_email !== "" && registerForm.user_email.search(emailRule) === -1){
+      setEmailError('email必須符合格式');
+    }
+    else if(registerForm.user_email==""){
+      setEmailError('email為必填');
+    }
+    else{
+      setEmailError('');
+    }
+  }
+
+  const checkPhone = () =>{
+    const phoneRule = /^09\d{8}$/;
+    if(registerForm.phone!==""&& registerForm.phone.search(phoneRule)===-1){
+      setPhoneError('手機號碼不符合格式');
+    }
+    if(registerForm.phone===""||registerForm.phone!==""&& registerForm.phone.search(phoneRule)!==-1){
+      setPhoneError('');
+    }
+  }
+
+  const checkPassword = () =>{
+    const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
+    if(registerForm.user_password===""){
+      setPasswordError('密碼為必填')
+    }
+    else if(registerForm.user_password!==""&& registerForm.user_password.search(passwordRule)===-1){
+      setPasswordError('密碼不符合格式，長度6以上且至少包含一個數字一個小寫英文字母，一個大寫英文字母');
+    }
+    else{
+      setPasswordError('')
+    }
+  }
+  const checkPassword2 = () =>{
+    if(registerForm.rePassword===registerForm.user_password){
+      setPassword2Error('')
+    }
+    else{
+      setPassword2Error('輸入的密碼與第一次不同');
+    }
+  }
+  useEffect(()=>{
+    checkName
+  },[registerForm.user_name])
+
+  useEffect(()=>{
+    checkEmail
+  },[registerForm.user_email])
+
+  useEffect(()=>{
+    checkPhone
+  },[registerForm.phone])
+
+  useEffect(()=>{
+    checkPassword
+  },[registerForm.user_password])
+
+  useEffect(()=>{
+    checkPassword2
+  },[registerForm.rePassword,registerForm.user_password])
+
   const onSubmit = async (e) => {
     e.preventDefault();
     // TODO: 檢查各個欄位的資料
-    if(registerForm.user_name.trim().length == 0){
-      
-    }
-    // coerce 寬鬆的檢查方式
-    const emailSchema = z.coerce
-      .string()
-      .email({ message: "錯誤的 email 格式" });
-    console.log("emailSchema:", emailSchema.safeParse(registerForm.user_email));
+    let ispass = true;
 
+    if(registerForm.user_name.trim().length == 0){
+      setNameError('姓名為必填');
+      ispass = false;
+    }
+    const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+    if(registerForm.user_email===""){
+      setEmailError('email為必填');
+      ispass = false;
+    }
+    else if(registerForm.user_email!==""&&registerForm.user_email.search(emailRule)===-1){
+      setEmailError('email不符合格式');
+      ispass = false;
+    }
+    else{
+      setEmailError('');
+    }
+    const phoneRule = /^09\d{8}$/;
+    if(registerForm.phone!==""&& registerForm.phone.search(phoneRule)===-1){
+      setPhoneError('手機號碼不符合格式');
+      ispass = false;
+    }
+    const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
+    if(registerForm.user_password===""){
+      setPasswordError('密碼為必填');
+      ispass = false;
+    }
+    if(registerForm.user_password!==""&& registerForm.user_password.search(passwordRule)===-1){
+      setPasswordError('密碼不符合格式');
+      ispass = false;
+    }
+    if(registerForm.rePassword===registerForm.user_password){
+      setPasswordError('');
+    }
+    else{
+      setPasswordError('輸入的密碼與第一次不同');
+      ispass = false;
+    }
+    ispass = true;
+
+    if(!ispass){
+      alert('資料新增失敗。請檢查欄位內容');
+      return
+    }
     const r = await fetch(USER_ADD, {
       method: "POST",
       body: JSON.stringify(registerForm),
@@ -47,7 +179,7 @@ export default function Register() {
     }
   };
 
-  console.log("re-render---", new Date());
+  // console.log("re-render---", new Date());
   return (
     <>
       <div className={styles.container}>
@@ -57,6 +189,7 @@ export default function Register() {
           <p>會員姓名：{registerForm.user_name}</p>
           <p>帳號：{registerForm.user_email}</p>
           <p>密碼：{registerForm.user_password}</p>
+          <p>再次驗證密碼：{registerForm.rePassword}</p>
           <p>手機：{registerForm.phone}</p>
           <p>小名：{registerForm.user_nickname}</p>
           <p>頭貼：{registerForm.avatar}</p>
@@ -104,39 +237,40 @@ export default function Register() {
                   <input type='text' className={styles.input} id="user_name"
                       name="user_name"
                       value={registerForm.user_name}
-                      onChange={changeHandler} placeholder='請輸入真實姓名'/>
+                      onChange={changeHandler} onKeyUp={checkName}  placeholder='請輸入真實姓名'/>
                 </label>
-                <br/>
+                <p style={{color:"red",fontSize:16}}>{nameError}</p>
                 <label htmlFor="user_email"><span className={styles.red}>*</span>帳號：<br/>
                   <input type='email' className={styles.input} id="user_email"
                       name="user_email"
                       value={registerForm.user_email}
-                      onChange={changeHandler} placeholder='請輸入email'/>
+                      onChange={changeHandler} onKeyUp={checkEmail} placeholder='請輸入email'/>
                 </label>
-                <br/>
+                <p style={{color:"red",fontSize:16}}>{emailError}</p>
                 <label htmlFor="user_password"><span className={styles.red}>*</span>密碼：<br/>
                   <input type='password' className={styles.input} id="user_password"
                       name="user_password"
                       value={registerForm.user_password}
-                      onChange={changeHandler} placeholder='請輸入密碼'/>
+                      onChange={changeHandler} onKeyUp={checkPassword} placeholder='請輸入密碼'/>
                 </label>
-                <br/>
-                {/* <label htmlFor="password"><span className={styles.red}>*</span>再次確認密碼：<br/>
-                  <input type='password' className={styles.input} placeholder='請輸入一樣的密碼'/>
+                <p style={{color:"red",fontSize:16}}>{passwordError}</p>
+                <label htmlFor="rePassword"><span className={styles.red}>*</span>再次確認密碼：<br/>
+                  <input type='password' id="rePassword"
+                      name="rePassword" className={styles.input} value={registerForm.rePassword} onChange={changeHandler} onKeyUp={checkPassword2} placeholder='請輸入一樣的密碼'/>
                 </label>
-                <br/> */}
+                <p style={{color:"red",fontSize:16}}>{password2Error}</p>
                 <label htmlFor="user_phone">手機號碼：<br/>
                   <input type='text' className={styles.input} id="phone"
                       name="phone"
                       value={registerForm.phone}
-                      onChange={changeHandler} placeholder='請輸入手機號碼'/>
+                      onChange={changeHandler} onKeyUp={checkPhone} placeholder='請輸入手機號碼'/>
                 </label>
-                <br/>
+                <p style={{color:"red",fontSize:16}}>{phoneError}</p>
                 <label htmlFor="birthday">生日：<br/>
                   <input type='date' className={styles.input} id="birthday"
                       name="birthday"
                       value={registerForm.birthday}
-                      onChange={changeHandler} placeholder='請輸入出生年月日YYYY/MM/DD'/>
+                      onChange={changeHandler}/>
                 </label>
                 <br/>
                 <label htmlFor="address">地址：<br/>

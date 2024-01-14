@@ -3,6 +3,9 @@ import db from "./../utils/connect-mysql.js";
 import upload from "./../utils/upload-imgs.js";
 import dayjs from "dayjs";
 import bcrypt from "bcryptjs";
+import { error } from "console";
+
+
 
 
 const router = express.Router();
@@ -90,13 +93,26 @@ router.get("/api", async (req, res) => {
 router.get("/add", async (req, res) => {
   res.render("user/add");
 });
+
+// router.post('/add', check('email').isEmail(), authController)
 router.post("/add", upload.none(), async (req, res) => {
   const output = {
     success: false,
     postData: req.body, // 除錯用
+    errors:{}
   };
   let { user_name, user_email, user_password, avatar, birthday, phone,  address, user_nickname } = req.body;
   const hash = await bcrypt.hash(user_password, 8);
+  
+  if(user_name===""){
+    error.user_name = "姓名為必填";
+    return
+  }
+  if(user_email===""){
+    error.user_email = "信箱為必填";
+    return
+  }
+  
   if(user_nickname===""){
     user_nickname=user_name
   }
@@ -106,6 +122,10 @@ router.post("/add", upload.none(), async (req, res) => {
   if(address===""){
     address=" ";
   }
+  if(birthday===""){
+    birthday=null;
+  }
+
   const sql =
     "INSERT INTO `user`(`user_name`, `user_email`, `user_password`, `avatar`, `birthday`, `phone`, `address`, `user_nickname` ) VALUES (?, ?, ?, ?, ?, ?, ?, ? )";
 

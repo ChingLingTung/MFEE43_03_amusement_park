@@ -20,6 +20,7 @@ import registerRouter from "./routes/register.js"
 import getProfileRouter from "./routes/get_profile.js"
 
 
+
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
 
@@ -93,18 +94,19 @@ app.get("/", (req, res) => {
   res.render("home", { name: process.env.DB_NAME });
 });
 
-app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
-  let u = req.url.slice(3).split("?")[0];
-  u = u.split("-").join("");
+// app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
+//   let u = req.url.slice(3).split("?")[0];
+//   u = u.split("-").join("");
 
-  res.send({ u });
-});
+//   res.send({ u });
+// });
 
 app.use("/ride", rideRouter);
 app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);
 app.use("/register", registerRouter);
+app.use("/login", loginRouter);
 app.use("/getProfile", getProfileRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
@@ -113,6 +115,9 @@ app.get("/try-sess", (req, res) => {
 });
 
 app.get("/login", async (req, res) => {
+  res.render("login");
+});
+app.get("/register", async (req, res) => {
   res.render("login");
 });
 app.post("/login-jwt", async (req, res) => {
