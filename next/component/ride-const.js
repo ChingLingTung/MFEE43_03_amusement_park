@@ -12,6 +12,14 @@ export const SHOP_LIST = API_SERVER + "/shop/api";
 
 export const SHOP_GET_ONE = API_SERVER + "/shop/api/details";
 
+export const USER_LIST = API_SERVER + "/register/api/";
+
+export const USER_ADD = API_SERVER + "/register/add";
+
+export const USER_GET_ONE = API_SERVER + "/login/api/";
+
+
+
 
 
 

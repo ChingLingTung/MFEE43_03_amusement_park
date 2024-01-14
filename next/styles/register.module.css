@@ -77,6 +77,16 @@
   width: 100%;
   margin:20px 2px;
 }
+.upload_button{
+  font-family:'Zen Maru Gothic', serif;
+  border:0;
+  background-color:none;
+  font-size: 20px;
+  outline: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 .nickname{
   outline-style: none;
   border:0;

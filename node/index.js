@@ -6,16 +6,25 @@ import cors from "cors";
 import mysql_session from "express-mysql-session";
 import bcrypt from "bcryptjs";
 import  jwt  from "jsonwebtoken";
+import fileUpload from "express-fileupload";
+import morgan from "morgan";
+import lodash from "lodash";
+import bodyParser from "body-parser";
 import loginRouter from "./routes/login.js"
 import rideRouter from "./routes/ride.js";
 import showRouter from "./routes/show.js"
 import shopRouter from "./routes/restaurant.js"
 import db from "./utils/connect-mysql.js";
 import maintainRouter from './routes/maintain.js'
+import registerRouter from "./routes/register.js"
+import getProfileRouter from "./routes/get_profile.js"
+
 
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
 
+// const bodyParser = require('body-parser');
+// const _ = require('lodash');
 
 const app = express();
 
@@ -25,6 +34,19 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(fileUpload({
+  createParentPath: true
+}));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(morgan('dev'));
+
+//讓uploads目錄公開
+// https://expressjs.com/zh-tw/starter/static-files.html
+//app.use(express.static('uploads'));
+// 如果想要改網址路徑用下面的
+// 您可以透過 /static 路徑字首，來載入 uploads 目錄中的檔案。
+app.use('/uploads', express.static('uploads'));
 
 const MysqlStore = mysql_session(session);
 const sessionStore = new MysqlStore({}, db);
@@ -82,6 +104,8 @@ app.use("/ride", rideRouter);
 app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);
+app.use("/register", registerRouter);
+app.use("/getProfile", getProfileRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
   req.session.n++;
@@ -145,6 +169,7 @@ app.get("/try-jw2", async(req,res)=>{
   const payload = jwt.verify(token,process.env.JWT_SECRET);
   res.json({payload});
 });
+
 
 // 設定靜態內容的資料夾
 app.use(express.static("public"));
