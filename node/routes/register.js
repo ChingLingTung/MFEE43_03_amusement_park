@@ -99,17 +99,15 @@ router.post("/add", upload.none(), async (req, res) => {
   const output = {
     success: false,
     postData: req.body, // 除錯用
-    errors:{}
   };
-  let { user_name, user_email, user_password, avatar, birthday, phone,  address, user_nickname } = req.body;
+  let { user_name, user_email, user_password, avatar, birthday, phone,  address, user_nickname, rePassword } = req.body;
   const hash = await bcrypt.hash(user_password, 8);
   
-  if(user_name===""){
-    error.user_name = "姓名為必填";
+  if(user_name===""||user_name.trim().length == 0){
     return
   }
-  if(user_email===""){
-    error.user_email = "信箱為必填";
+  const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+  if(user_email===""||user_email.search(emailRule)===-1){
     return
   }
   
@@ -125,6 +123,22 @@ router.post("/add", upload.none(), async (req, res) => {
   if(birthday===""){
     birthday=null;
   }
+
+  const phoneRule = /^09\d{8}$/;
+    if(phone!==""&& phone.search(phoneRule)===-1){
+      return
+    }
+    
+  const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
+    if(user_password===""){
+      return
+    }
+    if(user_password!==""&& user_password.search(passwordRule)===-1){
+      return
+    }
+    if(rePassword!==user_password){
+      return
+    }
 
   const sql =
     "INSERT INTO `user`(`user_name`, `user_email`, `user_password`, `avatar`, `birthday`, `phone`, `address`, `user_nickname` ) VALUES (?, ?, ?, ?, ?, ?, ?, ? )";
