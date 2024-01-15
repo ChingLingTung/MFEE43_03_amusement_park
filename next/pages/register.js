@@ -180,6 +180,7 @@ export default function Register() {
             })
           }
     })
+    // 如果這樣寫，會跳出沒有內容的alert後跳轉
     //   Alert.fire({ 
     //     didOpen: () => { 
     //       Alert.fire({
