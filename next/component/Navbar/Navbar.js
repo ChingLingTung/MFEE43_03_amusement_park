@@ -1,7 +1,7 @@
 import Link from "next/link";
 // import React from 'react'
-// import ThemeContext, { themes } from "@/contexts/theme-context";
-import AuthContext from "@/contexts/auth-context";
+// import ThemeContext, { themes } from "@/context/theme-context";
+import AuthContext from "@/context/auth-context";
 import { useContext } from "react";
 import styles from "@/component/Navbar/Navbar.module.css";
 import { FaUserAlt } from "react-icons/fa";

@@ -11,7 +11,7 @@ router.use((req, res, next) => {
   if (req.method === "GET" && u === "/") {
     return next();
   }
-  /*
+/*
   if (!req.session.admin) {
     return res.redirect("/login");
   } */
@@ -19,15 +19,12 @@ router.use((req, res, next) => {
 });
 
 const getListData = async (req) => {
-  const perPage = 20; // 每頁幾筆
+  const perPage = 19; // 每頁幾筆
   let page = +req.query.page || 1; // 用戶決定要看第幾頁
-  let keyword =
-    req.query.keyword && typeof req.query.keyword === "string"
-      ? req.query.keyword.trim()
-      : "";
+  let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
   let keyword_ = db.escape(`%${keyword}%`);
 
-  let qs = {}; // 用來把 query string 的設定傳給 template
+  let qs = {};  // 用來把 query string 的設定傳給 template
   // 起始的日期
   let startDate = req.query.startDate ? req.query.startDate.trim() : "";
   const startDateD = dayjs(startDate);
@@ -49,7 +46,7 @@ const getListData = async (req) => {
   let where = ` WHERE 1 `;
   if (keyword) {
     qs.keyword = keyword;
-    where += ` AND ( \`pdcate_id \` LIKE ${keyword_} OR \`pdcolor_id\` LIKE ${keyword_} OR \`pdstyle_id\` LIKE ${keyword_} OR \`pdsize_id\` LIKE ${keyword_}) `;
+    where += ` AND ( \`product_name\` LIKE ${keyword_} OR \`product_price\` LIKE ${keyword_} ) `;
   }
   // if (startDate) {
   //   qs.startDate = startDate;
@@ -82,7 +79,7 @@ const getListData = async (req) => {
     return output;
   }
 
-  const t_sql = `SELECT COUNT(1) totalRows FROM product_stock ${where}`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -92,7 +89,8 @@ const getListData = async (req) => {
       return { ...output, totalRows, totalPages };
     }
 
-    const sql = `SELECT * FROM ((((product_stock JOIN product_color ON product_stock.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_stock.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_stock.pdstyle_id = product_style.pdstyle_id) JOIN product_list ON product_stock.product_id = product_list.product_id) JOIN product_size ON product_stock.pdsize_id = product_size.pdsize_id ${where} ORDER BY pdstock_id DESC 
+    const sql = `
+    SELECT * FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id ${where} ORDER BY pdasize_list.pdasize_id DESC 
     LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };
@@ -136,27 +134,15 @@ router.post("/add", upload.none(), async (req, res) => {
     postData: req.body, // 除錯用
   };
 
-  const {
-    product_id,
-    pdcate_id,
-    pdsize_id,
-    pdcolor_id,
-    pdstyle_id,
-    pdstock_quantity,
-    pd_picture,
-  } = req.body;
+  const { product_name, product_price, product_description } = req.body;
   const sql =
-    "INSERT INTO `product_stock`( `product_id,`, `pdcate_id`, `pdsize_id`,`pdcolor_id`, `pdstyle_id`, `pdstock_quantity`, `pd_picture`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    "INSERT INTO `product_list`( `product_name`, `product_price`, `product_description`) VALUES (?, ?, ? )";
 
   try {
     const [result] = await db.query(sql, [
-      product_id,
-      pdcate_id,
-      pdsize_id,
-      pdcolor_id,
-      pdstyle_id,
-      pdstock_quantity,
-      pd_picture,
+      product_name,
+      product_price,
+      product_description,
     ]);
     output.result = result;
     output.success = !!result.affectedRows;
@@ -165,8 +151,8 @@ router.post("/add", upload.none(), async (req, res) => {
   }
 
   /*
-  const sql = "INSERT INTO `product_stock` SET ?";
-  // INSERT INTO `product_stock` SET `product_name`='abc',
+  const sql = "INSERT INTO `product_list` SET ?";
+  // INSERT INTO `product_list` SET `product_name`='abc',
   req.body.created_at = new Date();
   const [result] = await db.query(sql, [req.body]);
   */
@@ -184,37 +170,38 @@ router.post("/add", upload.none(), async (req, res) => {
   res.json(output);
 });
 
-router.get("/edit/:pdstock_id", async (req, res) => {
-  const pdstock_id = +req.params.pdstock_id;
+router.get("/edit/:product_id", async (req, res) => {
+  const product_id = +req.params.product_id;
   res.locals.title = "編輯 | " + res.locals.title;
 
-  const sql = `SELECT * FROM product_stock WHERE pdstock_id=?`;
-  const [rows] = await db.query(sql, [pdstock_id]);
+  const sql = `SELECT * FROM product_list WHERE product_id=?`;
+  const [rows] = await db.query(sql, [product_id]);
   if (!rows.length) {
     return res.redirect(req.baseUrl);
   }
   // const row = rows[0];
   // row.birthday2 = dayjs(row.birthday).format("YYYY-MM-DD");
 
-  res.render("pdstock_id/edit");
+  res.render("product/edit");
 });
 
 // 取得單筆的資料
-router.get("/api/edit/:pdstock_id", async (req, res) => {
-  const pdstock_id = +req.params.pdstock_id;
+router.get("/api/edit/:product_id", async (req, res) => {
+  const product_id = +req.params.product_id;
 
-  const sql = `SELECT * FROM product_stock WHERE pdstock_id=?`;
-  const [rows] = await db.query(sql, [pdstock_id]);
+
+  const sql = `SELECT * FROM product_list WHERE product_id=?`;
+  const [rows] = await db.query(sql, [product_id]);
   if (!rows.length) {
-    return res.json({ success: false });
+    return res.json({success: false});
   }
   const row = rows[0];
   row.price = dayjs(row.price).format("YYYY-MM-DD");
 
-  res.json({ success: true, row });
+  res.json({success: true, row});
 });
 
-router.put("/edit/:pdstock_id", async (req, res) => {
+router.put("/edit/:product_id", async (req, res) => {
   const output = {
     success: false,
     postData: req.body,
@@ -222,25 +209,25 @@ router.put("/edit/:pdstock_id", async (req, res) => {
   };
   // TODO: 表單資料檢查
   req.body.product = req.body.product.trim(); // 去除頭尾空白
-  const sql = `UPDATE product_stock SET ? WHERE pdstock_id=?`;
-  const [result] = await db.query(sql, [req.body, req.body.pdstock_id]);
+  const sql = `UPDATE product_list SET ? WHERE product_id=?`;
+  const [result] = await db.query(sql, [req.body, req.body.product_id]);
   output.result = result;
   output.success = !!result.changedRows;
 
   res.json(output);
 });
 
-router.delete("/:pdstock_id", async (req, res) => {
+router.delete("/:product_id", async (req, res) => {
   const output = {
     success: false,
     result: null,
   };
-  const pdstock_id = +req.params.pdstock_id;
-  if (!pdstock_id || pdstock_id < 1) {
+  const product_id = +req.params.product_id;
+  if (!product_id || product_id < 1) {
     return res.json(output);
   }
 
-  const sql = ` DELETE FROM product_stock WHERE pdstock_id=${pdstock_id}`;
+  const sql = ` DELETE FROM product_list WHERE product_id=${product_id}`;
   const [result] = await db.query(sql);
   output.result = result;
   output.success = !!result.affectedRows;

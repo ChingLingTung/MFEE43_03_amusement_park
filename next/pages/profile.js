@@ -1,7 +1,7 @@
 import { Layout } from "@/component/Layout";
 import Head from "next/head";
 import { useContext, useEffect, useState } from "react";
-import AuthContext from "@/contexts/AuthContext";
+import AuthContext from "@/context/AuthContext";
 import { useRouter } from "next/router";
 import { PROFILE } from "@/component/product-const";
 

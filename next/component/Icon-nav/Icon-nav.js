@@ -11,8 +11,6 @@ export default function Card({ product_name = "女鞋", product_price = 1990 }) 
         <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
         <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
         <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
-        <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
-        <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
       </div>
     </>
   );

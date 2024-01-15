@@ -79,7 +79,7 @@ const getListData = async (req) => {
     return output;
   }
 
-  const t_sql = `SELECT COUNT(1) totalRows FROM product_list ${where}`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM (product_order JOIN product_order_detail ON product_order.pdorder_id = product_order_detail.pdorder_id) JOIN product_order_status ON product_order.odstatus_id = product_order_status.odstatus_id ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -89,8 +89,8 @@ const getListData = async (req) => {
       return { ...output, totalRows, totalPages };
     }
 
-    const sql = `SELECT * FROM (((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id ${where} ORDER BY product_id DESC 
-    LIMIT ${(page - 1) * perPage}, ${perPage}`;
+    const sql = `
+    SELECT * FROM (product_order JOIN product_order_detail ON product_order.pdorder_id = product_order_detail.pdorder_id) JOIN product_order_status ON product_order.odstatus_id = product_order_status.odstatus_id ${where} ORDER BY product_order.pdorder_id DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };
   }
@@ -99,17 +99,17 @@ const getListData = async (req) => {
 };
 
 router.get("/", async (req, res) => {
-  res.locals.pageName = "PD-list";
-  res.locals.title = "列表 | " + res.locals.title;
+  res.locals.pageName = "PD-order";
+  res.locals.title = "詳細列表 | " + res.locals.title;
   const output = await getListData(req);
   if (output.redirect) {
     return res.redirect(output.redirect);
   }
 
   if (!req.session.admin) {
-    res.render("product/list-no-admin", output);
+    res.render("order/list-no-admin", output);
   } else {
-    res.render("product/list", output);
+    res.render("order/list", output);
   }
 });
 

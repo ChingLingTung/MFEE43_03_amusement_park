@@ -1,0 +1,172 @@
+.recipient_information {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 150px 0px 0px 0px;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.recipient_information div input {
+  width: 30px;
+  height: 30px;
+}
+
+.form_container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  margin: auto;
+  margin-top: 50px;
+}
+
+.form_container1 {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  margin: auto;
+  margin-top: 50px;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
+.form_dflex{
+  width: 100%;
+  display: flex;
+}
+
+.recipient_descs {
+  width: 50%;
+  height: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 50px;
+  padding-left: 50px;
+  border-radius: 20px;
+}
+
+.ml50{
+  margin-left: 50px;
+}
+
+.recipient_descs div span {
+  color: red;
+}
+
+.recipient_descs div input {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px gray;
+  width: 400px;
+  height: 50px;
+  margin-right: 50px;
+}
+
+.recipient_descs_address{
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 60px;
+  padding-left: 65px;
+  padding-right: 150px;
+  border-radius: 20px;
+}
+
+.recipient_address{
+  width: 12%;
+}
+
+.recipient_textarea{
+  width: 86%;
+}
+
+.recipient_descs_address div textarea {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px gray;
+  margin-top: 10px;
+  width: 100%;
+}
+
+
+.logistics {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 50px;
+  padding-left: 50px;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
+.logistics_title {
+  width: 30%;
+}
+
+.logistics_descs {
+  width: 70%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.logistics_descs div {
+  margin-right: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logistics_descs div:nth-child(3) {
+  margin-right: 0px;
+}
+
+.logistics_descs div input {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+
+.ml30{
+  margin-left: 30px;
+}
+.credit_descs1 {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 45%;
+  margin-right: 50px;
+}
+
+.credit_descs2 {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 23%;
+  margin-right: 50px;
+}
+
+.credit_title {
+  margin-right: 50px;
+}
+
+.credit_desc input {
+  width: 120px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px gray;
+}

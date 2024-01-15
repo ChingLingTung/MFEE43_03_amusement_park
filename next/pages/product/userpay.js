@@ -1,13 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Layout } from "@/component/Layout";
-import { AB_DETAIL } from "@/component/product-const";
+import { AB_USERPAY } from "@/component/product-const";
 // import ThemeContext from "@/context/ThemeContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import IconNav from "@/component/Icon-nav/Icon-nav";
-import Detail from "@/component/Detail/Detail";
-
-
+import Userpay from "@/component/Userpay/Userpay";
 
 export default function List() {
   // console.log("window.location.href:", window.location.href);
@@ -20,7 +18,7 @@ export default function List() {
     let page = +router.query.page || 1;
     if (page < 1) page = 1;
     try {
-      const r = await fetch(AB_DETAIL + `?page=${page}`);
+      const r = await fetch(AB_USERPAY + `?page=${page}`);
       const d = await r.json();
 
       setData(d);
@@ -31,19 +29,17 @@ export default function List() {
     getListData();
   }, [router.query.page]);
 
-  // useEffect(()=>{
-  //   fetch('http://localhost:3002/detail').then(res=>res.json()).then((data)=>{console.log('從api取得資料',data)})
-  // },[])
-
   return (
     <>
       <Layout>
         <IconNav />
-        <div className="product-container">
+        {/* <div className="product-container">
           {data.rows?.length &&
-            data.rows.map((v) => <Detail key={v.product_id} data={v} />)}
+            data.rows.map((v) => <Userpay key={v.product_id} {...v} />)}
+        </div> */}
+        <div className="userpay-container">
+          <Userpay />
         </div>
-          {/* <Detail /> */}
       </Layout>
     </>
   );

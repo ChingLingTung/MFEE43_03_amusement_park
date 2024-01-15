@@ -6,7 +6,6 @@
   box-shadow: 0px 0px 5px gray;
   margin: 40px 30px;
   flex-wrap: wrap;
-  background-color: white;
 }
 
 .w-262 img {
@@ -14,6 +13,7 @@
   height: 70%;
   border-radius: 15px 15px 0px 0px;
   overflow: hidden;
+  background-color: white;
 }
 
 .w-262:hover {

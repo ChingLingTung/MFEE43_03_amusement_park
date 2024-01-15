@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { Layout } from "@/component/Layout";
 import { AB_LIST } from "@/component/product-const";
-// import ThemeContext from "@/contexts/ThemeContext";
+// import ThemeContext from "@/context/ThemeContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Card from "@/component/Product/Card";
 import IconNav from "@/component/Icon-nav/Icon-nav";
 import Slider from "@/component/Slider/Slider"
 
-export default function List1() {
+export default function List() {
   // console.log("window.location.href:", window.location.href);
   const [data, setData] = useState({});
   const router = useRouter();
@@ -33,12 +33,13 @@ export default function List1() {
 
   return (
     <>
+      <pre>{JSON.stringify(data,null,4)}</pre>
       <Layout>
         <Slider />
         <IconNav />
         <div className="product-container">
           {data.rows?.length &&
-            data.rows.map((v) => <Card key={v.product_id} {...v} />)}
+            data.rows.map((v) => <Card key={v.product_id} data={v}/>)}
         </div>
       </Layout>
     </>
