@@ -120,19 +120,23 @@ app.post("/login", async (req, res) => {
   const output = {
     success: false,
     code: 0,
+    error:"",
     postData: req.body,
   };
   if (!req.body.email || !req.body.password) {
     // 資料不足
     output.code = 410;
+    output.error = "帳號或密碼未填";
     return res.json(output);
   }
+
   const sql = "SELECT * FROM user WHERE user_email=?";
   const [rows] = await db.query(sql, [req.body.email]);
 
   if (!rows.length) {
     // 帳號是錯的
     output.code = 400;
+    output.error = "帳號不存在";
     return res.json(output);
   }
   const row = rows[0];
@@ -140,6 +144,7 @@ app.post("/login", async (req, res) => {
   if (!pass) {
     // 密碼是錯的
     output.code = 420;
+    output.error = "密碼錯誤";
     return res.json(output);
   }
 

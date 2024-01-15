@@ -123,16 +123,19 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
     // TODO: 檢查各個欄位的資料
-
+    let ispass = true
     if(registerForm.user_name.trim().length == 0){
         setNameError('姓名為必填');
+        ispass = false;
       }
     const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if(registerForm.user_email===""){
       setEmailError('email為必填');
+      ispass = false;
     }
     else if(registerForm.user_email!==""&&registerForm.user_email.search(emailRule)===-1){
       setEmailError('email不符合格式');
+      ispass = false;
     }
     else{
       setEmailError('');
@@ -140,22 +143,37 @@ export default function Register() {
     const phoneRule = /^09\d{8}$/;
     if(registerForm.phone!==""&& registerForm.phone.search(phoneRule)===-1){
       setPhoneError('手機號碼不符合格式');
+      ispass = false;
     }
     const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
     if(registerForm.user_password===""){
       setPasswordError('密碼為必填');
+      ispass = false;
     }
     if(registerForm.user_password!==""&& registerForm.user_password.search(passwordRule)===-1){
       setPasswordError('密碼不符合格式');
+      ispass = false;
     }
     if(registerForm.rePassword===registerForm.user_password){
       setPassword2Error('');
     }
     else{
       setPassword2Error('輸入的密碼與第一次不同');
+      ispass = false;
     }
-
-    const r = await fetch(USER_ADD, {
+    if(!ispass){
+      setDisplayInfo("fail");
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'註冊失敗',
+              text:'請檢查輸入的資料是否符合格式',
+            })
+          }
+    })
+    }
+    if(ispass){
+      const r = await fetch(USER_ADD, {
       method: "POST",
       body: JSON.stringify(registerForm),
       headers: {
@@ -180,24 +198,20 @@ export default function Register() {
             })
           }
     })
-    // 如果這樣寫，會跳出沒有內容的alert後跳轉
-    //   Alert.fire({ 
-    //     didOpen: () => { 
-    //       Alert.fire({
-    //         didClose: () => { 
-    //                   Alert.fire({
-    //                     titleText:'註冊成功',
-    //                     text:'前往登入',
-    //                     preConfirm:false,
-    //                   })
-    //                 }
-    //       })
-    //       router.push('/login');
-    //       }
-    // })
     } else {
       setDisplayInfo("fail");
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'註冊失敗',
+              text:'請檢查輸入的資料是否符合格式',
+            })
+          }
+    })
     }
+    }
+
+
   };
 
   // console.log("re-render---", new Date());

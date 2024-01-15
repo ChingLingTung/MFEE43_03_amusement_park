@@ -6,6 +6,10 @@ import { USER_GET_ONE } from "@/component/ride-const";
 import AuthContext from "@/context/auth-context";
 import { useRouter } from "next/router";
 import Link from 'next/link';
+import Swal from 'sweetalert2' 
+import withReactContent from 'sweetalert2-react-content' 
+
+
 
 export default function Login() {
   const [displayInfo, setDisplayInfo] = useState("");
@@ -15,7 +19,8 @@ export default function Login() {
   const [passwordError,setPasswordError]=useState('')
   const {setParkAuth} = useContext(AuthContext)
   const router = useRouter();
-
+  const Alert = withReactContent(Swal) ;
+  
   const checkEmail = () =>{
     const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if(!email){
@@ -59,14 +64,13 @@ export default function Login() {
     const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if(email!==""&&email.search(emailRule)===-1){
       setEmailError('email不符合格式');
-      ispass = false;
     }
     // if(!email){
     //   setEmailError('email不存在');
     //   return
     // }
     if(!password){
-      setEmailError('密碼為必填');
+      setPasswordError('密碼為必填');
     }
     const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
     if(password && password.search(passwordRule)===-1){
@@ -82,15 +86,38 @@ export default function Login() {
     });
     const data = await r.json();
     console.log(data);
-    if(!password){
-      setPasswordError('密碼必填')
+    if(!data.success){
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'登入失敗',
+              text:data.error,
+            })
+          }
+    })
     }
+    
     if(data.success){
       const {user_id, email, nickname, token} = data;
       // 成功登入時, 寫入 localStorage 做長時間的狀態保存
       localStorage.setItem('park_auth', JSON.stringify({user_id, email, nickname, token}));
       setParkAuth({user_id, email, nickname, token});
-      router.push('/');
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'登入成功',
+              text:'前往首頁',
+            }),
+            Alert.fire({
+              titleText:'登入成功',
+              text:'前往首頁',
+              willClose:()=>{
+                router.push('/');
+              }
+            })
+          }
+    })
+      
     }
   };
 
