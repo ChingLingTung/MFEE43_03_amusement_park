@@ -11,7 +11,7 @@
   font-size: 30px;
 }
 .formborder{
-  height: 500px;
+  height: 600px;
   width: 400px;
   border: #F29BA5 2px solid;
   border-radius: 10px;
@@ -48,6 +48,9 @@
 .flex{
   display: flex;
   justify-content: space-between;
+}
+.register_button{
+  cursor: pointer;
 }
 .google_login{
   outline-style: none;

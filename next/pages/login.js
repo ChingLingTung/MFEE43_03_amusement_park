@@ -82,11 +82,14 @@ export default function Login() {
     });
     const data = await r.json();
     console.log(data);
+    if(!password){
+      setPasswordError('密碼必填')
+    }
     if(data.success){
-      const {id, email, nickname, token} = data;
+      const {user_id, email, nickname, token} = data;
       // 成功登入時, 寫入 localStorage 做長時間的狀態保存
-      localStorage.setItem('auth', JSON.stringify({id, email, nickname, token}));
-      setParkAuth({id, email, nickname, token});
+      localStorage.setItem('park_auth', JSON.stringify({user_id, email, nickname, token}));
+      setParkAuth({user_id, email, nickname, token});
       router.push('/');
     }
   };

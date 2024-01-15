@@ -100,11 +100,14 @@ export default function ShowDetail() {
               </div>
               
               <button style={{width:1200}} className={styles.button}>預約</button>
+              <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
+              <p>演出時間：{getData.show_day}的{getData.start} 至 {getData.finish}</p>
+              <p>預約座位：</p>
             </>
           )}
             <Head><title>表演詳細資訊</title></Head>
           </div>
-        </div>
+        </div>  
       </div>
     </>
   )

@@ -46,11 +46,11 @@ export default function Navbar() {
             <>
             <div className={styles.flex_center}>
               <span className={styles.option}>
-                <a>{parkAuth.nickname}</a>
+                <p>{parkAuth.user_nickname}</p>
               </span>
-              <span className={styles.option}>
+              {/* <span className={styles.option}>
                 <Link  href="/profile">profile</Link>
-              </span>
+              </span> */}
               <span className={styles.option}>
                 <a
                   href="#"
