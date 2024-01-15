@@ -79,7 +79,7 @@ const getListData = async (req) => {
     return output;
   }
 
-  const t_sql = `SELECT COUNT(1) totalRows FROM (product_order JOIN product_order_detail ON product_order.pdorder_id = product_order_detail.pdorder_id) JOIN product_order_status ON product_order.odstatus_id = product_order_status.odstatus_id ${where}`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM (((product_order JOIN product_order_status ON product_order.odstatus_id = product_order_status.odstatus_id) JOIN ibon_list ON product_order.ibon_id = ibon_list.ibon_id) JOIN recipient_list ON product_order.pdorder_id=recipient_list.pdorder_id) JOIN product_list ON product_order.product_id = product_list.product_id ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -90,7 +90,7 @@ const getListData = async (req) => {
     }
 
     const sql = `
-    SELECT * FROM (product_order JOIN product_order_detail ON product_order.pdorder_id = product_order_detail.pdorder_id) JOIN product_order_status ON product_order.odstatus_id = product_order_status.odstatus_id ${where} ORDER BY product_order.pdorder_id DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
+    SELECT * FROM (((product_order JOIN product_order_status ON product_order.odstatus_id = product_order_status.odstatus_id) JOIN ibon_list ON product_order.ibon_id = ibon_list.ibon_id) JOIN recipient_list ON product_order.pdorder_id=recipient_list.pdorder_id) JOIN product_list ON product_order.product_id = product_list.product_id  ${where} ORDER BY product_order.pdorder_id DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };
   }

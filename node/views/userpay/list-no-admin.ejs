@@ -41,26 +41,29 @@
         <thead>
           <tr>
 
-            <th>訂單編號</th>
-            <th>訂單日期</th>
-            <th>產品名稱</th>
-            <th>下單數量</th>
-            <th>訂單總價</th>
-            <th>訂單狀態</th>
-            <th>優惠券</th>
+            <th>收件人編號</th>
+            <th>收件人名字</th>
+            <th>收件人Email</th>
+            <th>收件人手機</th>
+            <th>收件人電話</th>
+            <th>發票類型</th>
+            <th>付款方式</th>
+            <th>收貨方式</th>
 
           </tr>
         </thead>
         <tbody>
           <% for(let i of rows) { %>
           <tr>
-            <td><%= i.pdorder_id %></td>
-            <td><%= i.pdorder_date %></td>
-            <td><%= i.product_name %></td>
-            <td><%= i.order_quantity %></td>
-            <td><%= i.order_amount %></td>
-            <td><%= i.odstatus_name %></td>
-            <td><%= i.ibon_name %></td>
+            <td><%= i.recipient_id %></td>
+            <td><%= i.recipient_name %></td>
+            <td><%= i.recipient_email %></td>
+            <td><%= i.recipient_phone %></td>
+            <td><%= i.recipient_tel %></td>
+            <td><%= i.bill_name %></td>
+            <td><%= i.userpay_name %></td>
+            <td><%= i.recipient_address_name %></td>
+
           </tr>
           <% } %>
         </tbody>
@@ -73,14 +76,13 @@
 
 <%- include('../parts/scripts') %>
 <script>
-  fetch()
   const removeItem = (e) => {
     e.preventDefault();
     const sid = e.currentTarget.getAttribute("data-sid");
 
     // TODO: 詢問用戶是否確定要刪除
 
-    fetch(`/detail/${sid}`, {
+    fetch(`/product-list/${sid}`, {
       method: "DELETE",
     })
       .then((r) => r.json())

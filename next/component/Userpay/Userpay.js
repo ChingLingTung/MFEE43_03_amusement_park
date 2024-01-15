@@ -2,9 +2,7 @@ import React from "react";
 import styles from "@/component/Userpay/Userpay.module.css";
 import Image from "next/image";
 // import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa";
-import { FaChevronLeft } from "react-icons/fa";
-import Paystep from "./Paystep/Paystep"; 
+import Paystep from "./Paystep/Paystep";
 
 export default function Userpay({
   product_name = "女鞋",
@@ -13,48 +11,47 @@ export default function Userpay({
   return (
     <>
       <Paystep />
-
       <main className={styles.form_container}>
         <div className={styles.recipient_information}>
-          <div>收件人資料</div>
-          <div>
-            <input type="radio" /> 同收件人資料{" "}
+          <div className={styles.recipient_information_title1}>收件人資料</div>
+          <div className={styles.recipient_information_title2}>
+            <input type="radio" /> 同收件人資料
           </div>
         </div>
       </main>
       <main className={styles.form_container1}>
-        <div className={styles.form_dflex}>
+        <div className={styles.form_flex}>
           <div className={styles.recipient_descs}>
-            <div>
-              <span>*</span> 收件人姓名{" "}
+            <div className={styles.recipient_descs_title}>
+              <span>*</span> 收件人姓名
             </div>
-            <div>
+            <div className={styles.recipient_descs_input}>
               <input type="text" placeholder="請輸入姓名" />
             </div>
           </div>
           <div className={styles.recipient_descs}>
-            <div>
-              <span>*</span> 收件人email{" "}
+            <div className={styles.recipient_descs_title}>
+              <span>*</span> 收件人Email
             </div>
-            <div>
-              <input type="text" placeholder="請輸入email" />
+            <div className={styles.recipient_descs_input}>
+              <input type="text" placeholder="請輸入Email" />
             </div>
           </div>
         </div>
-        <div className={styles.form_dflex}>
-        <div className={styles.recipient_descs}>
-            <div>
-              <span>*</span> 收件人手機{" "}
+        <div className={styles.form_flex}>
+          <div className={styles.recipient_descs}>
+            <div className={styles.recipient_descs_title}>
+              <span>*</span> 收件人手機
             </div>
-            <div>
+            <div className={styles.recipient_descs_input}>
               <input type="text" placeholder="請輸入手機" />
             </div>
           </div>
           <div className={styles.recipient_descs}>
-            <div>
-              <span>*</span> 收件人電話{" "}
+            <div className={styles.recipient_descs_title}>
+              <span>*</span> 收件人電話
             </div>
-            <div className={styles.ml50}>
+            <div className={styles.recipient_descs_input}>
               <input type="text" placeholder="請輸入電話" />
             </div>
           </div>
@@ -62,15 +59,11 @@ export default function Userpay({
         <div className={styles.recipient_descs_address}>
           <div className={styles.recipient_address}>收件人地址</div>
           <div className={styles.recipient_textarea}>
-            <textarea
-              cols=""
-              rols=""
-              placeholder="請輸入地址"
-              defaultValue={""}
-            />
+            <textarea cols="30" rols="10" placeholder="請輸入地址"></textarea>
           </div>
         </div>
       </main>
+
       <main className={styles.form_container}>
         <div className={styles.logistics}>
           <div className={styles.logistics_title}>發票類型</div>
@@ -82,10 +75,11 @@ export default function Userpay({
               <input type="radio" name="bill" /> 公司發票
             </div>
             <div>
-              <input type="radio" name="bill" className="ml30" /> 發票捐贈
+              <input type="radio" name="bill" className={styles.ml30} /> 發票捐贈
             </div>
           </div>
         </div>
+
         <div className={styles.logistics}>
           <div className={styles.logistics_title}>付款方式</div>
           <div className={styles.logistics_descs}>
@@ -100,6 +94,7 @@ export default function Userpay({
             </div>
           </div>
         </div>
+
         <div className={styles.logistics}>
           <div className={styles.logistics_title}>取貨方式</div>
           <div className={styles.logistics_descs}>
@@ -111,27 +106,13 @@ export default function Userpay({
             </div>
           </div>
         </div>
-        <div className={styles.logistics}>
-          <div className={styles.credit_descs1}>
-            <div className={styles.credit_title}>信用卡號</div>
-            <div className={styles.credit_desc}>
-              <input type="text" placeholder="XXXX" />
-              <span>-</span>
-              <input type="text" placeholder="XXXX" />
-              <span>-</span>
-              <input type="text" placeholder="XXXX" />
-            </div>
-          </div>
-          <div className={styles.credit_descs2}>
-            <div className={styles.credit_title}>末三碼</div>
-            <div className={styles.credit_desc}>
-              <input type="text" placeholder={123} />
-            </div>
-          </div>
-          <div className={styles.credit_descs2}>
-            <div className={styles.credit_title}>有效日期</div>
-            <div className={styles.credit_desc}>
-              <input type="text" placeholder="12/3456" />
+
+        <div className={styles.total_container}>
+          <div className={styles.total_info}>
+            <div>總計</div>
+            <div>$1800</div>
+            <div className={styles.pay_button}>
+              <button className={styles.pay_button_word}>確認結帳</button>
             </div>
           </div>
         </div>

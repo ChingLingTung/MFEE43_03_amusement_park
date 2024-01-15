@@ -3,9 +3,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 150px 0px 0px 0px;
-  font-size: 32px;
+  margin: auto;
+  font-size: 40px;
   font-weight: bold;
+}
+
+.recipient_information_title1{
+  margin-left: 5%;
+}
+
+.recipient_information_title2{
+  margin-right: 5%;
 }
 
 .recipient_information div input {
@@ -19,7 +27,10 @@
   flex-direction: column;
   margin-top: 50px;
   margin: auto;
-  margin-top: 50px;
+}
+
+.form_flex{
+  display: flex;
 }
 
 .form_container1 {
@@ -33,26 +44,26 @@
   border-radius: 20px;
 }
 
-.form_dflex{
-  width: 100%;
-  display: flex;
-}
-
 .recipient_descs {
   width: 50%;
   height: 150px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 16px;
+  font-size: 30px;
   font-weight: bold;
   margin-top: 50px;
   padding-left: 50px;
+  padding-right: 30px;
   border-radius: 20px;
 }
 
-.ml50{
-  margin-left: 50px;
+.recipient_descs_title {
+  width: 35%;
+}
+
+.recipient_descs_input {
+  width: 60%;
 }
 
 .recipient_descs div span {
@@ -60,34 +71,40 @@
 }
 
 .recipient_descs div input {
+  width: 100%;
+  height: 45px;
   border: none;
   border-radius: 10px;
   box-shadow: 0px 0px 5px gray;
-  width: 400px;
-  height: 50px;
-  margin-right: 50px;
+  margin-top: 10px;
+  font-size: 24px;
 }
 
-.recipient_descs_address{
+.recipient_descs_address {
   width: 100%;
   height: 150px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 16px;
+  font-size: 30px;
   font-weight: bold;
   margin-top: 60px;
-  padding-left: 65px;
-  padding-right: 150px;
   border-radius: 20px;
 }
 
-.recipient_address{
-  width: 12%;
+.recipient_address {
+  width: 15%;
+  margin-left: 70px;
 }
 
-.recipient_textarea{
-  width: 86%;
+.recipient_textarea {
+  width: 76%;
+  margin-right: 30px;
+}
+
+.recipient_textarea textarea {
+  height: 90px;
+  font-size: 24px;
 }
 
 .recipient_descs_address div textarea {
@@ -98,23 +115,22 @@
   width: 100%;
 }
 
-
 .logistics {
   width: 100%;
   height: 150px;
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   align-items: center;
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   margin-top: 50px;
-  padding-left: 50px;
   border: 1px solid black;
   border-radius: 20px;
 }
 
 .logistics_title {
-  width: 30%;
+  width: 20%;
+  margin-left: 70px;
 }
 
 .logistics_descs {
@@ -124,7 +140,7 @@
   align-items: center;
 }
 
-.logistics_descs div {
+.logistics-descs div {
   margin-right: 100px;
   display: flex;
   justify-content: center;
@@ -139,17 +155,15 @@
   width: 30px;
   height: 30px;
   margin-right: 10px;
+  margin-left: 50px;
 }
 
-.ml30{
-  margin-left: 30px;
-}
 .credit_descs1 {
   display: flex;
   justify-content: start;
   align-items: center;
   width: 45%;
-  margin-right: 50px;
+  margin-left: 70px;
 }
 
 .credit_descs2 {
@@ -162,11 +176,62 @@
 
 .credit_title {
   margin-right: 50px;
+
 }
 
 .credit_desc input {
   width: 120px;
+  height: 45px;
+  font-size: 24px;
   border: none;
   border-radius: 10px;
   box-shadow: 0px 0px 5px gray;
 }
+
+.total_container{
+  width: 100%;
+  display: flex;
+  justify-content: end
+}
+
+.total_info{
+  width: 50%;
+  display: flex;
+  justify-content: end;
+}
+
+.total_info div{
+  width: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  margin-top: 100px;
+}
+
+.total_info div:nth-child(2){
+  color: red;
+}
+
+.pay_button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid black;
+  border-radius: 50px;
+  padding: 5px;
+  margin: 0px 15px;
+  background-color: white;
+}
+
+.pay_button_word{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  color: black;
+  font-size: 30px;
+  background-color: white;
+  border: none;
+}
+

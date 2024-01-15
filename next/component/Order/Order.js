@@ -5,7 +5,7 @@ import Image from "next/image";
 import Paystep from "../Userpay/Paystep/Paystep";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
-import { AB_ORDER } from "../product-const";
+
 
 export default function Order({ product_name = "女鞋", product_price = 1990 }) {
   return (
@@ -84,15 +84,6 @@ export default function Order({ product_name = "女鞋", product_price = 1990 })
             <div>數量: 1</div>
             <div>$12,000</div>
           </div>
-        </div>
-
-        <div className={styles.payment_details}>
-          <span>付款方式: 行動支付</span>
-          <span>發票類型: 捐贈發票</span>
-        </div>
-
-        <div className={styles.payment_address}>
-          <span>取貨方式: 台北市大安區復興南路一段390號2樓</span>
         </div>
       </main>
     </>

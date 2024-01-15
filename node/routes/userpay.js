@@ -1,6 +1,6 @@
 import express from "express";
-import db from "./../utils/connect-mysql.js";
-import upload from "./../utils/upload-imgs.js";
+import db from "../utils/connect-mysql.js";
+import upload from "../utils/upload-imgs.js";
 import dayjs from "dayjs";
 
 const router = express.Router();
@@ -25,7 +25,6 @@ const getListData = async (req) => {
   let keyword_ = db.escape(`%${keyword}%`);
 
   let qs = {};  // 用來把 query string 的設定傳給 template
-  let product_id = req.query.product_id? req.query.product_id : '';
   // 起始的日期
   let startDate = req.query.startDate ? req.query.startDate.trim() : "";
   const startDateD = dayjs(startDate);
@@ -48,11 +47,6 @@ const getListData = async (req) => {
   if (keyword) {
     qs.keyword = keyword;
     where += ` AND ( \`product_name\` LIKE ${keyword_} OR \`product_price\` LIKE ${keyword_} ) `;
-  }
-
-  if (product_id !==0 && product_id !=='') {
-    qs.product_id = product_id;
-    where += ` AND product_id = '${product_id}' `;
   }
   // if (startDate) {
   //   qs.startDate = startDate;
@@ -85,7 +79,7 @@ const getListData = async (req) => {
     return output;
   }
 
-  const t_sql = `SELECT COUNT(1) totalRows FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id ${where}`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM ((recipient_list JOIN bill_list ON recipient_list.bill_id = bill_list.bill_id) JOIN userpay_list ON recipient_list.userpay_id = userpay_list.userpay_id) JOIN recipient_address_list ON recipient_list.recipient_address_id = recipient_address_list.recipient_address_id ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -96,8 +90,7 @@ const getListData = async (req) => {
     }
 
     const sql = `
-    SELECT * FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id ${where} ORDER BY pdasize_list.pdasize_id DESC 
-    LIMIT ${(page - 1) * perPage}, ${perPage}`;
+    SELECT * FROM ((recipient_list JOIN bill_list ON recipient_list.bill_id = bill_list.bill_id) JOIN userpay_list ON recipient_list.userpay_id = userpay_list.userpay_id) JOIN recipient_address_list ON recipient_list.recipient_address_id = recipient_address_list.recipient_address_id ${where} ORDER BY recipient_list.recipient_id DESC LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };
   }
@@ -106,7 +99,7 @@ const getListData = async (req) => {
 };
 
 router.get("/", async (req, res) => {
-  res.locals.pageName = "PD-detail";
+  res.locals.pageName = "PD-userpay";
   res.locals.title = "詳細列表 | " + res.locals.title;
   const output = await getListData(req);
   if (output.redirect) {
@@ -114,9 +107,9 @@ router.get("/", async (req, res) => {
   }
 
   if (!req.session.admin) {
-    res.render("detail/list-no-admin", output);
+    res.render("userpay/list-no-admin", output);
   } else {
-    res.render("detail/list", output);
+    res.render("userpay/list", output);
   }
 });
 
