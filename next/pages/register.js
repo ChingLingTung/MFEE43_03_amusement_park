@@ -20,7 +20,7 @@ export default function Register() {
     }
   );
 
-  // const [getRePassword,setGetRePassword]=useState('');
+
   const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
 
   const changeHandler = (e) => {
@@ -120,9 +120,9 @@ export default function Register() {
     let ispass = true;
 
     if(registerForm.user_name.trim().length == 0){
-      setNameError('姓名為必填');
-      ispass = false;
-    }
+        setNameError('姓名為必填');
+        ispass = false;
+      }
     const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if(registerForm.user_email===""){
       setEmailError('email為必填');
@@ -284,6 +284,8 @@ export default function Register() {
             </div>
             
             <div className={styles.flex}>
+              
+              <button type='submit' className={styles.button}>註冊</button>
               {displayInfo ? (
                     displayInfo === "succ" ? (
                       <div>
@@ -295,7 +297,6 @@ export default function Register() {
                       </div>
                     )
                   ) : null}
-              <button type='submit' className={styles.button}>註冊</button>
             </div>
           </form>
         </div>

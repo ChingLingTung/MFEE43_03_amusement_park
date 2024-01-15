@@ -6,9 +6,9 @@ export default AuthContext;
 
 // 登入狀態: 可以登入, 可以登出, 狀態資料(會員id, email, nickname, token)
 export const initAuth = {
-  id: 0,
-  email: "",
-  nickname: "",
+  user_id: 0,
+  user_email: "",
+  user_nickname: "",
   token: "",
 };
 
@@ -20,9 +20,9 @@ export const AuthContextProvider = ({ children }) => {
     if (str) {
       try {
         const data = JSON.parse(str);
-        if (data.id && data.email) {
-          const { id, email, nickname, token } = data;
-          setParkAuth({ id, email, nickname, token });
+        if (data.user_id && data.user_email) {
+          const { user_id, user_email, user_nickname, token } = data;
+          setParkAuth({ user_id, user_email, user_nickname, token });
         }
       } catch (ex) {}
     }

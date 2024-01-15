@@ -29,6 +29,28 @@ const getListData = async (req) => {
 
   let qs = {};  // 用來把 query string 的設定傳給 template
 
+  // 設定綜合的where子句
+  let where = `WHERE 1 `;
+  let user_email = req.query.user_email? req.query.user_email : '';
+  let user_password = req.query.user_password? req.query.user_word : '';
+  const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+  if(user_email!=="" && user_email.search(emailRule)!==-1){
+    qs.user_email = user_email;
+    where += ` AND user_email = '${user_email}' `;
+  }
+  if(user_password!=="" && user_email.search(emailRule)!==-1){
+    // await bcrypt.compare("123zzzZZZ","$2a$08$MafiDLdOaJS65JblXkpvueEgik/QA3VzJLO.5jO6Izk92VXerLm4S");
+    // await bcrypt.compare(user_password,hash);
+    qs.user_password = user_password
+    // const hash = await bcrypt.hash(user_password, 8)
+    let hash = ''
+    const passIsCorrect =await bcrypt.compare(user_password, hash);
+    if (passIsCorrect){
+      where += ` AND user_password = '${hash}' `;
+    }
+    console.log(hash)
+  }
+
   let totalRows = 0;
   let totalPages = 0;
   let rows = [];
@@ -51,7 +73,7 @@ const getListData = async (req) => {
     return output;
   }
 
-  const t_sql = `SELECT COUNT(1) totalRows FROM user`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM user ${where} ORDER BY user_id`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -61,7 +83,7 @@ const getListData = async (req) => {
       return { ...output, totalRows, totalPages };
     }
 
-    const sql = `SELECT * FROM user ORDER BY user_id  
+    const sql = `SELECT * FROM user ${where} ORDER BY user_id  
     LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };
@@ -69,11 +91,12 @@ const getListData = async (req) => {
 
   return output;
 };
-
+  console.log(await bcrypt.compare("123zzzZZZ","$2a$08$MafiDLdOaJS65JblXkpvueEgik/QA3VzJLO.5jO6Izk92VXerLm4S"));
 router.get("/", async (req, res) => {
   res.locals.pageName = "user-list";
   res.locals.title = "列表 | " + res.locals.title;
   const output = await getListData(req);
+
   if (output.redirect) {
     return res.redirect(output.redirect);
   }

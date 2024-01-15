@@ -10,7 +10,6 @@ import fileUpload from "express-fileupload";
 import morgan from "morgan";
 import lodash from "lodash";
 import bodyParser from "body-parser";
-import loginRouter from "./routes/login.js"
 import rideRouter from "./routes/ride.js";
 import showRouter from "./routes/show.js"
 import shopRouter from "./routes/restaurant.js"
@@ -18,6 +17,7 @@ import db from "./utils/connect-mysql.js";
 import maintainRouter from './routes/maintain.js'
 import registerRouter from "./routes/register.js"
 import getProfileRouter from "./routes/get_profile.js"
+import testRouter from "./routes/test.js"
 
 
 
@@ -35,19 +35,19 @@ app.set("view engine", "ejs");
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(fileUpload({
-  createParentPath: true
-}));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(morgan('dev'));
+// app.use(fileUpload({
+//   createParentPath: true
+// }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({extended: true}));
+// app.use(morgan('dev'));
 
 //讓uploads目錄公開
 // https://expressjs.com/zh-tw/starter/static-files.html
 //app.use(express.static('uploads'));
 // 如果想要改網址路徑用下面的
 // 您可以透過 /static 路徑字首，來載入 uploads 目錄中的檔案。
-app.use('/uploads', express.static('uploads'));
+// app.use('/uploads', express.static('uploads'));
 
 const MysqlStore = mysql_session(session);
 const sessionStore = new MysqlStore({}, db);
@@ -106,7 +106,7 @@ app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);
 app.use("/register", registerRouter);
-app.use("/login", loginRouter);
+app.use("/test", testRouter)
 app.use("/getProfile", getProfileRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
@@ -117,22 +117,66 @@ app.get("/try-sess", (req, res) => {
 app.get("/login", async (req, res) => {
   res.render("login");
 });
-app.get("/register", async (req, res) => {
-  res.render("login");
-});
-app.post("/login-jwt", async (req, res) => {
+
+app.post("/login", async (req, res) => {
   const output = {
     success: false,
     code: 0,
     postData: req.body,
   };
-  if (!req.body.user_account || !req.body.user_password) {
+  if (!req.body.email || !req.body.password) {
+    // 資料不足
+    output.code = 410;
+    return res.json(output);
+  }
+  const sql = "SELECT * FROM user WHERE user_email=?";
+  const [rows] = await db.query(sql, [req.body.email]);
+
+  if (!rows.length) {
+    // 帳號是錯的
+    output.code = 400;
+    return res.json(output);
+  }
+  const row = rows[0];
+  const pass = await bcrypt.compare(req.body.password, row.user_password);
+  if (!pass) {
+    // 密碼是錯的
+    output.code = 420;
+    return res.json(output);
+  }
+
+  output.code = 200;
+  output.success = true;
+  // 設定 session
+  req.session.admin = {
+    id: row.user_id,
+    email: row.user_email,
+    nickname: row.user_nickname,
+  };
+  output.user = req.session.admin;
+  res.json(output);
+});
+  app.get("/logout", async (req, res) => {
+  delete req.session.admin;
+  res.redirect("/");
+});
+  app.post("/login-jwt", async (req, res) => {
+  const output = {
+    success: false,
+    code: 0,
+    postData: req.body,
+    user_id: 0,
+    user_email: "",
+    user_nickname: "",
+    token: "",
+  };
+  if (!req.body.user_email || !req.body.user_password) {
     // 資料不足
     output.code = 410;
     return res.json(output);
   }
   const sql = "SELECT * FROM user WHERE user_account=?";
-  const [rows] = await db.query(sql, [req.body.email]);
+  const [rows] = await db.query(sql, [req.body.user_email]);
 
   if (!rows.length) {
     // 帳號是錯的
