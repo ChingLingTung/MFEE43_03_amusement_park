@@ -3,8 +3,14 @@ import styles from '@/styles/register.module.css';
 import Head from 'next/head';
 import { USER_ADD } from '@/component/ride-const';
 import { z } from "zod";
+import Swal from 'sweetalert2' 
+import withReactContent from 'sweetalert2-react-content' 
+import { useRouter } from 'next/navigation';
+
+
 
 export default function Register() {
+  const router=useRouter();
   const [registerForm, setRegisterForm]=useState(
     {
       user_name: "",
@@ -19,8 +25,8 @@ export default function Register() {
       address:""
     }
   );
-
-
+  const Alert = withReactContent(Swal) 
+  
   const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
 
   const changeHandler = (e) => {
@@ -117,20 +123,16 @@ export default function Register() {
   const onSubmit = async (e) => {
     e.preventDefault();
     // TODO: 檢查各個欄位的資料
-    let ispass = true;
 
     if(registerForm.user_name.trim().length == 0){
         setNameError('姓名為必填');
-        ispass = false;
       }
     const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
     if(registerForm.user_email===""){
       setEmailError('email為必填');
-      ispass = false;
     }
     else if(registerForm.user_email!==""&&registerForm.user_email.search(emailRule)===-1){
       setEmailError('email不符合格式');
-      ispass = false;
     }
     else{
       setEmailError('');
@@ -138,30 +140,21 @@ export default function Register() {
     const phoneRule = /^09\d{8}$/;
     if(registerForm.phone!==""&& registerForm.phone.search(phoneRule)===-1){
       setPhoneError('手機號碼不符合格式');
-      ispass = false;
     }
     const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
     if(registerForm.user_password===""){
       setPasswordError('密碼為必填');
-      ispass = false;
     }
     if(registerForm.user_password!==""&& registerForm.user_password.search(passwordRule)===-1){
       setPasswordError('密碼不符合格式');
-      ispass = false;
     }
     if(registerForm.rePassword===registerForm.user_password){
-      setPasswordError('');
+      setPassword2Error('');
     }
     else{
-      setPasswordError('輸入的密碼與第一次不同');
-      ispass = false;
+      setPassword2Error('輸入的密碼與第一次不同');
     }
-    ispass = true;
 
-    if(!ispass){
-      alert('資料新增失敗。請檢查欄位內容');
-      return
-    }
     const r = await fetch(USER_ADD, {
       method: "POST",
       body: JSON.stringify(registerForm),
@@ -172,10 +165,37 @@ export default function Register() {
     const responseData = await r.json();
     if (responseData.success) {
       setDisplayInfo("succ");
-      // alert("新增成功");
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'註冊成功',
+              text:'前往登入',
+            }),
+            Alert.fire({
+              titleText:'註冊成功',
+              text:'前往登入',
+              willClose:()=>{
+                router.push('/login');
+              }
+            })
+          }
+    })
+    //   Alert.fire({ 
+    //     didOpen: () => { 
+    //       Alert.fire({
+    //         didClose: () => { 
+    //                   Alert.fire({
+    //                     titleText:'註冊成功',
+    //                     text:'前往登入',
+    //                     preConfirm:false,
+    //                   })
+    //                 }
+    //       })
+    //       router.push('/login');
+    //       }
+    // })
     } else {
       setDisplayInfo("fail");
-      // alert("新增發生錯誤!!!");
     }
   };
 
@@ -214,10 +234,10 @@ export default function Register() {
                       onChange={changeHandler} /> */}
                   </label>
                   <div className={styles.flex}>
-                    <button type='button' className={styles.upload_button}>
+                    {/* <button type='button' className={styles.upload_button}>
                       <img className={styles.icon} src='/images/Upload.png'/>
                 上傳大頭照
-                    </button>
+                    </button> */}
                     
                   </div>
                 <p className={styles.flex}>
@@ -253,7 +273,7 @@ export default function Register() {
                       value={registerForm.user_password}
                       onChange={changeHandler} onKeyUp={checkPassword} placeholder='請輸入密碼'/>
                 </label>
-                <p style={{color:"red",fontSize:16}}>{passwordError}</p>
+                <p style={{color:"red",fontSize:16,width:550}}>{passwordError}</p>
                 <label htmlFor="rePassword"><span className={styles.red}>*</span>再次確認密碼：<br/>
                   <input type='password' id="rePassword"
                       name="rePassword" className={styles.input} value={registerForm.rePassword} onChange={changeHandler} onKeyUp={checkPassword2} placeholder='請輸入一樣的密碼'/>

@@ -17,7 +17,6 @@ import db from "./utils/connect-mysql.js";
 import maintainRouter from './routes/maintain.js'
 import registerRouter from "./routes/register.js"
 import getProfileRouter from "./routes/get_profile.js"
-import testRouter from "./routes/test.js"
 
 
 
@@ -106,7 +105,6 @@ app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);
 app.use("/register", registerRouter);
-app.use("/test", testRouter)
 app.use("/getProfile", getProfileRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
