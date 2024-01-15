@@ -44,7 +44,7 @@ const getListData = async (req) => {
 
   if (shop_type_id !==0 && shop_type_id !== '') {
     qs.shop_type_id = shop_type_id;
-    where += ` AND shop.shop_type_id = '${shop_type_id}' `;
+    where += ` AND shop_with_shop_type.shop_type_id = '${shop_type_id}' `;
   }
   let totalRows = 0;
   let totalPages = 0;
@@ -61,7 +61,7 @@ const getListData = async (req) => {
     redirect: "",
     info: "",
   };
-  const t_sql = `SELECT COUNT(1) totalRows FROM shop JOIN shop_type ON shop.shop_id=shop_type.shop_id ${where} ORDER BY shop.shop_id `;
+  const t_sql = `SELECT COUNT(1) totalRows FROM (shop JOIN shop_with_shop_type ON shop.shop_id = shop_with_shop_type.shop_id) JOIN shop_type ON shop_with_shop_type.shop_type_id=shop_type.shop_type_id ${where} ORDER BY shop.shop_id `;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -71,7 +71,7 @@ const getListData = async (req) => {
       return {...output, totalRows, totalPages};
     }
 
-    const sql = `SELECT * FROM shop JOIN shop_type ON shop.shop_id=shop_type.shop_id ORDER BY shop.shop_id LIMIT ${(page - 1) * perPage}, ${perPage}`;
+    const sql = `SELECT * FROM shop JOIN shop_with_shop_type ON shop.shop_id = shop_with_shop_type.shop_id JOIN shop_type ON shop_with_shop_type.shop_type_id=shop_type.shop_type_id ${where} ORDER BY shop.shop_id LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };
   }
@@ -104,7 +104,7 @@ router.get("/api/details/:shop_id", async (req, res) => {
   const shop_id = +req.params.shop_id;
 
 
-  const sql = `SELECT * FROM shop JOIN shop_type ON shop.shop_id=shop_type.shop_id WHERE shop.shop_id=?`;
+  const sql = `SELECT * FROM shop JOIN shop_with_shop_type ON shop.shop_id = shop_with_shop_type.shop_id JOIN shop_type ON shop_with_shop_type.shop_type_id=shop_type.shop_type_id WHERE shop.shop_id=?`;
   const [rows] = await db.query(sql, [shop_id]);
   if (!rows.length) {
     return res.json({success: false});
