@@ -7,20 +7,21 @@ import cors from "cors";
 import mysql_session from "express-mysql-session";
 import bcrypt from "bcryptjs";
 
-import  jwt  from "jsonwebtoken";
-import loginRouter from "./routes/login.js"
+import jwt from "jsonwebtoken";
+import loginRouter from "./routes/login.js";
 import rideRouter from "./routes/ride.js";
-import showRouter from "./routes/show.js"
+import showRouter from "./routes/show.js";
 import db from "./utils/connect-mysql.js";
 import upload from "./utils/upload-imgs.js";
 import sales from "./data/sales.json" assert { type: "json" };
 import admin2Router from "./routes/admin2.js";
 import productListRouter from "./routes/product.js";
-import detailRouter from './routes/detail.js';
+import detailRouter from "./routes/detail.js";
+import cartRouter from "./routes/cart.js";
+import ticketRouter from "./routes/ticket.js";
 
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
-
 
 const app = express();
 
@@ -44,25 +45,25 @@ app.use(
 
 // 自訂頂層 middleware
 app.use((req, res, next) => {
-  res.locals.title = "豬豬的網站";
+  res.locals.title = "小景頁的網站";
   res.locals.pageName = "";
 
   res.locals.toDateString = (d) => dayjs(d).format("YYYY-MM-DD");
   res.locals.toDateTimeString = (d) => dayjs(d).format("YYYY-MM-DD HH:mm:ss");
 
-  res.locals.session = req.session;  // 讓 templates 可以取用 session
+  res.locals.session = req.session; // 讓 templates 可以取用 session
   const auth = req.get("Authorization");
   // 處理token，將Authorization的值去掉Bearer 只取單純的token值
-  if(auth && auth.indexOf("Bearer ")===0){
+  if (auth && auth.indexOf("Bearer ") === 0) {
     const token = auth.slice(7);
     // 避免因為token錯誤報錯，用try catch包起來但不對錯誤的token做任何處理
-    try{
+    try {
       const payload = jwt.verify(token, process.env.JWT_SECRET);
       // console.log({payload});
 
       // 將token的登入狀態傳遞下去供其他需要驗證登入的網頁使用
       res.locals.jwt = payload;
-    }catch(ex){}
+    } catch (ex) {}
   }
   // 測試用
   // res.locals.jwt = { id: 1, email: "DrinkAllDay@iSpan.com" };
@@ -82,7 +83,6 @@ app.get("/json-sales", (req, res) => {
   res.render("json-sales", { sales });
 });
 
-
 app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
   let u = req.url.slice(3).split("?")[0];
   u = u.split("-").join("");
@@ -92,6 +92,8 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 app.use("/ride", rideRouter);
 app.use("/admins", admin2Router);
 app.use("/product", productListRouter);
+app.use("/cart", cartRouter);
+app.use("/ticket", ticketRouter);
 app.use("/detail", detailRouter);
 app.use("/show", showRouter);
 app.get("/try-sess", (req, res) => {
@@ -172,7 +174,7 @@ app.post("/login-jwt", async (req, res) => {
 });
 app.get("/logout", async (req, res) => {
   delete req.session.admin;
-  res.redirect('/');
+  res.redirect("/");
 });
 // 設定靜態內容的資料夾
 app.use(express.static("public"));
@@ -189,6 +191,3 @@ const port = process.env.WEB_PORT || 3001;
 app.listen(port, () => {
   console.log(`express server: ${port}`);
 });
-
-
-

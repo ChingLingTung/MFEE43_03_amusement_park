@@ -23,5 +23,4 @@ const storage = multer.diskStorage({
     cb(null, main + ext);
   },
 });
-
 export default multer({ fileFilter, storage });

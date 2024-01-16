@@ -24,7 +24,6 @@ router.get("/", async (req, res) => {
 //   // 放在上面先判斷頁數本身有沒有可能存在，有存在才進行下一步
 //   // 不存在直接return即結束不執行下面的程式
 
-
 //   const total_sql = "SELECT COUNT(1) totalRows FROM amusement_ride";
 //   // 用括號們將totalRows解構得到純數字
 //   [[{ totalRows }]] = await db.query(total_sql);
@@ -36,7 +35,7 @@ router.get("/", async (req, res) => {
 //     if (page > totalPages) {
 //       return res.redirect(`?page=${totalPages}`);
 //     }
-//     const sql = `SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC 
+//     const sql = `SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC
 //     LIMIT ${(page - 1) * perPage}, ${perPage}`;
 //     // 這裡的rows是上面的全域變數
 //     [rows] = await db.query(sql);
@@ -59,11 +58,11 @@ router.use((req, res, next) => {
   if (req.method === "GET" && u === "/") {
     return next();
   }
-//   // 如果session裡沒有登入的資訊
-//   if (!req.session.admin) {
-//     // 跳轉到登入頁面
-//     return res.redirect("/login");
-//   }
+  //   // 如果session裡沒有登入的資訊
+  //   if (!req.session.admin) {
+  //     // 跳轉到登入頁面
+  //     return res.redirect("/login");
+  //   }
   next();
 });
 
@@ -72,10 +71,13 @@ const getListData = async (req) => {
   // 用戶決定要看第幾頁
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
-  let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
+  let keyword =
+    req.query.keyword && typeof req.query.keyword === "string"
+      ? req.query.keyword.trim()
+      : "";
   let keyword_ = db.escape(`%${keyword}%`);
-  
-  let qs = {};  // 用來把 query string 的設定傳給 template
+
+  let qs = {}; // 用來把 query string 的設定傳給 template
 
   // // 日期的搜尋(在某個日期後的搜尋)
   // // 設定開始日期startDate用於搜尋某日期以後的資料
@@ -101,7 +103,7 @@ const getListData = async (req) => {
   // 設定綜合的where子句
   let where = `WHERE 1 `;
   // 關鍵字搜尋只有一欄的情況下要用符合任一的or
-  if(keyword){
+  if (keyword) {
     qs.keyword = keyword;
     where += ` AND (\`amusement_ride_name\` LIKE ${keyword_}) `;
   }
@@ -128,14 +130,14 @@ const getListData = async (req) => {
   //   output.info = `頁碼值小於 1`;
   //   return output;
   // }
-const t_sql = `SELECT COUNT(1) totalRows FROM amusement_ride ${where}`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM amusement_ride ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
     if (page > totalPages) {
       output.redirect = `?page=${totalPages}`;
       output.info = `頁碼值大於總頁數`;
-      return {...output, totalRows, totalPages};
+      return { ...output, totalRows, totalPages };
     }
 
     const sql = `SELECT * FROM amusement_ride ${where} ORDER BY amusement_ride_id DESC 
@@ -145,8 +147,7 @@ const t_sql = `SELECT COUNT(1) totalRows FROM amusement_ride ${where}`;
   }
 
   return output;
-}
-
+};
 
 router.get("/", async (req, res) => {
   const output = await getListData(req);
@@ -162,29 +163,26 @@ router.get("/", async (req, res) => {
   //   // res.render("rides/list", output);
   //   res.render('rides/ride_list', output);
   // }
-  
 });
 
 router.get("/api", async (req, res) => {
-  res.json( await getListData(req) );
+  res.json(await getListData(req));
 });
 
 // 取得單筆的資料
 router.get("/api/details/:amusement_ride_id", async (req, res) => {
   const amusement_ride_id = +req.params.amusement_ride_id;
 
-
   const sql = `SELECT * FROM amusement_ride JOIN ride_category ON amusement_ride.ride_category_id=ride_category.ride_category_id JOIN ride_support ON amusement_ride.ride_support_id=ride_support.ride_support_id JOIN theme ON amusement_ride.theme_id=theme.theme_id WHERE amusement_ride_id=?`;
   const [rows] = await db.query(sql, [amusement_ride_id]);
   if (!rows.length) {
-    return res.json({success: false});
+    return res.json({ success: false });
   }
   const row = rows[0];
   row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
 
-  res.json({success: true, row});
+  res.json({ success: true, row });
 });
-
 
 // router.get("/ride_add", async (req, res) => {
 //   res.locals.pageName = "ride_add";
@@ -202,15 +200,15 @@ router.get("/api/details/:amusement_ride_id", async (req, res) => {
 
 //   try{
 //     const [result] = await db.query(sql, [
-//       amusement_ride_name, 
-//       amusement_ride_img, 
-//       amusement_ride_longitude, 
+//       amusement_ride_name,
+//       amusement_ride_img,
+//       amusement_ride_longitude,
 //       amusement_ride_latitude,
-//       ride_category_id, 
-//       thriller_rating, 
-//       created_at, 
-//       ride_support_id, 
-//       theme_id, 
+//       ride_category_id,
+//       thriller_rating,
+//       created_at,
+//       ride_support_id,
+//       theme_id,
 //       amusement_ride_description
 //     ]);
 //     output.result = result;
@@ -219,15 +217,14 @@ router.get("/api/details/:amusement_ride_id", async (req, res) => {
 //   } catch (ex) {
 //     output.exception = ex;
 //   }
-  
 
-  /*必須一個欄位對應一個欄位，欄位多或少都會報錯
+/*必須一個欄位對應一個欄位，欄位多或少都會報錯
   const sql = "INSERT INTO `amusement_ride` SET ?";
   req.body.created_at = new Date();
   const [result] = await db.query(sql, [req.body]);
   */
 
-  /*{
+/*{
     "fieldCount": 0,
     "affectedRows": 1,  # 影響的列數(筆數)
     "insertId": 1021,   # 取得的 PK (流水號ID)
@@ -272,8 +269,6 @@ router.get("/api/details/:amusement_ride_id", async (req, res) => {
 //   res.json(output);
 // });
 
-
-
 // // 設定刪除功能
 // router.delete("/:amusement_ride_id", async (req, res) => {
 //   const output = {
@@ -295,6 +290,5 @@ router.get("/api/details/:amusement_ride_id", async (req, res) => {
 //   output.success = !! result.affectedRows;
 //   res.json(output);
 // });
-
 
 export default router;

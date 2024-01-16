@@ -32,44 +32,24 @@ export default function Show() {
         <div className={styles.container}>
           <h2 className={styles.title}>表演節目</h2>
           <div className={styles.card_flex}>
-          {/* {data.rows &&
+          {data.rows &&
             data.rows.map((i)=>{
               return (
                 <div key={i.show_id}>
-                  <Link href={`/show/details/${i.amusement_ride_id}`}>
+                  <Link href={`/show/details/${i.show_id}`}>
                     <div className={styles.card}>
                       <img className={styles.card_img} src={`/images/show/${i.show_pic}`}/>
-                      <div style={{padding:5}}>
+                      <div style={{padding:10}}>
+                        <div className={styles.card_title}>{i.show_group}</div>
                         <div className={styles.card_title}>{i.show_name}</div>
-                        <div>{i.show_info}{i.show_info2}</div>
                       </div>
                     </div>
                   </Link>
                 </div>
               )
             })
-          } */}
-            <div className={styles.card}>
-              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
-              <div style={{padding:5}}>
-                <div className={styles.card_title}>設施名稱</div>
-                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
-              <div style={{padding:5}}>
-                <div className={styles.card_title}>設施名稱</div>
-                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
-              </div>
-            </div>
-            <div className={styles.card}>
-              <img className={styles.card_img} src='/../../images/ride/w1.jpg'/>
-              <div style={{padding:5}}>
-                <div className={styles.card_title}>設施名稱</div>
-                <div>設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述設施敘述</div>
-              </div>
-            </div>
+          }
+
           </div>
         </div>
       </Layout>

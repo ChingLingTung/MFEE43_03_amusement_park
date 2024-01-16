@@ -30,13 +30,17 @@ router.use((req, res, next) => {
 });
 
 const getListData = async (req) => {
-  // const sql = "SELECT * FROM show ORDER BY show_id";
-  // const [rows] = await db.query(sql);
-  // if (!rows.length) {
-  //   return res.json({success: false});
-  // }
-  // const row = rows[0];
-  // res.json({success: true, row});
+  const sql = "SELECT * FROM show ORDER BY show_id";
+  const [rows] = await db.query(sql);
+  if (!rows.length) {
+    return res.json({success: false});
+  }
+  const row = rows[0];
+  row.beginTime = dayjs(row.beginTime).format("YYYY/MM/DD");
+  row.endTime = dayjs(row.endTime).format("YYYY/MM/DD");
+
+
+  res.json({success: true, row});
   }
 
   router.get("/", async (req, res) => {
