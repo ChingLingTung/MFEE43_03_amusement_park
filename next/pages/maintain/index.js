@@ -8,6 +8,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import Head from 'next/head';
 import { MAINTAIN_GET_LIST } from '@/component/ride-const'; 
+import { useEffect } from 'react';
 
 export const StyleWrapper = styled.div`
   .fc th {
@@ -47,7 +48,31 @@ export default function Maintain() {
   function handleClick() {
     window.history.go(-1);
   }
-  const [data, setData] = useState({});
+  let event = []; // 空list
+    // ajax 從資料庫獲取資料
+    async function post_api() {
+        const url = 'api/Selectionperiod';
+        const response = await fetch(url, {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            method: "POST",
+            body: JSON.stringify(obj),
+        })
+        const res = await response.json();
+        // ajax 結果新增到 event
+        res.map(value => {
+            // console.log(value);
+            event.push({
+                title: value['class_name'],
+                start: value['class_day']
+            })
+        })
+    }
+useEffect(()=>{
+  getListData
+},[])
 
   const getListData = async () => {
     // const usp = new URLSearchParams(router.query)
@@ -55,13 +80,30 @@ export default function Maintain() {
 
     if (page < 1) page = 1;
       try {
-      const r = await fetch(MAINTAIN_GET_LIST);
-      const d = await r.json();
-      setData(d);
+      const r = await fetch(MAINTAIN_GET_LIST,
+        {
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          method: "POST",
+          body: JSON.stringify(obj),
+      });
+      const res = await response.json();
+      // ajax 結果新增到 event
+      res.map(value => {
+          // console.log(value);
+          event.push({
+              title: value['amusement_ride_name'],
+              start: value['maintenance_begin'],
+              end: value['maintenance_end']
+          })
+      })
     } catch (ex) {
       console.log(ex)
     }
     };
+
 
   return (
     <>
@@ -91,13 +133,14 @@ export default function Maintain() {
             right: 'dayGridMonth,timeGridWeek,multiMonthYear',
           }}
           initialView="dayGridMonth"
-          events={[
+          events = {event}
+          // events={[
             // {data.rows && data.rows.map((i)=>{
             //   <div key= {i.maintenance_id}>
-            //     {title:'',}
+            //     {'title':{i.amusement_ride_name},'start':{i.maintenance_begin},'end':{i.maintenance_end}}
             //   </div>
             // })}
-          ]}
+          // ]}
           // events={[
           //   // {title:'🛠️', date:'2024-03-03'},
           //   {title:'八彩天梯', start:'2024-01-11 09:00', end:'2024-01-11 12:00'},

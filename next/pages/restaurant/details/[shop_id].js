@@ -31,6 +31,8 @@ export default function RestaurantDetail() {
   });
   const Alert = withReactContent(Swal) ;
   const router = useRouter();
+
+
   useEffect(() => {
     const shop_id = +router.query.shop_id;
     console.log({shop_id, raw: router.query.shop_id });

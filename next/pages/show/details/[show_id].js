@@ -34,7 +34,14 @@ export default function ShowDetail() {
   const handleToggle=()=>{
     setToggle(true)
   }
+  const [seatClass,setSeatClass]=useState(styles.seat);
+  // const [selectedSeat, setSelectedSeat]=useState(false);
+  // const [getSelectedSeat, setGetSelectedSeat]=useState([]);
   const router = useRouter();
+
+  // const changeClass=()=>{
+    
+  // }
   useEffect(() => {
     const show_id = +router.query.show_id;
     console.log({show_id, raw: router.query.show_id });
@@ -57,6 +64,16 @@ export default function ShowDetail() {
       }
     }
   }, [router.query.show_id]);
+  
+  // useEffect(()=>{
+  //   setSelectedSeat
+  // },[selectedSeat])
+
+  useEffect(()=>{
+    setSeatClass
+  },[seatClass])
+
+  useEffect(()=>{},[])
   return (
     <>
     <div key={getData.show_id}>
@@ -93,7 +110,18 @@ export default function ShowDetail() {
                 {seat.map((row, i) => (
                   <div key={i}>
                     {row.map((cell, j) => (
-                      <span className={cell? styles.seat : styles.not_seat} key={j} style={cell? {} : {opacity:0}} value={cell} onClick={()=>console.log("這是編號："+cell)}>{cell? cell : "0"}</span>
+                      <span 
+                      className={seatClass} key={j} 
+                      style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
+                      value={cell} 
+                      onClick={(value)=>{
+                        if(seatClass===styles.seat && value===cell){
+                          setSeatClass(styles.selected_seat)
+                        }else{
+                          setSeatClass(styles.seat)
+                        }
+                        console.log("這是編號："+cell)
+                        }}>{cell? cell : "0"}</span>
                     ))}
                   </div>
                 ))}
