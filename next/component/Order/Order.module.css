@@ -25,6 +25,10 @@
   padding: 0px 50px;
 }
 
+.order_navs{
+  width: 100%;
+}
+
 .order_nav{
   width: 100%;
   display: flex;

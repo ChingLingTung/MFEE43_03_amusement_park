@@ -16,7 +16,6 @@ import upload from "./utils/upload-imgs.js";
 import sales from "./data/sales.json" assert { type: "json" };
 import admin2Router from "./routes/admin2.js";
 import productListRouter from "./routes/product.js";
-import detailRouter from './routes/detail.js';
 import orderRouter from './routes/order.js'
 import userpayRouter from './routes/userpay.js'
 
@@ -94,7 +93,6 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res) => {
 app.use("/ride", rideRouter);
 app.use("/admins", admin2Router);
 app.use("/product", productListRouter);
-app.use("/detail", detailRouter);
 app.use("/order", orderRouter);
 app.use("/userpay", userpayRouter);
 app.use("/show", showRouter);

@@ -1,61 +1,110 @@
+import "dotenv/config";
 import express from "express";
-import db from "./../utils/connect-mysql.js";
+import db from "../utils/connect-mysql.js";
 import upload from "./../utils/upload-imgs.js";
 import dayjs from "dayjs";
 
 const router = express.Router();
 
+// router.get("/", async (req, res) => {
+//   const sql = "SELECT * FROM product_list ORDER BY product_id";
+//   const [rows] = await db.query(sql);
+//   res.json(rows);
+// });
+
+// router.get("/", async (req, res) => {
+//   const perPage = 20; // 每頁固定20筆資料
+//   // +轉換成數字，若無法轉換變成NAN則設定為1(使用者意外使用了不存在的頁數直接跳轉到第一頁)
+//   let page = +req.query.page || 1;;
+//   let totalRows;
+//   let totalPages;
+//   let rows = [];
+
+//   // 如果頁數小於一(不存在)，用重新導向方法redirect()頁面跳轉回第一頁
+//   // 放在上面先判斷頁數本身有沒有可能存在，有存在才進行下一步
+//   // 不存在直接return即結束不執行下面的程式
+
+//   const total_sql = "SELECT COUNT(1) totalRows FROM amusement_ride";
+//   // 用括號們將totalRows解構得到純數字
+//   [[{ totalRows }]] = await db.query(total_sql);
+//   // 將資料總筆數除以一頁的資料筆數後以Math.ceil()小數直接進位成整數
+//   totalPages = Math.ceil(totalRows / perPage);
+//   // 如果資料總筆數大於零(可能存在)
+//   if(totalRows > 0){
+//     // 如果頁數大於總頁數直接重新導向到上次的最後一頁
+//     if (page > totalPages) {
+//       return res.redirect(`?page=${totalPages}`);
+//     }
+//     const sql = `SELECT * FROM amusement_ride ORDER BY product_id DESC
+//     LIMIT ${(page - 1) * perPage}, ${perPage}`;
+//     // 這裡的rows是上面的全域變數
+//     [rows] = await db.query(sql);
+//   }
+//     return {
+//     page,
+//     totalRows,
+//     totalPages,
+//     rows,
+//     };
+//   });
+//   res.render('rides/ride_list', {
+
+//   });
+
+// 設定要在近其他頁面前要先登入，沒登入會跳轉到登入頁面
 router.use((req, res, next) => {
-  const u = req.url.split("?")[0]; // 只要路徑
+  const u = req.url.split("?")[0]; // 用split擷取路徑
   console.log({ u });
   if (req.method === "GET" && u === "/") {
     return next();
   }
-/*
-  if (!req.session.admin) {
-    return res.redirect("/login");
-  } */
+  //   // 如果session裡沒有登入的資訊
+  //   if (!req.session.admin) {
+  //     // 跳轉到登入頁面
+  //     return res.redirect("/login");
+  //   }
   next();
 });
 
 const getListData = async (req) => {
-  const perPage = 19; // 每頁幾筆
-  let page = +req.query.page || 1; // 用戶決定要看第幾頁
-  let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
+  const perPage = 20; // 每頁幾筆
+  // 用戶決定要看第幾頁
+  let page = +req.query.page || 1;
+  // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
+  let keyword =
+    req.query.keyword && typeof req.query.keyword === "string"
+      ? req.query.keyword.trim()
+      : "";
   let keyword_ = db.escape(`%${keyword}%`);
 
-  let qs = {};  // 用來把 query string 的設定傳給 template
-  // 起始的日期
-  let startDate = req.query.startDate ? req.query.startDate.trim() : "";
-  const startDateD = dayjs(startDate);
-  if (startDateD.isValid()) {
-    startDate = startDateD.format("YYYY-MM-DD");
-  } else {
-    startDate = "";
-  }
-
-  // 結束的日期
-  let endDate = req.query.endDate ? req.query.endDate.trim() : "";
-  const endDateD = dayjs(endDate);
-  if (endDateD.isValid()) {
-    endDate = endDateD.format("YYYY-MM-DD");
-  } else {
-    endDate = "";
-  }
-
-  let where = ` WHERE 1 `;
+  let qs = {}; // 用來把 query string 的設定傳給 template
+  let pdcate_id = req.query.pdcate_id ? req.query.pdcate_id : "";
+  let pdstyle_id = req.query.pdstyle_id ? req.query.pdstyle_id : "";
+  let pdsize_id = req.query.pdsize_id ? req.query.pdsize_id : "";
+  let pdcolor_id = req.query.pdcolor_id ? req.query.pdcolor_id : "";
+  // 設定綜合的where子句
+  let where = `WHERE 1 `;
+  // 關鍵字搜尋只有一欄的情況下要用符合任一的or
   if (keyword) {
     qs.keyword = keyword;
-    where += ` AND ( \`product_name\` LIKE ${keyword_} OR \`product_price\` LIKE ${keyword_} ) `;
+    where += ` AND (\`product_name\` LIKE ${keyword_}) `;
   }
-  // if (startDate) {
-  //   qs.startDate = startDate;
-  //   where += ` AND birthday >= '${startDate}' `;
-  // }
-  // if (endDate) {
-  //   qs.endDate = endDate;
-  //   where += ` AND birthday <= '${endDate}' `;
-  // }
+  if (pdcate_id !== 0 && pdcate_id !== "") {
+    qs.pdcate_id = pdcate_id;
+    where += ` AND pdcate_id = '${pdcate_id}' `;
+  }
+  if (pdstyle_id !== 0 && pdstyle_id !== "") {
+    qs.pdstyle_id = pdstyle_id;
+    where += ` AND pdstyle_id = '${pdstyle_id}' `;
+  }
+  if (pdsize_id !== 0 && pdsize_id !== "") {
+    qs.pdsize_id = pdsize_id;
+    where += ` AND pdsize_id = '${pdsize_id}' `;
+  }
+  if (pdcolor_id !== 0 && pdcolor_id !== "") {
+    qs.pdcolor_id = pdcolor_id;
+    where += ` AND pdcolor_id = '${pdcolor_id}' `;
+  }
 
   let totalRows = 0;
   let totalPages = 0;
@@ -74,12 +123,14 @@ const getListData = async (req) => {
   };
 
   if (page < 1) {
+    // 如果頁數小於一，頁面轉向到第一頁
     output.redirect = `?page=1`;
     output.info = `頁碼值小於 1`;
     return output;
   }
 
-  const t_sql = `SELECT COUNT(1) totalRows FROM product_list ${where}`;
+
+  const t_sql = `SELECT COUNT(1) totalRows FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -89,7 +140,7 @@ const getListData = async (req) => {
       return { ...output, totalRows, totalPages };
     }
 
-    const sql = `SELECT * FROM (((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id ${where} ORDER BY product_id DESC 
+    const sql = `SELECT * FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id ${where} ORDER BY product_list.product_id 
     LIMIT ${(page - 1) * perPage}, ${perPage}`;
     [rows] = await db.query(sql);
     output = { ...output, success: true, rows, totalRows, totalPages };
@@ -98,138 +149,39 @@ const getListData = async (req) => {
   return output;
 };
 
-router.get("/", async (req, res) => {
-  res.locals.pageName = "PD-list";
-  res.locals.title = "列表 | " + res.locals.title;
-  const output = await getListData(req);
-  if (output.redirect) {
-    return res.redirect(output.redirect);
-  }
-
-  if (!req.session.admin) {
-    res.render("product/list-no-admin", output);
-  } else {
-    res.render("product/list", output);
-  }
-});
+// router.get("/", async (req, res) => {
+//   const output = await getListData(req);
+//   res.locals.pageName = "ride_list";
+//   res.locals.title = "列表|" + res.locals.title;
+//   if(output.redirect){
+//     return res.redirect(output.redirect);
+//   }
+//   // 限制權限，如果沒登入無法使用編輯和刪除的功能(另外弄一個檔案拿掉)
+//   if (!req.session.admin) {
+//     res.render("rides/no_login_ride_list", output);
+//   } else {
+//     // res.render("rides/list", output);
+//     res.render('rides/ride_list', output);
+//   }
+// });
 
 router.get("/api", async (req, res) => {
   res.json(await getListData(req));
-  /*
-  if(res.locals.jwt?.id){
-    return res.json(await getListData(req));
-  } else {
-    return res.json({success: false, error: "沒有授權, 不能取得資料"});
-  }
-  */
-});
-
-// router.get("/add", async (req, res) => {
-//   res.render("product/add");
-// });
-router.post("/add", upload.none(), async (req, res) => {
-  const output = {
-    success: false,
-    postData: req.body, // 除錯用
-  };
-
-  const { product_name, product_price, product_description } = req.body;
-  const sql =
-    "INSERT INTO `product_list`( `product_name`, `product_price`, `product_description`) VALUES (?, ?, ? )";
-
-  try {
-    const [result] = await db.query(sql, [
-      product_name,
-      product_price,
-      product_description,
-    ]);
-    output.result = result;
-    output.success = !!result.affectedRows;
-  } catch (ex) {
-    output.exception = ex;
-  }
-
-  /*
-  const sql = "INSERT INTO `product_list` SET ?";
-  // INSERT INTO `product_list` SET `product_name`='abc',
-  req.body.created_at = new Date();
-  const [result] = await db.query(sql, [req.body]);
-  */
-
-  // {
-  //   "fieldCount": 0,
-  //   "affectedRows": 1,  # 影響的列數
-  //   "insertId": 1021,   # 取得的 PK
-  //   "info": "",
-  //   "serverStatus": 2,
-  //   "warningStatus": 0,
-  //   "changedRows": 0    # 修改時真正有變動的資料筆數
-  // }
-
-  res.json(output);
-});
-
-router.get("/edit/:product_id", async (req, res) => {
-  const product_id = +req.params.product_id;
-  res.locals.title = "編輯 | " + res.locals.title;
-
-  const sql = `SELECT * FROM product_list WHERE product_id=?`;
-  const [rows] = await db.query(sql, [product_id]);
-  if (!rows.length) {
-    return res.redirect(req.baseUrl);
-  }
-  // const row = rows[0];
-  // row.birthday2 = dayjs(row.birthday).format("YYYY-MM-DD");
-
-  res.render("product/edit");
 });
 
 // 取得單筆的資料
-router.get("/api/edit/:product_id", async (req, res) => {
+router.get("/api/:product_id", async (req, res) => {
   const product_id = +req.params.product_id;
 
-
-  const sql = `SELECT * FROM product_list WHERE product_id=?`;
+  const sql = `SELECT * FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id WHERE product_list.product_id=?`;
   const [rows] = await db.query(sql, [product_id]);
   if (!rows.length) {
-    return res.json({success: false});
+    return res.json({ success: false });
   }
   const row = rows[0];
-  row.price = dayjs(row.price).format("YYYY-MM-DD");
+  // row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
 
-  res.json({success: true, row});
+  res.json({ success: true, row });
 });
 
-router.put("/edit/:product_id", async (req, res) => {
-  const output = {
-    success: false,
-    postData: req.body,
-    result: null,
-  };
-  // TODO: 表單資料檢查
-  req.body.product = req.body.product.trim(); // 去除頭尾空白
-  const sql = `UPDATE product_list SET ? WHERE product_id=?`;
-  const [result] = await db.query(sql, [req.body, req.body.product_id]);
-  output.result = result;
-  output.success = !!result.changedRows;
-
-  res.json(output);
-});
-
-router.delete("/:product_id", async (req, res) => {
-  const output = {
-    success: false,
-    result: null,
-  };
-  const product_id = +req.params.product_id;
-  if (!product_id || product_id < 1) {
-    return res.json(output);
-  }
-
-  const sql = ` DELETE FROM product_list WHERE product_id=${product_id}`;
-  const [result] = await db.query(sql);
-  output.result = result;
-  output.success = !!result.affectedRows;
-  res.json(output);
-});
 export default router;
