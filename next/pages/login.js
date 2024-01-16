@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '@/styles/login.module.css';
 import Head from "next/head";
 import { useContext, useState, useEffect } from "react";
-import { USER_GET_ONE } from "@/component/ride-const";
+import { USER_GET_ONE, LOGIN } from "@/component/ride-const";
 import AuthContext from "@/context/auth-context";
 import { useRouter } from "next/router";
 import Link from 'next/link';
@@ -77,7 +77,7 @@ export default function Login() {
       setPasswordError('密碼須長度6以上，且至少包含一個數字、一個小寫英文字母、一個大寫英文字母');
       return
     }
-    const r = await fetch(USER_GET_ONE, {
+    const r = await fetch(LOGIN, {
       method: "POST",
       body: JSON.stringify({ email, password }),
       headers: {
@@ -98,10 +98,10 @@ export default function Login() {
     }
     
     if(data.success){
-      const {user_id, email, nickname, token} = data;
+      const {id, email, nickname, token} = data;
       // 成功登入時, 寫入 localStorage 做長時間的狀態保存
-      localStorage.setItem('park_auth', JSON.stringify({user_id, email, nickname, token}));
-      setParkAuth({user_id, email, nickname, token});
+      localStorage.setItem('park_auth', JSON.stringify({id, email, nickname, token}));
+      setParkAuth({id, email, nickname, token});
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
