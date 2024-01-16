@@ -38,6 +38,9 @@
   height:450px;
   margin:20px 10px;
 }
+.menu{
+  cursor: pointer;
+}
 .space_between{
   display: flex;
   justify-content: space-between;

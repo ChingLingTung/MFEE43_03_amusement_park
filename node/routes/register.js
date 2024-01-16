@@ -91,7 +91,7 @@ const getListData = async (req) => {
 
   return output;
 };
-  console.log(await bcrypt.compare("123zzzZZZ","$2a$08$MafiDLdOaJS65JblXkpvueEgik/QA3VzJLO.5jO6Izk92VXerLm4S"));
+  // console.log(await bcrypt.compare("123zzzZZZ","$2a$08$MafiDLdOaJS65JblXkpvueEgik/QA3VzJLO.5jO6Izk92VXerLm4S"));
 router.get("/", async (req, res) => {
   res.locals.pageName = "user-list";
   res.locals.title = "列表 | " + res.locals.title;

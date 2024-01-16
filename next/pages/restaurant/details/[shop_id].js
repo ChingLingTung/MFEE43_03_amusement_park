@@ -11,6 +11,9 @@ import Head from 'next/head';
 import { SHOP_GET_ONE } from '@/component/ride-const';
 import { useState,useEffect } from 'react';
 import { Layout } from '@/component/layout';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content' 
+
 
 export default function RestaurantDetail() {
   const [getData, setGetData] = useState({
@@ -23,8 +26,10 @@ export default function RestaurantDetail() {
     shop_img1:"", 
     shop_img2:"", 
     shop_img3:"", 
-    shop_img4:"", 
+    shop_img4:"",
+    menu:'' 
   });
+  const Alert = withReactContent(Swal) ;
   const router = useRouter();
   useEffect(() => {
     const shop_id = +router.query.shop_id;
@@ -48,6 +53,20 @@ export default function RestaurantDetail() {
       }
     }
   },[router.query.shop_id]);
+
+  const showMenu = () => {
+    Alert.fire({ 
+      didOpen: () => { 
+          Alert.fire({
+            titleText:getData.shop_name+' Menu',
+            width:900,
+            imageUrl:`/images/restaurant/${getData.shop_type_name2}/${getData.shop_name2}/menu/${getData.menu}`,
+            imageWidth:'100%',
+            imageHeight:'100%' 
+          })
+        }
+  })
+  }
   return (
 
       <div key={getData.shop_id}>
@@ -59,7 +78,7 @@ export default function RestaurantDetail() {
             
             <h2>{getData.shop_name}</h2>
               <p>類型：{getData.shop_type_name}</p>
-              <p><FaUtensils /> 菜單</p>
+              <p className={styles.menu} onClick={showMenu}><FaUtensils /> 菜單</p>
               <p><FaRegClock /> 星期一：11：00~19：00 </p>
               <p style={{marginLeft:20}}>星期二：11：00~19：00 </p>
               <p style={{marginLeft:20}}>星期三：11：00~19：00 </p>

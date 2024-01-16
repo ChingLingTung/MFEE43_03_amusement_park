@@ -29,22 +29,29 @@ router.use((req, res, next) => {
 
 const getListData = async (req) => {
 
-  const perPage = 20; // 每頁幾筆
+  const perPage = 60; // 每頁幾筆
   // 用戶決定要看第幾頁
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
-  let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
-  let keyword_ = db.escape(`%${keyword}%`);
-  
+  // let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
+  // let keyword_ = db.escape(`%${keyword}%`);
+  // let amusement_ride_name = (req.query.amusement_ride_name && typeof req.query.amusement_ride_name ==='string' ) ? req.query.amusement_ride_name.trim() : "";
   let qs = {};  // 用來把 query string 的設定傳給 template
 
   // 設定綜合的where子句
   let where = `WHERE 1 `;
   // 關鍵字搜尋只有一欄的情況下要用符合任一的or
-  if(keyword){
-    qs.keyword = keyword;
-    where += ` AND (\`amusement_ride_name\` LIKE ${keyword_}) `;
-  }
+  // if(keyword){
+  //   qs.keyword = keyword;
+  //   where += ` AND (\`amusement_ride_name\` LIKE ${keyword_}) `;
+  // }
+  // if(!amusement_ride_name){
+  //   return
+  // }
+  // if(amusement_ride_name.length>0){
+  //   qs.amusement_ride_name = amusement_ride_name;
+  //   where += ` AND (\`amusement_ride_name\` = ${amusement_ride_name}) `;
+  // }
 
   let totalRows = 0;
   let totalPages = 0;
@@ -61,7 +68,8 @@ const getListData = async (req) => {
     redirect: "",
     info: "",
   };
-  const t_sql = `SELECT COUNT(1) totalRows FROM maintenance ${where}`;
+  // const t_sql = `SELECT COUNT(1) totalRows FROM maintenance where amusement_ride_name LIKE ${keyword_}`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM maintenance ${where} ORDER BY  maintenance_id`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -71,15 +79,31 @@ const getListData = async (req) => {
       return {...output, totalRows, totalPages};
     }
 
+    // const sql = `SELECT * FROM maintenance where amusement_ride_name LIKE ${keyword_} ORDER BY maintenance_id 
+    // LIMIT ${(page - 1) * perPage}, ${perPage}`;
     const sql = `SELECT * FROM maintenance ${where} ORDER BY maintenance_id 
     LIMIT ${(page - 1) * perPage}, ${perPage}`;
-    [rows] = await db.query(sql);
-    output = { ...output, success: true, rows, totalRows, totalPages };
-  }
-  return output;
-  }
 
-  router.get("/", async (req, res) => {
+    const [rows] = await db.query(sql);
+    if (!rows.length) {
+      return res.json({success: false});
+    }
+    else{
+      // for(let i;i<rows.length;i++){
+      //   const row = rows[i];
+      //   row.maintenance_begin = dayjs(row.maintenance_begin).format("YYYY/MM/DD HH:mm");
+      //   row.maintenance_end = dayjs(row.maintenance_end).format("YYYY/MM/DD HH:mm");
+      // }
+      rows.forEach((row) => {
+        row.maintenance_begin = dayjs(row.maintenance_begin).format("YYYY/MM/DD HH:mm");
+        row.maintenance_end = dayjs(row.maintenance_end).format("YYYY/MM/DD HH:mm");
+    })
+      output = { ...output, success: true, rows, totalRows, totalPages };
+    }
+    return output;
+  }
+}
+router.get("/", async (req, res) => {
     const output = await getListData(req);
     res.locals.pageName = "maintenance_list";
     res.locals.title = "列表|" + res.locals.title;
@@ -94,11 +118,10 @@ const getListData = async (req) => {
     //   res.render('rides/ride_list', output);
     // }
     
-  });
+});
 
-  router.get("/api", async (req, res) => {
-    res.json( await getListData(req) );
-  });
-
+router.get("/api", async (req, res) => {
+  res.json( await getListData(req) );
+});
 
 export default router;

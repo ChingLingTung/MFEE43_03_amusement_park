@@ -16,7 +16,7 @@ import shopRouter from "./routes/restaurant.js"
 import db from "./utils/connect-mysql.js";
 import maintainRouter from './routes/maintain.js'
 import registerRouter from "./routes/register.js"
-import getProfileRouter from "./routes/get_profile.js"
+
 
 
 
@@ -68,10 +68,10 @@ app.use((req, res, next) => {
   res.locals.toDateTimeString = (d) => dayjs(d).format("YYYY-MM-DD HH:mm:ss");
 
   res.locals.session = req.session;  // 讓 templates 可以取用 session
-  const auth = req.get("Authorization");
+  const park_auth = req.get("Authorization");
   // 處理token，將Authorization的值去掉Bearer 只取單純的token值
-  if(auth && auth.indexOf("Bearer ")===0){
-    const token = auth.slice(7);
+  if(park_auth && park_auth.indexOf("Bearer ")===0){
+    const token = park_auth.slice(7);
     // 避免因為token錯誤報錯，用try catch包起來但不對錯誤的token做任何處理
     try{
       const payload = jwt.verify(token, process.env.JWT_SECRET);
@@ -105,7 +105,6 @@ app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);
 app.use("/register", registerRouter);
-app.use("/getProfile", getProfileRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
   req.session.n++;
@@ -152,9 +151,9 @@ app.post("/login", async (req, res) => {
   output.success = true;
   // 設定 session
   req.session.admin = {
-    id: row.user_id,
+    user_id: row.user_id,
     email: row.user_email,
-    nickname: row.user_nickname,
+    user_nickname: row.user_nickname,
   };
   output.user = req.session.admin;
   res.json(output);
@@ -166,24 +165,26 @@ app.post("/login", async (req, res) => {
   app.post("/login-jwt", async (req, res) => {
   const output = {
     success: false,
+    error:'',
     code: 0,
     postData: req.body,
     user_id: 0,
-    user_email: "",
+    email: "",
     user_nickname: "",
     token: "",
   };
-  if (!req.body.user_email || !req.body.user_password) {
+  if (!req.body.email || !req.body.user_password) {
     // 資料不足
     output.code = 410;
     return res.json(output);
   }
-  const sql = "SELECT * FROM user WHERE user_account=?";
-  const [rows] = await db.query(sql, [req.body.user_email]);
+  const sql = "SELECT * FROM user WHERE user_email=?";
+  const [rows] = await db.query(sql, [req.body.email]);
 
   if (!rows.length) {
     // 帳號是錯的
     output.code = 400;
+    output.error = '查無此帳號';
     return res.json(output);
   }
   const row = rows[0];
@@ -191,16 +192,18 @@ app.post("/login", async (req, res) => {
   if (!pass) {
     // 密碼是錯的
     output.code = 420;
+    output.error = '密碼錯誤';
     return res.json(output);
   }
 
   output.code = 200;
+  output.error = '資料正確';
   output.success = true;
   // 設定 session
   req.session.admin = {
-    id: row.id,
-    email: row.user_account,
-    nickname: row.user_nickname,
+    user_id: row.user_id,
+    email: row.user_email,
+    user_nickname: row.user_nickname,
   };
   output.user = req.session.admin;
   res.json(output);
@@ -212,7 +215,7 @@ app.get("/logout", async (req, res) => {
 
 app.get("/try-jw1", async(req,res)=>{
   // jwt 加密(.env的設定中再加一項)
-  const token = jwt.sign({id:1, account: "DrinkAllDay@iSpan.com"},process.env.JWT_SECRET);
+  const token = jwt.sign({user_id:1, user_email: "DrinkAllDay@iSpan.com"},process.env.JWT_SECRET);
   res.json({token});
 });
 app.get("/try-jw2", async(req,res)=>{

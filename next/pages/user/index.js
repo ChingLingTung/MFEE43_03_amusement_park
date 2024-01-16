@@ -9,7 +9,7 @@ export default function User() {
         <div style={{padding:300}} className={styles.flex_center}>
           <div className={styles.left_section}>
             <div className={styles.user_info}>
-              <img className={styles.img} src='/../../images/profile.png'/>
+              <img className={styles.img} src='/images/user/profile.png'/>
               <p>小景頁</p>
               <p>DrinkAllDay0O0@gmail.com</p>
             </div>
@@ -26,6 +26,8 @@ export default function User() {
           <div className={styles.info_section}>
             <h2 className={styles.title}>表演預約</h2>
             <table className={styles.table}> 
+            <tbody>
+
               <tr> 
                 <th className={styles.th}>演出節目</th> 
                 <th className={styles.th}>演出日期</th>
@@ -40,6 +42,7 @@ export default function User() {
                 <td className={styles.td}>14:00-15:30</td> 
                 <td className={styles.td}>D5、D6</td> 
               </tr> 
+            </tbody>
             </table>
           </div>
         </div>

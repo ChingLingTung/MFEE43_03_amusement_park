@@ -5,6 +5,8 @@ import {SHOW_GET_ONE} from '@/component/ride-const'
 import { useState,useEffect } from 'react';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
+import { Cursor } from 'react-custom-cursors';
+import "react-custom-cursors/dist/index.css";
 
 
 export default function ShowDetail() {
@@ -91,14 +93,12 @@ export default function ShowDetail() {
                 {seat.map((row, i) => (
                   <div key={i}>
                     {row.map((cell, j) => (
-                      <span className={styles.seat} key={j} style={cell? {} : {opacity:0}}>{cell? cell : "0"}</span>
+                      <span className={cell? styles.seat : styles.not_seat} key={j} style={cell? {} : {opacity:0}} value={cell} onClick={()=>console.log("這是編號："+cell)}>{cell? cell : "0"}</span>
                     ))}
                   </div>
                 ))}
               </div>
-
               </div>
-              
               <button style={{width:1200}} className={styles.button}>預約</button>
               <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
               <p>演出時間：{getData.show_day}的{getData.start} 至 {getData.finish}</p>

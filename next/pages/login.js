@@ -131,7 +131,7 @@ export default function Login() {
         <p>密碼：{password}</p>
         <div className={styles.formborder}>
           <form name="form1" onSubmit={onSubmit}>
-            <label>Email：<br/>
+            <label htmlFor='email'>Email：<br/>
             <input type='text' id="email"
                       name="email"
                       value={email}
@@ -140,7 +140,7 @@ export default function Login() {
                       className={styles.input}/>
             </label>
             <p style={{color:"red",fontSize:16}}>{emailError}</p>
-            <label>密碼：<br/>
+            <label htmlFor='password'>密碼：<br/>
             <input type='password' id="password"
                       name="password"
                       value={password}

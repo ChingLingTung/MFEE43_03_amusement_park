@@ -204,7 +204,7 @@ export default function Register() {
         didOpen: () => { 
             Alert.fire({
               titleText:'註冊失敗',
-              text:'請檢查輸入的資料是否符合格式',
+              text:responseData.error,
             })
           }
     })
