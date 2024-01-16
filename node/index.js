@@ -215,6 +215,27 @@ app.get("/logout", async (req, res) => {
   res.redirect('/');
 });
 
+app.get("/user", async (req, res) => {
+  // res.locals.jwt: {id, email}
+  const output = {
+    success: false,
+    error: "",
+    data: {},
+  };
+  if(!req.locals.jwt?.id){
+    output.error = "沒有權限";
+    return res.json(output);
+  }
+  const [rows] = await db.query("SELECT `user_id`, `user_email`, `phone`, `birthday`, `user_nickname` FROM `user` WHERE user_id=?", [req.locals.jwt.id]);
+  if(!rows.length){
+    output.error = "沒有這個會員";
+    return res.json(output);
+  }
+  output.success = true;
+  output.data = rows[0];
+  res.json(output);
+});
+
 app.get("/try-jw1", async(req,res)=>{
   // jwt 加密(.env的設定中再加一項)
   const token = jwt.sign({user_id:1, user_email: "DrinkAllDay@iSpan.com"},process.env.JWT_SECRET);
