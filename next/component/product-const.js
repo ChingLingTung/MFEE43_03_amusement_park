@@ -6,6 +6,10 @@ export const AB_USERPAY = API_SERVER + "/userpay/api";
 
 export const AB_ORDER = API_SERVER + "/order/api";
 
+export const AB_ORDER_DETAILS = API_SERVER + "/order/details";
+
+export const AB_ORDER_DETAILS2 = API_SERVER + "/order/details2";
+
 export const AB_ADD = API_SERVER + "/product/add";  // method: POST
 
 // 取得某一筆

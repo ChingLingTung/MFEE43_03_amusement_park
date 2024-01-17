@@ -41,7 +41,6 @@ export default function Detail() {
               const photoArray = data.row.product_pic.split(',')
               data.row.product_pic = photoArray
               setGetData({ ...data.row });
-              // setMainPic(photoArray[0])
             }
           })
           .catch((ex) => console.log(ex));

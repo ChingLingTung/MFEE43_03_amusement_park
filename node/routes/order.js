@@ -67,7 +67,10 @@ router.use((req, res, next) => {
 });
 
 const getListData = async (req) => {
-  const perPage = 30; // 每頁幾筆
+  // 取得會員ID
+  const user_id = +req.body.user_id;
+
+  const perPage = 5; // 每頁幾筆
   // 用戶決定要看第幾頁
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
@@ -108,13 +111,14 @@ const getListData = async (req) => {
 
   let totalRows = 0;
   let totalPages = 0;
-  let rows = [];
+  let orders = [];
+  let order_details = [];
 
   let output = {
     success: false,
     page,
     perPage,
-    rows,
+    orders,
     totalRows,
     totalPages,
     qs,
@@ -137,12 +141,55 @@ const getListData = async (req) => {
       output.info = `頁碼值大於總頁數`;
       return { ...output, totalRows, totalPages };
     }
+    // const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user_list ON order_list.user_id = user_list.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where} ORDER BY order_list.order_id
+    // LIMIT ${(page - 1) * perPage}, ${perPage}`;
 
-    const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user_list ON order_list.user_id = user_list.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where} ORDER BY order_list.order_id 
+    // 訂單總表
+    const sql = `SELECT * FROM order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE user_id = ? ORDER BY order_id 
     LIMIT ${(page - 1) * perPage}, ${perPage}`;
-    [rows] = await db.query(sql);
-    output = { ...output, success: true, rows, totalRows, totalPages };
+    [orders] = await db.query(sql, [user_id]);
+
+    output = { ...output, success: true, orders, totalRows, totalPages };
   }
+
+  return output;
+};
+
+const getDetailData = async (req) => {
+  // 取得會員ID
+  const order_id = +req.body.order_id;
+  let order_details = [];
+
+  let output = {
+    success: false,
+    order_details: [],
+  };
+
+  // 訂單細節頁
+  const sql = `SELECT * FROM order_detail_list JOIN product_list ON order_detail_list.product_id = product_list.product_id JOIN order_list ON order_detail_list.order_id = order_list.order_id JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_detail_list.order_id = ? ORDER BY order_detail_id `;
+  [order_details] = await db.query(sql, [order_id]);
+
+  output = { ...output, success: true, order_details };
+
+  return output;
+};
+
+const getDetail2Data = async (req) => {
+  // 取得會員ID
+  const order_id = +req.body.order_id;
+  let order_details2 = [];
+
+  let output = {
+    success: false,
+    order_details2: [],
+  };
+
+  // 訂單細節頁2
+  const sql = `SELECT * FROM order_list JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN userpay_list ON order_list.userpay_id= userpay_list.userpay_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_detail_list.order_id = ? ORDER BY order_detail_list.order_id`;
+
+  [order_details2] = await db.query(sql, [order_id]);
+
+  output = { ...output, success: true, order_details2 };
 
   return output;
 };
@@ -163,8 +210,16 @@ router.get("/", async (req, res) => {
   // }
 });
 
-router.get("/api", async (req, res) => {
+router.post("/api", async (req, res) => {
   res.json(await getListData(req));
+});
+
+router.post("/details", async (req, res) => {
+  res.json(await getDetailData(req));
+});
+
+router.post("/details2", async (req, res) => {
+  res.json(await getDetail2Data(req));
 });
 
 // 取得單筆的資料
