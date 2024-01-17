@@ -98,6 +98,7 @@ const getListData = async (req) => {
         row.maintenance_begin = dayjs(row.maintenance_begin).format("YYYY/MM/DD HH:mm");
         row.maintenance_end = dayjs(row.maintenance_end).format("YYYY/MM/DD HH:mm");
     })
+    
       output = { ...output, success: true, rows, totalRows, totalPages };
     }
     return output;

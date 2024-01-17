@@ -8,7 +8,7 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import multiMonthPlugin from '@fullcalendar/multimonth'
 import Head from 'next/head';
 import { MAINTAIN_GET_LIST } from '@/component/ride-const'; 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout } from '@/component/layout';
 
 
@@ -47,60 +47,66 @@ export const StyleWrapper = styled.div`
   }
 `
 export default function Maintain() {
+  const [data, setData] = useState({});
+  // const [event, setEvent] = useState([]);
   function handleClick() {
     window.history.go(-1);
   }
-  let event = []; // 空list
+  // let event = []; // 空list
     // ajax 從資料庫獲取資料
-    async function post_api() {
-        const url = 'api/Selectionperiod';
-        const response = await fetch(url, {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            method: "POST",
-            body: JSON.stringify(obj),
-        })
-        const res = await response.json();
-        // ajax 結果新增到 event
-        res.map(value => {
-            // console.log(value);
-            event.push({
-                title: value['class_name'],
-                start: value['class_day']
-            })
-        })
-    }
+    // async function post_api() {
+    //     const url = 'api/Selectionperiod';
+    //     const response = await fetch(url, {
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json',
+    //         },
+    //         method: "POST",
+    //         body: JSON.stringify(obj),
+    //     })
+    //     const res = await response.json();
+    //     // ajax 結果新增到 event
+    //     res.map(value => {
+    //         // console.log(value);
+    //         event.push({
+    //             title: value['class_name'],
+    //             start: value['class_day']
+    //         })
+    //     })
+    // }
 useEffect(()=>{
-  getListData
+  getListData();
+  console.log(event)
+
 },[])
 
   const getListData = async () => {
     // const usp = new URLSearchParams(router.query)
-    let page = +router.query.page || 1
+    // let page = +router.query.page || 1
 
-    if (page < 1) page = 1;
+    // if (page < 1) page = 1;
       try {
-      const r = await fetch(MAINTAIN_GET_LIST,
-        {
-          headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-          },
-          method: "POST",
-          body: JSON.stringify(obj),
-      });
-      const res = await response.json();
-      // ajax 結果新增到 event
-      res.map(value => {
-          // console.log(value);
-          event.push({
-              title: value['amusement_ride_name'],
-              start: value['maintenance_begin'],
-              end: value['maintenance_end']
-          })
+      const r = await fetch(MAINTAIN_GET_LIST);
+      const d = await r.json();
+      // setData(d);
+      // return d.rows.map(value => {
+      //           // console.log(value);
+      //           ({
+      //               title: value.amusement_ride_name,
+      //               start: value.maintenance_begin,
+      //               end:value.maintenance_end
+      //           })
+      //       })
+            let event = [];
+      d.rows.forEach((row) => {
+        event.push({
+          title:row.amusement_ride_name,
+          start:row.maintenance_begin,
+          end:row.maintenance_end
+        })
       })
+      return event;
+      // setEvent(event);
     } catch (ex) {
       console.log(ex)
     }
@@ -136,7 +142,7 @@ useEffect(()=>{
             right: 'dayGridMonth,timeGridWeek,multiMonthYear',
           }}
           initialView="dayGridMonth"
-          events = {event}
+          events = {getListData()}
           // events={[
             // {data.rows && data.rows.map((i)=>{
             //   <div key= {i.maintenance_id}>
@@ -205,36 +211,23 @@ useEffect(()=>{
           // ]}
           
         />
-        {/* <FullCalendar
-          plugins={[
-            resourceTimelinePlugin,
-            dayGridPlugin,
-            interactionPlugin,
-            timeGridPlugin,
-            multiMonthPlugin
-          ]}
-          headerToolbar={{
-            left: 'prev,next today',
-            center: 'title',
-            right: 'resourceTimelineWeek,dayGridMonth,timeGridWeek'
-          }}
-          initialView='dayGridMonth'
-          nowIndicator={true}
-          editable={true}
-          selectable={true}
-          selectMirror={true}
-          resources={[
-            { id: 'a', title: 'Auditorium A' },
-            { id: 'b', title: 'Auditorium B', eventColor: 'green' },
-            { id: 'c', title: 'Auditorium C', eventColor: 'orange' },
-          ]}
-          initialEvents={[
-            { title: 'nice event', start: new Date(), resourceId: 'a' }
-          ]}
-        /> */}
-        </StyleWrapper>
         
+        </StyleWrapper>
+
       </div>
+      {/* <div>
+        {data.rows &&
+            data.rows.map((i)=>{
+              return (
+                <div key={i.maintenance_id}>
+                  <p>{i.amusement_ride_name}</p>
+                  <p>{i.maintenance_begin}</p>
+                  <p>{i.maintenance_end}</p>
+                </div>
+              )
+            })
+          }
+      </div> */}
       
     </div>
     </Layout>
