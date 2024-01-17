@@ -168,14 +168,15 @@ app.post("/login", async (req, res) => {
     error:'',
     code: 0,
     postData: req.body,
-    user_id: 0,
+    id: 0,
     email: "",
-    user_nickname: "",
+    nickname: "",
     token: "",
   };
-  if (!req.body.email || !req.body.user_password) {
+  if (!req.body.email || !req.body.password) {
     // 資料不足
     output.code = 410;
+    output.error = "帳號或密碼未填";
     return res.json(output);
   }
   const sql = "SELECT * FROM user WHERE user_email=?";
@@ -184,11 +185,11 @@ app.post("/login", async (req, res) => {
   if (!rows.length) {
     // 帳號是錯的
     output.code = 400;
-    output.error = '查無此帳號';
+    output.error = '此帳號不存在';
     return res.json(output);
   }
   const row = rows[0];
-  const pass = await bcrypt.compare(req.body.user_password, row.user_password);
+  const pass = await bcrypt.compare(req.body.password, row.user_password);
   if (!pass) {
     // 密碼是錯的
     output.code = 420;
@@ -199,18 +200,40 @@ app.post("/login", async (req, res) => {
   output.code = 200;
   output.error = '資料正確';
   output.success = true;
-  // 設定 session
-  req.session.admin = {
-    user_id: row.user_id,
-    email: row.user_email,
-    user_nickname: row.user_nickname,
-  };
-  output.user = req.session.admin;
+  
+  output.id = row.user_id;
+  output.email = row.user_email;
+  output.nickname = row.user_nickname;
+  output.token = jwt.sign(
+    { id: row.user_id, email: row.user_email },
+    process.env.JWT_SECRET
+  );
   res.json(output);
 });
 app.get("/logout", async (req, res) => {
   delete req.session.admin;
   res.redirect('/');
+});
+
+app.get("/user", async (req, res) => {
+  // res.locals.jwt: {id, email}
+  const output = {
+    success: false,
+    error: "",
+    data: {},
+  };
+  if(!req.locals.jwt?.id){
+    output.error = "沒有權限";
+    return res.json(output);
+  }
+  const [rows] = await db.query("SELECT `user_id`, `user_email`, `phone`, `birthday`, `user_nickname` FROM `user` WHERE user_id=?", [req.locals.jwt.id]);
+  if(!rows.length){
+    output.error = "沒有這個會員";
+    return res.json(output);
+  }
+  output.success = true;
+  output.data = rows[0];
+  res.json(output);
 });
 
 app.get("/try-jw1", async(req,res)=>{
