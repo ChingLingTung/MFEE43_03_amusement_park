@@ -5,6 +5,7 @@ import { useContext, useState, useEffect } from "react";
 import { USER_GET_ONE, LOGIN } from "@/component/ride-const";
 import AuthContext from "@/context/auth-context";
 import { useRouter } from "next/router";
+import { Layout } from '@/component/layout';
 import Link from 'next/link';
 import Swal from 'sweetalert2' 
 import withReactContent from 'sweetalert2-react-content' 
@@ -123,8 +124,8 @@ export default function Login() {
 
   return (
     <>
+    <Layout>
       <div className={styles.container}>
-        
         <h2 className={styles.title}>會員登入</h2>
         <p>前端取得資料</p>
         <p>帳號：{email}</p>
@@ -177,7 +178,9 @@ export default function Login() {
                   ) : null}
           </form>
         </div>
+       
       </div>
+      </Layout>
       <Head>
         <title>登入</title>
       </Head>

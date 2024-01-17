@@ -1,11 +1,4 @@
-.container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  height: 850px;
-}
+
 .title{
   margin:20px auto;
   text-align: center;

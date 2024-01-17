@@ -222,11 +222,12 @@ app.get("/user", async (req, res) => {
     error: "",
     data: {},
   };
-  if(!req.locals.jwt?.id){
+
+  if(!res.locals.jwt?.id){
     output.error = "沒有權限";
     return res.json(output);
   }
-  const [rows] = await db.query("SELECT `user_id`, `user_email`, `phone`, `birthday`, `user_nickname` FROM `user` WHERE user_id=?", [req.locals.jwt.id]);
+  const [rows] = await db.query("SELECT `user_id`, `user_email`, `phone`, `birthday`, `user_nickname`, `user_name`, `address` FROM `user` WHERE user_id=?", [res.locals.jwt.id]);
   if(!rows.length){
     output.error = "沒有這個會員";
     return res.json(output);

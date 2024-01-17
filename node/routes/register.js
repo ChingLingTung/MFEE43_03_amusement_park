@@ -219,7 +219,7 @@ router.get("/edit/:user_id", async (req, res) => {
   const row = rows[0];
   row.birthday2 = dayjs(row.birthday).format("YYYY-MM-DD");
 
-  res.render("address-book/edit", row);
+  res.render("user/edit", row);
 });
 
 // 取得單筆的資料

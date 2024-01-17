@@ -7,21 +7,47 @@ import { FaUserAlt } from "react-icons/fa";
 import { LuRollerCoaster } from "react-icons/lu";
 import { FaTicketAlt } from "react-icons/fa";
 import { FaBagShopping } from "react-icons/fa6";
+import Swal from 'sweetalert2' 
+import withReactContent from 'sweetalert2-react-content' 
+import { useRouter } from 'next/navigation';
+
 
 export default function Navbar() {
   const { theme, setTheme } = useContext(ThemeContext);
   const { parkAuth, logout } = useContext(AuthContext);
+  const Alert = withReactContent(Swal) 
+  const router = useRouter();
   return (
     <>
       <nav className={styles.flex_spacebetween}>
         <span className={styles.option}>
-          <Link  href="/">
+          <Link href="/">
             Logo
           </Link>
         </span>
         <div className={styles.flex_center}>
-          <span className={styles.option}>
-            <Link  href="/user">
+          <span className={styles.option} onClick={()=>{
+                if(!parkAuth.email){
+                  Alert.fire({ 
+                    didOpen: () => { 
+                      Alert.fire({
+                        titleText:'尚未登入',
+                        text:'前往登入',
+                    }),
+                        Alert.fire({
+                          titleText:'尚未登入',
+                          text:'前往登入',
+                          willClose:()=>{
+                            router.push('/login');
+                          }
+                        })
+                    }
+                  })
+              }else{
+                router.push('/user');
+              }
+          }}>
+            <Link href="#">
             <FaUserAlt color="white"/>會員中心
             </Link>
           </span>
