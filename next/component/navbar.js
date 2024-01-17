@@ -83,6 +83,21 @@ export default function Navbar() {
                   onClick={(e) => {
                     e.preventDefault();
                     logout();
+                    Alert.fire({ 
+                    didOpen: () => { 
+                      Alert.fire({
+                        titleText:'成功登出',
+                        text:'前往首頁',
+                    }),
+                        Alert.fire({
+                          titleText:'成功登出',
+                          text:'前往首頁',
+                          willClose:()=>{
+                            router.push('/');
+                          }
+                        })
+                    }
+                  })
                   }}
                 >
                   登出

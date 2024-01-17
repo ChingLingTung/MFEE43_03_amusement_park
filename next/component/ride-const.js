@@ -20,6 +20,8 @@ export const USER_ADD = API_SERVER + "/register/add";
 export const MAINTAIN_GET_LIST = API_SERVER + "/maintenance/api";
 // 取得單筆會員資料
 export const USER_GET_ONE = API_SERVER + "/register/api/edit"
+// 編輯會員資料
+export const USER_EDIT = API_SERVER + "/register/edit"
 // 登入取得token存入localstorage
 export const LOGIN = API_SERVER + "/login-jwt";
 // 會員在登入狀態時進入會員中心的首頁取得會員資料表格

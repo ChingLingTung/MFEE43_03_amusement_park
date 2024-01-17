@@ -238,19 +238,60 @@ router.get("/api/edit/:user_id", async (req, res) => {
   res.json({success: true, row});
 });
 
-router.put("/edit/:user_id", async (req, res) => {
+router.post("/edit/:user_id", async (req, res) => {
+  const user_id = +req.params.user_id;
+  const sql = `SELECT * FROM user WHERE user_id=?`;
+  const [rows] = await db.query(sql, [user_id]);
+  if (!rows.length) {
+    return res.json({success: false});
+  }
+  const row = rows[0];
+  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+
   const output = {
     success: false,
     postData: req.body,
     result: null,
+    error:''
   };
   // TODO: 表單資料檢查
+
+  let { user_name, birthday, phone, address, user_nickname} = req.body;
+  if(req.body.user_name===row.user_name &&
+    req.body.birthday===row.birthday &&
+    req.body.phone===row.phone &&
+    req.body.address===row.address &&
+    req.body.user_nickname===row.user_nickname
+    ){
+      output.result='資料沒有修改'
+      output.error='輸入的資料與之前相同'
+      return res.json(output);
+    }
+  if(user_name===""||user_name.trim().length == 0){
+    output.result='資料修改失敗'
+    output.error='姓名為必填'
+    return res.json(output);
+  }
+  
+  if(user_nickname===""){
+    user_nickname=user_name
+  }
+  if(address===""){
+    address=" ";
+  }
+  if(birthday===""){
+    birthday=null;
+  }
+  const phoneRule = /^09\d{8}$/;
+    if(phone!==""&& phone.search(phoneRule)===-1){
+      output.result='資料修改失敗'
+      output.error='手機號碼須符合格式'
+    }
   req.body.address = req.body.address.trim(); // 去除頭尾空白
-  const sql = `UPDATE user SET ? WHERE user_id=?`;
-  const [result] = await db.query(sql, [req.body, req.body.user_id]);
+  const sql2 = `UPDATE user SET ? WHERE user_id=?`;
+  const [result] = await db.query(sql2, [req.body, req.body.user_id]);
   output.result = result;
   output.success = !!result.changedRows;
-
   res.json(output);
 });
 export default router;

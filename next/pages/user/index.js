@@ -66,8 +66,8 @@ export default function User() {
           <div className={styles.left_section}>
             <div className={styles.user_info}>
               <img className={styles.img} src='/images/user/profile.png'/>
-              <p>{parkAuth.nickname}</p>
-              <p>{parkAuth.email}</p>
+              <p>{data.user_nickname}</p>
+              <p>{data.user_email}</p>
             </div>
             <div className={styles.column}>
             <Link href='/user'>
