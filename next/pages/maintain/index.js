@@ -52,7 +52,7 @@ export default function Maintain() {
   function handleClick() {
     window.history.go(-1);
   }
-  // let event = []; // 空list
+  let event = []; // 空list
     // ajax 從資料庫獲取資料
     // async function post_api() {
     //     const url = 'api/Selectionperiod';
@@ -97,7 +97,7 @@ useEffect(()=>{
       //               end:value.maintenance_end
       //           })
       //       })
-            let event = [];
+
       d.rows.forEach((row) => {
         event.push({
           title:row.amusement_ride_name,
