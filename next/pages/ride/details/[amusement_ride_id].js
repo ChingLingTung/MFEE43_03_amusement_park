@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image';
 import { RIDE_GET_ONE } from '@/component/ride-const';
 import Head from 'next/head';
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/Layout';
 import { useState,useEffect } from 'react';
 
 export default function RideDetail() {

@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/show.module.css'
 import { FaChevronRight } from "react-icons/fa6";
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/Layout';
 import { SHOW_LIST } from '@/component/ride-const';
 import { useRouter } from 'next/router';
 import { useState,useContext,useEffect } from 'react';

@@ -1,19 +1,19 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { CART_LIST } from "@/components/cartConst";
+import { AB_LIST } from "@/components/cartConst";
 import { FaChevronRight } from "react-icons/fa";
 
-import styles from "@/styles/cart_withing.module.css";
+import styles from "@/component/Cart/cart_withing.module.css";
 
-export default function CartList() {
+export default function CartList({ items = [], increment, decrement, remove }) {
   const [data, setData] = useState({});
   const router = useRouter();
   const getListData = async () => {
     let page = +router.query.page || 1;
     if (page < 1) page = 1;
     try {
-      const r = await fetch(CART_LIST);
+      const r = await fetch(AB_LIST);
       const d = await r.json();
       // console.log(value)
       setData(d);
@@ -24,6 +24,18 @@ export default function CartList() {
   useEffect(() => {
     getListData();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("myData", JSON.stringify(data));
+  }, [data]);
+
+  useEffect(() => {
+    let a = JSON.parse(localStorage.getItem("myData"));
+  }, []);
+
+  const clearLocalS = () => {
+    localStorage.removeItem("myData");
+  };
 
   return (
     <>
@@ -56,8 +68,7 @@ export default function CartList() {
           <div className={styles.p_totalPrice}>總計</div>
           <div className={styles.p_del}>刪除</div>
         </div>
-        {data.rows &&
-          data.rows.map((v, i) => {
+        {items.map((v, i) => {
             return (
               <div key={v.product_id}>
                 <div className={styles.productIn}>
@@ -79,10 +90,10 @@ export default function CartList() {
                     >
                       +
                     </button>
-                    <span>{v.qty}</span>
+                    <span>{v.stock_quantity}</span>
                     <button
                       onClick={() => {
-                        if (v.qty === 1) {
+                        if (v.stock_quantity === 1) {
                           // 移除商品數量要為0的
                           remove(items, v.product_id);
                           // alert('至少要買一樣商品')
@@ -99,10 +110,10 @@ export default function CartList() {
                   <div className={styles.p_del}>
                     <button
                       onClick={() => {
-                        remove(items, v.product_id);
+                        clearLocalS(data, v.product_id);
                       }}
                     >
-                      移除
+                      刪除
                     </button>
                   </div>
                 </div>

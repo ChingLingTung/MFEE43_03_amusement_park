@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { AB_GET_ONE, AB_EDIT_ONE } from "@/components/product-const";
-import { Layout } from "@/components/Layout";
+import { AB_GET_ONE, AB_EDIT_ONE } from "@/component/product-const";
+import { Layout } from "@/component/Layout";
 
 export default function ABEdit() {
   const [myForm, setMyForm] = useState({

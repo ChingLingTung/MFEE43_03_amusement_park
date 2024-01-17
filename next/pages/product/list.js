@@ -1,12 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { Layout } from "@/components/Layout";
-import { AB_LIST } from "@/components/product-const";
+import { Layout } from "@/component/Layout";
+import { AB_LIST } from "@/component/product-const";
 // import ThemeContext from "@/contexts/ThemeContext";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Card from "@/components/Product/Card";
-import IconNav from "@/components/Icon-nav/Icon-nav";
-import Slider from "@/components/Slider/Slider"
+import Card from "@/component/Product/Card";
+import IconNav from "@/component/Icon-nav/Icon-nav";
+import Slider from "@/component/Slider/Slider";
 
 export default function List1() {
   // console.log("window.location.href:", window.location.href);
@@ -29,7 +29,6 @@ export default function List1() {
   useEffect(() => {
     getListData();
   }, [router.query.page]);
-  
 
   return (
     <>

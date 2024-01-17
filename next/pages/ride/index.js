@@ -3,7 +3,7 @@ import styles from '@/styles/ride.module.css'
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa6";
 import Image from 'next/image';
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/Layout';
 import Head from 'next/head';
 import { RIDE_LIST } from '@/component/ride-const';
 import { useRouter } from 'next/router';
