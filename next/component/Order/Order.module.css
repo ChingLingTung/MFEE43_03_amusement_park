@@ -98,6 +98,15 @@
   border: solid 1px black;
 }
 
+.order_detail_nav1{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 30px; 
+  padding: 0px 60px 0px 90px;
+}
+
 .order_detail_nav_title{
   width: 120px;
   height: 120px;
