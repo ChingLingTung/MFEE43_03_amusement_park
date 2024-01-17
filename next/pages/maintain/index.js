@@ -9,6 +9,8 @@ import multiMonthPlugin from '@fullcalendar/multimonth'
 import Head from 'next/head';
 import { MAINTAIN_GET_LIST } from '@/component/ride-const'; 
 import { useEffect } from 'react';
+import { Layout } from '@/component/layout';
+
 
 export const StyleWrapper = styled.div`
   .fc th {
@@ -107,6 +109,7 @@ useEffect(()=>{
 
   return (
     <>
+    <Layout>
     <div className={styles.container}>
       <div className={styles.flex_spacebetween}>
         <div className={styles.flex_center} style={{height:50}}>
@@ -234,6 +237,7 @@ useEffect(()=>{
       </div>
       
     </div>
+    </Layout>
       <Head><title>維護時間</title></Head>
     </>
   )

@@ -14,11 +14,6 @@ import withReactContent from 'sweetalert2-react-content'
 
 export default function User() {
   const { parkAuth, logout } = useContext(AuthContext);
-  const [orderClass, setOrderClass]=useState(styles.button);
-  const [ticketClass, setTicketClass]=useState(styles.button);
-  const [collectClass, setCollectClass]=useState(styles.button);
-  const [editClass, setEditClass]=useState(styles.button);
-  const [showClass, setShowClass]=useState(styles.button);
   const [data, setData] = useState({});
   const router = useRouter();
   const Alert = withReactContent(Swal) ;
@@ -67,7 +62,6 @@ export default function User() {
   return (
     <>
     <Layout>
-      {/* <div className={styles.contain}> */}
         <div style={{padding:30}} className={styles.flex_center}>
           <div className={styles.left_section}>
             <div className={styles.user_info}>
@@ -76,41 +70,13 @@ export default function User() {
               <p>{parkAuth.email}</p>
             </div>
             <div className={styles.column}>
-              <button className={orderClass} onClick={()=>{
-                if (orderClass === styles.button){
-                  setOrderClass(styles.selected_button)
-                }else{
-                  setOrderClass(styles.button)
-                }
-              }}>會員訂單</button>
-              <button className={ticketClass} onClick={()=>{
-                if (ticketClass === styles.button){
-                  setTicketClass(styles.selected_button)
-                }else{
-                  setTicketClass(styles.button)
-                }
-              }}>優惠券</button>
-              <button className={collectClass} onClick={()=>{
-                if (collectClass === styles.button){
-                  setCollectClass(styles.selected_button)
-                }else{
-                  setCollectClass(styles.button)
-                }
-              }}>我的收藏</button>
-              <button className={editClass} onClick={()=>{
-                if (editClass === styles.button){
-                  setEditClass(styles.selected_button)
-                }else{
-                  setEditClass(styles.button)
-                }
+              <button className={styles.button}>會員訂單</button>
+              <button className={styles.button}>優惠券</button>
+              <button className={styles.button}>我的收藏</button>
+              <button className={styles.button} onClick={()=>{
+                router.push(`/user/edit/${data.user_id}`)
               }}>修改資料</button>
-              <button className={showClass} onClick={()=>{
-                if (showClass === styles.button){
-                  setShowClass(styles.selected_button)
-                }else{
-                  setShowClass(styles.button)
-                }
-              }}>表演預約</button>
+              <button className={styles.button}>表演預約</button>
               <button className={styles.button} onClick={(e) => {
                     e.preventDefault();
                     logout();
@@ -161,7 +127,6 @@ export default function User() {
             </table>
           </div>
         </div>
-      {/* </div> */}
       </Layout>
       <Head><title>會員中心</title></Head>
     </>

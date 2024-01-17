@@ -227,13 +227,16 @@ app.get("/user", async (req, res) => {
     output.error = "沒有權限";
     return res.json(output);
   }
-  const [rows] = await db.query("SELECT `user_id`, `user_email`, `phone`, `birthday`, `user_nickname`, `user_name`, `address` FROM `user` WHERE user_id=?", [res.locals.jwt.id]);
+  const [rows] = await db.query("SELECT `user_id`, `user_email`,`user_password`, `phone`, `birthday`, `user_nickname`, `user_name`, `address` FROM `user` WHERE user_id=?", [res.locals.jwt.id]);
   if(!rows.length){
     output.error = "沒有這個會員";
     return res.json(output);
   }
   output.success = true;
   output.data = rows[0];
+  const row = rows[0];
+  row.birthday = dayjs(row.birthday).format("YYYY/MM/DD");
+  
   res.json(output);
 });
 

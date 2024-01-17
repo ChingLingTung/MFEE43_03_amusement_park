@@ -217,7 +217,7 @@ router.get("/edit/:user_id", async (req, res) => {
     return res.redirect(req.baseUrl);
   }
   const row = rows[0];
-  row.birthday2 = dayjs(row.birthday).format("YYYY-MM-DD");
+  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
 
   res.render("user/edit", row);
 });
