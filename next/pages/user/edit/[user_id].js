@@ -47,19 +47,19 @@ export default function User() {
     }
   };
 
-  const checkEmail = () =>{
+  // const checkEmail = () =>{
     
-    const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-    if(data.user_email !== "" && data.user_email.search(emailRule) === -1){
-      setEmailError('email必須符合格式');
-    }
-    else if(data.user_email==""){
-      setEmailError('email為必填');
-    }
-    else{
-      setEmailError('');
-    }
-  };
+  //   const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+  //   if(data.user_email !== "" && data.user_email.search(emailRule) === -1){
+  //     setEmailError('email必須符合格式');
+  //   }
+  //   else if(data.user_email==""){
+  //     setEmailError('email為必填');
+  //   }
+  //   else{
+  //     setEmailError('');
+  //   }
+  // };
 
   const checkPhone = () =>{
     const phoneRule = /^09\d{8}$/;
@@ -71,47 +71,47 @@ export default function User() {
     }
   };
 
-  const checkPassword = () =>{
-    const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
-    if(data.user_password===""){
-      setPasswordError('密碼為必填')
-    }
-    else if(data.user_password!==""&& data.user_password.search(passwordRule)===-1){
-      setPasswordError('密碼不符合格式，長度6以上且至少包含一個數字一個小寫英文字母，一個大寫英文字母');
-    }
-    else{
-      setPasswordError('')
-    }
-  };
+  // const checkPassword = () =>{
+  //   const passwordRule = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,30}$/;
+  //   if(data.user_password===""){
+  //     setPasswordError('密碼為必填')
+  //   }
+  //   else if(data.user_password!==""&& data.user_password.search(passwordRule)===-1){
+  //     setPasswordError('密碼不符合格式，長度6以上且至少包含一個數字一個小寫英文字母，一個大寫英文字母');
+  //   }
+  //   else{
+  //     setPasswordError('')
+  //   }
+  // };
 
-  const checkPassword2 = () =>{
-    if(data.rePassword===data.user_password){
-      setPassword2Error('')
-    }
-    else{
-      setPassword2Error('輸入的密碼與第一次不同');
-    }
-  }
+  // const checkPassword2 = () =>{
+  //   if(data.rePassword===data.user_password){
+  //     setPassword2Error('')
+  //   }
+  //   else{
+  //     setPassword2Error('輸入的密碼與第一次不同');
+  //   }
+  // }
 
   useEffect(()=>{
     checkName
   },[data.user_name])
 
-  useEffect(()=>{
-    checkEmail
-  },[data.user_email])
+  // useEffect(()=>{
+  //   checkEmail
+  // },[data.user_email])
 
   useEffect(()=>{
     checkPhone
   },[data.phone])
 
-  useEffect(()=>{
-    checkPassword
-  },[data.user_password])
+  // useEffect(()=>{
+  //   checkPassword
+  // },[data.user_password])
 
-  useEffect(()=>{
-    checkPassword2
-  },[data.rePassword,data.user_password])
+  // useEffect(()=>{
+  //   checkPassword2
+  // },[data.rePassword,data.user_password])
   useEffect(()=>{
     if(parkAuth.email){
       const user_id = +router.query.user_id;
@@ -160,18 +160,18 @@ export default function User() {
         setNameError('姓名為必填');
         ispass = false;
       }
-    const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-    if(data.user_email===""){
-      setEmailError('email為必填');
-      ispass = false;
-    }
-    else if(data.user_email!==""&&data.user_email.search(emailRule)===-1){
-      setEmailError('email不符合格式');
-      ispass = false;
-    }
-    else{
-      setEmailError('');
-    }
+    // const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+    // if(data.user_email===""){
+    //   setEmailError('email為必填');
+    //   ispass = false;
+    // }
+    // else if(data.user_email!==""&&data.user_email.search(emailRule)===-1){
+    //   setEmailError('email不符合格式');
+    //   ispass = false;
+    // }
+    // else{
+    //   setEmailError('');
+    // }
     const phoneRule = /^09\d{8}$/;
     if(data.phone!==""&& data.phone.search(phoneRule)===-1){
       setPhoneError('手機號碼不符合格式');
@@ -256,7 +256,10 @@ export default function User() {
               <p>{parkAuth.email}</p>
             </div>
             <div className={styles.column}>
-            <button className={styles.button}>會員訂單</button>
+              <Link href='/user'>
+                <button className={styles.button}>會員資料</button>
+              </Link>
+              <button className={styles.button}>會員訂單</button>
               <button className={styles.button}>優惠券</button>
               <button className={styles.button}>我的收藏</button>
               <button className={styles.selected_button}>修改資料</button>
@@ -335,14 +338,21 @@ export default function User() {
                       onChange={changeHandler} onKeyUp={checkName}  placeholder='請輸入真實姓名'/>
                   <p style={{color:"red",fontSize:16}}>{nameError}</p>
                 </label>
-                <label htmlFor="user_email" className={styles.label_flex}><span className={styles.red}>*</span>帳號：<br/>
+                {/* <label htmlFor="user_email" className={styles.label_flex}><span className={styles.red}>*</span>帳號：<br/>
                   <input type='email' className={styles.input} id="user_email"
                       name="user_email"
                       value={data.user_email}
                       onChange={changeHandler} onKeyUp={checkEmail} placeholder='請輸入email'/>
-                </label>
+                </label> */}
                 <p style={{color:"red",fontSize:16}}>{emailError}</p>
-                <label htmlFor="user_password" className={styles.label_flex}><span className={styles.red}>*</span>密碼：<br/>
+                <label htmlFor="user_nickname" className={styles.label_flex}>小名：<br/>
+                    <input className={styles.input} placeholder='小名' type="text"
+                      id="user_nickname"
+                      name="user_nickname"
+                      value={data.user_nickname}
+                      onChange={changeHandler}/>
+                  </label>
+                {/* <label htmlFor="user_password" className={styles.label_flex}><span className={styles.red}>*</span>密碼：<br/>
                   <input type='password' className={styles.input} id="user_password"
                       name="user_password"
                       value={data.user_password}
@@ -353,7 +363,7 @@ export default function User() {
                   <input type='password' id="rePassword"
                       name="rePassword" className={styles.input} value={data.rePassword} onChange={changeHandler} onKeyUp={checkPassword2} placeholder='請輸入一樣的密碼'/>
                 </label>
-                <p style={{color:"red",fontSize:16}}>{password2Error}</p>
+                <p style={{color:"red",fontSize:16}}>{password2Error}</p> */}
                 <label htmlFor="user_phone" className={styles.label_flex}>手機號碼：<br/>
                   <input type='text' className={styles.input} id="phone"
                       name="phone"
@@ -367,21 +377,15 @@ export default function User() {
                       value={data.birthday}
                       onChange={changeHandler}/>
                 </label>
-                <br/>
+                
                 <label htmlFor="address" className={styles.label_flex}>地址：<br/>
                   <input type='text' className={styles.input} id="address"
                       name="address"
                       value={data.address}
                       onChange={changeHandler} placeholder='請輸入地址'/>
                 </label>
-                <br/>
-                  <label htmlFor="user_nickname" className={styles.label_flex}>小名：<br/>
-                    <input className={styles.input} placeholder='小名' type="text"
-                      id="user_nickname"
-                      name="user_nickname"
-                      value={data.user_nickname}
-                      onChange={changeHandler}/>
-                  </label>
+                
+                  
               </div>
             </div>
             
