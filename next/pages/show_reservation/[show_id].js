@@ -9,8 +9,7 @@ import { Cursor } from 'react-custom-cursors';
 import "react-custom-cursors/dist/index.css";
 import { Layout } from '@/component/layout';
 
-
-export default function ShowDetail() {
+export default function ShowInfo() {
   const seat = [
     ["","","","A4","A5","","A7","A8","A9","","A11","A12","","",""],
     ["","","B3","B4","B5","","B7","B8","B9","","B11","B12","B13","",""],
@@ -82,10 +81,15 @@ export default function ShowDetail() {
           <img className={styles.img} width='100%' height={300} src={`/images/show/${getData.show_pic}`} />
           <div className={styles.space_between}>
             <h2 className={styles.title}>{getData.show_name}</h2>
-            <Link href={'/show'}>
-              <button className={styles.button} style={{width:150}}>返回列表頁</button>
-            </Link>
-            
+            <div>
+              <Link href={'/show'}>
+                <button className={styles.button} style={{width:150}}>前往表演列表頁</button>
+              </Link>
+              <Link href={'/user/show_reservation'}>
+                <button className={styles.button} style={{width:150}}>返回查看預約資料</button>
+              </Link>
+            </div>
+
           </div>
           
           <h3 style={{marginBottom:20}}>表演資訊</h3>
@@ -99,7 +103,7 @@ export default function ShowDetail() {
           <p style={{marginTop:7}}>{getData.show_info}{getData.show_info2}</p>
           {!toggle? (
             <>
-              <button className={styles.button} onClick={handleToggle}>預約</button>
+              <button className={styles.button} onClick={handleToggle}>更改預約</button>
             </>
           )
           :
@@ -127,15 +131,16 @@ export default function ShowDetail() {
                 ))}
               </div>
               </div>
-              <button style={{width:1200}} className={styles.button}>預約</button>
+              <button style={{width:1200}} className={styles.button}>確定更改</button>
               <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
               <p>演出時間：{getData.show_day}的{getData.start} 至 {getData.finish}</p>
               <p>預約座位：</p>
             </>
           )}
-            <Head><title>表演詳細資訊</title></Head>
+            <Head><title>預約表演資訊</title></Head>
           </div>
         </div>  
       </Layout>
+
   )
 }
