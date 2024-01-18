@@ -116,11 +116,13 @@ useEffect(()=>{
               {getTypeData.rows && getTypeData.rows.map((i)=>{
                 return(
                   <div key= {i.amusement_ride_id} className={styles.card}>
+                  <Link href={`/ride/details/${i.amusement_ride_id}`}>
                     <img className={styles.card_img} src={`/images/ride/${i.amusement_ride_img}`}/>
                     <div style={{padding:5}}>
                       <div className={styles.card_title}>{i.amusement_ride_name}</div>
                       <div>{i.amusement_ride_description}</div>
                     </div>
+                  </Link>
                   </div>
                 )
               })

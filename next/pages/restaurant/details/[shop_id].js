@@ -90,9 +90,7 @@ export default function RestaurantDetail() {
     getTypeList()
   },[getData.shop_type_id,getData.shop_id]);
   return (
-
-      <div key={getData.shop_id}>
-        <Layout>
+        <Layout key={getData.shop_id}>
           <h2 className={styles.title}>餐廳詳細資料</h2>
           <div className={styles.flex_center}>
           <img className={styles.img} src={`/images/restaurant/${getData.shop_type_name2}/${getData.shop_name2}/food/${getData.shop_img}`}/>
@@ -147,6 +145,7 @@ export default function RestaurantDetail() {
           {getTypeData.rows && getTypeData.rows.map((i)=>{
                 return(
                   <div key={i.shop_id} className={styles.card}>
+                    <Link href={`/restaurant/details/${i.shop_id}`}>
                       <img className={styles.card_img} src={`/images/restaurant/${i.shop_type_name2}/${i.shop_name2}/food/${i.shop_img}`}/>
                       <div style={{padding:10}}>
                         <div className={styles.space_between2}>
@@ -154,14 +153,13 @@ export default function RestaurantDetail() {
                           <div className={styles.tag} style={{backgroundColor:i.tag_color}}>{i.shop_type_name}</div>
                         </div>
                       </div>
+                    </Link>
                   </div>
                 )
               })
               }
           </div>
+        <Head><title>餐廳資訊</title></Head>
         </Layout>
-      <Head><title>餐廳資訊</title></Head>
-      </div>
-
   )
 }

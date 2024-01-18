@@ -22,7 +22,7 @@ export default function Navbar() {
       <nav className={styles.flex_spacebetween}>
         <span className={styles.option}>
           <Link href="/">
-            Logo
+            <img className={styles.logo} src='/images/logo.png'/>
           </Link>
         </span>
         <div className={styles.flex_center}>
