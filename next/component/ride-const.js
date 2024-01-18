@@ -1,5 +1,4 @@
 export const API_SERVER = "http://localhost:3002";
-
 // 設施清單
 export const RIDE_LIST = API_SERVER + "/ride/api";
 // 設施單筆資料
@@ -28,9 +27,9 @@ export const LOGIN = API_SERVER + "/login-jwt";
 export const USER = API_SERVER + "/user";
 // 會員在登入狀態時進入會員中心的表演預約取得表演預約資料
 export const USER_RESERVATION = API_SERVER + "/reservation/api";
-
+// 設施詳細頁下方取得與該設施相同類型的其他設施
 export const GET_3_SAME_TYPE_RIDE = API_SERVER + "/ride/type/api";
-
+// 餐廳詳細頁下方取得與該餐廳同樣類型的其他餐廳
 export const GET_SAME_TYPE_SHOP = API_SERVER + "/shop/type/api";
 
 
