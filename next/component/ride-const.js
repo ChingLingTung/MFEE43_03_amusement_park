@@ -31,6 +31,8 @@ export const USER_RESERVATION = API_SERVER + "/reservation/api";
 
 export const GET_3_SAME_TYPE_RIDE = API_SERVER + "/ride/type/api";
 
+export const GET_SAME_TYPE_SHOP = API_SERVER + "/shop/type/api";
+
 
 
 

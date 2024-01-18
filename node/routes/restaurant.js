@@ -114,4 +114,63 @@ router.get("/api/details/:shop_id", async (req, res) => {
 
   res.json({success: true, row});
 });
+
+const getTypeData = async(req)=>{
+  const perPage = 10; // 每頁幾筆
+  // 用戶決定要看第幾頁
+  let page = +req.query.page || 1;
+  let qs = {};  // 用來把 query string 的設定傳給 template
+  let shop_id = req.query.shop_id? req.query.shop_id : '';
+  let shop_type_id = req.query.shop_type_id? req.query.shop_type_id : '';
+  // 設定綜合的where子句
+  let where = `WHERE 1 `;
+
+  // 關鍵字搜尋只有一欄的情況下要用符合任一的or
+  if (shop_id !==0 && shop_id !=='') {
+    qs.shop_id = shop_id;
+    where += ` AND shop.shop_id != '${shop_id}' `;
+  }
+  if (shop_type_id !==0 && shop_type_id !=='') {
+    qs.shop_type_id = shop_type_id;
+    where += ` AND shop_type.shop_type_id = '${shop_type_id}' `;
+  }
+
+  let totalRows = 0;
+  let totalPages = 0;
+  let rows = [];
+
+  let output = {
+    success: false,
+    page,
+    perPage,
+    rows,
+    totalRows,
+    totalPages,
+    qs,
+    redirect: "",
+    info: "",
+  };
+
+  const t_sql = `SELECT COUNT(1) totalRows FROM (shop JOIN shop_with_shop_type ON shop.shop_id = shop_with_shop_type.shop_id) JOIN shop_type ON shop_with_shop_type.shop_type_id=shop_type.shop_type_id ${where} ORDER BY shop.shop_id `;
+  [[{ totalRows }]] = await db.query(t_sql);
+  totalPages = Math.ceil(totalRows / perPage);
+  if (totalRows > 0) {
+    if (page > totalPages) {
+      output.redirect = `?page=${totalPages}`;
+      output.info = `頁碼值大於總頁數`;
+      return {...output, totalRows, totalPages};
+    }
+  }
+
+  const sql = `SELECT * FROM shop JOIN shop_with_shop_type ON shop.shop_id = shop_with_shop_type.shop_id JOIN shop_type ON shop_with_shop_type.shop_type_id=shop_type.shop_type_id ${where} ORDER BY shop.shop_id` ;
+  [rows] = await db.query(sql);
+    if (!rows.length) {
+      return res.json({success: false});
+    }
+    output = { ...output, success: true, rows, totalRows, totalPages };  
+  return output;
+}
+router.get("/type/api", async (req, res) => {
+res.json( await getTypeData(req) );
+});
 export default router;

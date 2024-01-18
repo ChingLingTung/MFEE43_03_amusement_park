@@ -8,7 +8,7 @@ import { FaAngleDown } from "react-icons/fa6";
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Head from 'next/head';
-import { SHOP_GET_ONE } from '@/component/ride-const';
+import { SHOP_GET_ONE, GET_SAME_TYPE_SHOP } from '@/component/ride-const';
 import { useState,useEffect } from 'react';
 import { Layout } from '@/component/layout';
 import Swal from 'sweetalert2';
@@ -20,6 +20,7 @@ export default function RestaurantDetail() {
     shop_id:"",
     shop_name:"",
     shop_name2:"",
+    shop_type_id:'',
     shop_type_name:"",
     shop_type_name2:"",
     shop_img:"", 
@@ -27,8 +28,10 @@ export default function RestaurantDetail() {
     shop_img2:"", 
     shop_img3:"", 
     shop_img4:"",
-    menu:'' 
+    menu:'',
+    phone:"" 
   });
+  const [getTypeData, setGetTypeData] = useState({});
   const Alert = withReactContent(Swal) ;
   const router = useRouter();
 
@@ -68,7 +71,24 @@ export default function RestaurantDetail() {
           })
         }
   })
+  };
+
+  const getTypeList = async()=>{
+    try {
+      const r = await fetch(
+        GET_SAME_TYPE_SHOP + 
+        '?' + `shop_type_id=${getData.shop_type_id}` + '&'
+        + `shop_id=${getData.shop_id}`);
+        const d = await r.json();
+        setGetTypeData(d);
+    } catch (ex) {
+      console.log(ex)
+    }
   }
+  
+  useEffect(()=>{
+    getTypeList()
+  },[getData.shop_type_id,getData.shop_id]);
   return (
 
       <div key={getData.shop_id}>
@@ -88,7 +108,7 @@ export default function RestaurantDetail() {
               <p style={{marginLeft:20}}>星期五：11：00~20：00 </p>
               <p style={{marginLeft:20}}>星期六：10：00~20：00 </p>
               <p style={{marginLeft:20}}>星期日：10：00~20：00 </p>
-              <p ><FaPhoneAlt /> 02-1234567</p>
+              <p ><FaPhoneAlt /> {getData.phone}</p>
               <div className={styles.space_between}>
                 <span><FaRegCheckCircle /> 有座位</span>
                 <span><FaRegCheckCircle /> 可外帶</span>
@@ -101,9 +121,9 @@ export default function RestaurantDetail() {
             <img className={styles.mini_img} src={`/images/restaurant/${getData.shop_type_name2}/${getData.shop_name2}/food/${getData.shop_img3}`}/>
             <img className={styles.mini_img} src={`/images/restaurant/${getData.shop_type_name2}/${getData.shop_name2}/food/${getData.shop_img4}`}/>
           </div>
-          <h2 className={styles.title}>周邊餐廳</h2>
+          <h2 className={styles.title}>類似餐廳</h2>
           <div className={styles.card_flex}>
-            <div className={styles.card}>
+            {/* <div className={styles.card}>
               <img className={styles.card_img} src='/images/restaurant/teatime/street_churros/food/street_churros_food1.webp'/>
               <div style={{padding:5}}>
                 <div className={styles.card_title}>餐廳名稱</div>
@@ -123,7 +143,21 @@ export default function RestaurantDetail() {
               <div className={styles.card_title}>餐廳名稱</div>
               <div>餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述餐廳敘述</div>
             </div>
-          </div>
+          </div> */}
+          {getTypeData.rows && getTypeData.rows.map((i)=>{
+                return(
+                  <div key={i.shop_id} className={styles.card}>
+                      <img className={styles.card_img} src={`/images/restaurant/${i.shop_type_name2}/${i.shop_name2}/food/${i.shop_img}`}/>
+                      <div style={{padding:10}}>
+                        <div className={styles.space_between2}>
+                          <div className={styles.card_title}>{i.shop_name}</div>
+                          <div className={styles.tag} style={{backgroundColor:i.tag_color}}>{i.shop_type_name}</div>
+                        </div>
+                      </div>
+                  </div>
+                )
+              })
+              }
           </div>
         </Layout>
       <Head><title>餐廳資訊</title></Head>
