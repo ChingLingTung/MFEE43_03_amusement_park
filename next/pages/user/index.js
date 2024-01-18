@@ -12,15 +12,14 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
 
 
-export default function User() {
+export default function UserInfo() {
   const { parkAuth, logout } = useContext(AuthContext);
   const [data, setData] = useState({});
   const router = useRouter();
   const Alert = withReactContent(Swal) ;
-  const getListData= async()=>{
+
 // 如果parkAuth存在,傳送parkAuth
     
-  }
   useEffect(()=>{
     if(parkAuth.email){
       fetch(USER,{
@@ -40,7 +39,7 @@ export default function User() {
   },[parkAuth])
 
   useEffect(()=>{
-    if(!parkAuth.email && !data){
+    if(!parkAuth.email){
       Alert.fire({ 
   didOpen: () => { 
       Alert.fire({
@@ -77,9 +76,29 @@ export default function User() {
               <button className={styles.button}>優惠券</button>
               <button className={styles.button}>我的收藏</button>
               <button className={styles.button} onClick={()=>{
-                router.push(`/user/edit/${data.user_id}`)
+                if(data.user_id){
+                  router.push(`/user/edit/${data.user_id}`)
+                }else{
+                  Alert.fire({ 
+                      didOpen: () => { 
+                          Alert.fire({
+                            titleText:'您尚未登入',
+                            text:'前往登入',
+                          }),
+                          Alert.fire({
+                            titleText:'您尚未登入',
+                            text:'前往登入',
+                            willClose:()=>{
+                              router.push('/login');
+                            }
+                          })
+                        }
+                      })
+                }
               }}>修改資料</button>
-              <button className={styles.button}>表演預約</button>
+              <button className={styles.button} onClick={()=>{
+                router.push(`/user/show_reservation`);
+              }}>表演預約</button>
               <button className={styles.button} onClick={(e) => {
                     e.preventDefault();
                     logout();

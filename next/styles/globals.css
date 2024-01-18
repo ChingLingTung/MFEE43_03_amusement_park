@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;500&display=swap');
+@import url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
+
 
 :root {
   --max-width: 1100px;
@@ -109,9 +111,14 @@ a {
 } */
 /* ------------ */
 body{
-font-family:'Zen Maru Gothic', serif;
+font-family:'Zen Maru Gothic',sans-serif ;
 background-image: url("../public/images/back-pattern-1920x1080.png");
 }
+/* @font-face {
+  font-family: 'Zen Maru Gothic';
+  src: url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;500&display=swap');
+  src:url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
+} */
 .formborder{
   border: #F29BA5 2px solid;
   border-radius: 10px;

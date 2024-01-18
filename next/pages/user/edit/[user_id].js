@@ -12,7 +12,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
 
 
-export default function User() {
+export default function UserEditInfo() {
   const { parkAuth, logout } = useContext(AuthContext);
   const [data,setData] = useState({
       user_name: '',
@@ -193,7 +193,27 @@ export default function User() {
               <button className={styles.button}>優惠券</button>
               <button className={styles.button}>我的收藏</button>
               <button className={styles.selected_button}>修改資料</button>
-              <button className={styles.button}>表演預約</button>
+              <button className={styles.button} onClick={()=>{
+                if(parkAuth.email){
+                  router.push(`/user/show_reservation`);
+                }else{
+                  Alert.fire({ 
+                      didOpen: () => { 
+                          Alert.fire({
+                            titleText:'您尚未登入',
+                            text:'前往登入',
+                          }),
+                          Alert.fire({
+                            titleText:'您尚未登入',
+                            text:'前往登入',
+                            willClose:()=>{
+                              router.push('/login');
+                            }
+                          })
+                        }
+                      })
+                }
+              }}>表演預約</button>
               <button className={styles.button} onClick={(e) => {
                     e.preventDefault();
                     logout();

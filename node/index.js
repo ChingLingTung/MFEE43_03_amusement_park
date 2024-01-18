@@ -16,6 +16,7 @@ import shopRouter from "./routes/restaurant.js"
 import db from "./utils/connect-mysql.js";
 import maintainRouter from './routes/maintain.js'
 import registerRouter from "./routes/register.js"
+import reservationRouter from "./routes/reservation.js"
 
 
 
@@ -105,6 +106,7 @@ app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);
 app.use("/register", registerRouter);
+app.use("/reservation", reservationRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
   req.session.n++;
