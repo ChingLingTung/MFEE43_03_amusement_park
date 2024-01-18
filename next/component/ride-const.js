@@ -26,6 +26,13 @@ export const USER_EDIT = API_SERVER + "/register/edit"
 export const LOGIN = API_SERVER + "/login-jwt";
 // 會員在登入狀態時進入會員中心的首頁取得會員資料表格
 export const USER = API_SERVER + "/user";
+// 會員在登入狀態時進入會員中心的表演預約取得表演預約資料
+export const USER_RESERVATION = API_SERVER + "/reservation/api";
+
+export const GET_3_SAME_TYPE_RIDE = API_SERVER + "/ride/type/api";
+
+
+
 
 
 
