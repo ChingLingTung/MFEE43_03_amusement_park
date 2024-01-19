@@ -1,5 +1,5 @@
 import React from "react";
-import styles from '@/components/Product/Icon/Icon.module.css'
+import styles from '@/component/Product/Icon/Icon.module.css'
 import { FaRegHeart } from "react-icons/fa";
 import { IoCart } from "react-icons/io5";
 

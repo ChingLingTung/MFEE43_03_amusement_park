@@ -1,106 +1,152 @@
-import { useContext, useState } from 'react'
+import React, {
+  useState,
+  //useReducer,
+  useContext,
+  createContext,
+  useEffect,
+} from "react";
+import {
+  init,
+  initState,
+  addOne,
+  findOneById,
+  updateOne,
+  removeOne,
+  incrementOne,
+  decrementOne,
+  generateCartState,
+} from "./cart-reducer-state";
+import useLocalStorage from "./use-localstorage";
 
-// 宣告要使用的context
-import { createContext } from 'react'
-const CartContext = createContext(null)
+const CartContext = createContext(null);
 
-export function CartProvider({ children }) {
-  const [items, setItems] = useState([])
+// cartItem = {
+//   id: '',
+//   quantity: 0,
+//   name: '',
+//   price: 0,
+// }
 
-  // 刪除商品，回傳新的陣列，符合id的商品不要
-  const remove = (items, product_id) => {
-    const newItems = items.filter((v, i) => {
-      return v.product_id !== product_id
-    })
+// cartState = {
+//   items: cartItems,
+//   isEmpty: true,
+//   totalItems: 0,
+//   cartTotal: 0,
+// }
 
-    setItems(newItems)
+export const CartProvider = ({
+  children,
+  initialCartItems = [], //初始化購物車的加入項目
+  localStorageKey = "cart", //初始化localStorage的鍵名
+}) => {
+  // localStorage中只儲存 items。如果localStorage有此鍵中的值，則套入使用作為初始items。
+  let items = initialCartItems;
+
+  if (!items.length) {
+    try {
+      // 修正nextjs中window is undefined的問題
+      if (typeof window !== "undefined") {
+        const item = window.localStorage.getItem(localStorageKey);
+        // 剖析存儲的json，如果沒有則返回初始值
+        items = item ? JSON.parse(item) : [];
+      }
+    } catch (error) {
+      items = [];
+      console.log(error);
+    }
   }
 
-  // 增加數量，回傳新的陣列，符合id的商品數量+1
-  const increment = (items, product_id) => {
-    const newItems = items.map((v, i) => {
-      if (v.product_id === product_id)
-        return { ...v, stock_quantity: v.stock_quantity + 1, subtotal: v.product_price * (v.stock_quantity + 1) }
-      else return v
-    })
+  // 初始化 cartItems, cartState
+  const [cartItems, setCartItems] = useState(initialCartItems);
+  const [cartState, setCartState] = useState(init(initialCartItems));
 
-    setItems(newItems)
-  }
+  // 初始化 setValue(localStoage), setValue用於存入localStorage中
+  const [storedValue, setValue] = useLocalStorage(localStorageKey, items);
 
-  // 減少數量，回傳新的陣列，符合product_id的商品數量-1
-  const decrement = (items, product_id) => {
-    const newItems = items.map((v, i) => {
-      if (v.product_id === product_id)
-        return { ...v, stock_quantity: v.stock_quantity - 1, subtotal: v.product_price * (v.stock_quantity - 1) }
-      else return v
-    })
+  // 當 cartItems 更動時 -> 更動 localStorage 中的值 -> 更動 cartState
+  useEffect(() => {
+    // 使用字串比較
+    if (JSON.stringify(cartItems) !== storedValue) {
+      setValue(cartItems);
+    }
+    // 有更動時，重新設定cartState
+    setCartState(generateCartState(cartState, cartItems));
 
-    setItems(newItems)
-  }
+    // eslint-disable-next-line
+  }, [cartItems]);
 
+  /**
+   * 加入新項目，重覆項目 quantity: quantity + 1
+   */
   const addItem = (item) => {
-    // 檢查是否存在
-    const index = items.findIndex((v, i) => {
-      return v.product_id === item.product_id
-    })
-
-    // 如果有找到
-    if (index > -1) {
-      // 數量+1
-      increment(items, item.product_id)
-      return // 跳出函式，接下來的程式不執行
-    }
-
-    // 以下是如果沒找到的話
-    // 原本的商品資料物件中沒有數量(qty)，所以要加入qty
-    const newItem = { ...item, stock_quantity: 1, subtotal: item.product_price }
-    //1 2 3
-    setItems([...items, newItem])
-  }
-
-  const calTotalItems = () => {
-    let total = 0
-
-    for (let i = 0; i < items.length; i++) {
-      total += items[i].qty
-    }
-
-    return total
-  }
-
-  const calTotalPrice = () => {
-    let total = 0
-
-    for (let i = 0; i < items.length; i++) {
-      total += items[i].subtotal
-    }
-
-    return total
-  }
-
-  // reduce (累加，歸納) 2 -> 1
-  // https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
-  const totalItems = items.reduce((acc, v) => acc + v.stock_quantity, 0)
-  const totalPrice = items.reduce((acc, v) => acc + v.subtotal, 0)
-  // const totalPrice = items.reduce((acc, v) => acc + v.qty*v.price, 0)
+    setCartItems(addOne(cartItems, item));
+  };
+  /**
+   * 給定一id值，將這商品移出陣列中
+   */
+  const removeItem = (id) => {
+    setCartItems(removeOne(cartItems, id));
+  };
+  /**
+   * 給定一item物件，更新其中的屬性值(依照id為準)
+   */
+  const updateItem = (item) => {
+    setCartItems(updateOne(cartItems, item));
+  };
+  /**
+   * 給定一id與quantity，更新某個項目的數量
+   */
+  const updateItemQty = (id, quantity) => {
+    const item = findOneById(cartItems, id);
+    // 如果沒有id，則不更新
+    if (!item.id) return;
+    // 更新項目
+    const updateItem = { ...item, quantity };
+    setCartItems(updateOne(cartItems, updateItem));
+  };
+  /**
+   * 清空整個購物車
+   */
+  const clearCart = () => {
+    setCartItems([]);
+  };
+  /**
+   * 給定一id值，回傳是否存在於購物車中
+   */
+  const isInCart = (id) => {
+    return cartItems.some((item) => item.id === id);
+  };
+  /**
+   * 給定一id值，有尋找到商品時，設定quantity: quantity + 1
+   */
+  const increment = (id) => {
+    setCartItems(incrementOne(cartItems, id));
+  };
+  /**
+   * 給定一id值，有尋找到商品時，設定quantity: quantity - 1，但 quantity 最小值為1
+   */
+  const decrement = (id) => {
+    setCartItems(decrementOne(cartItems, id));
+  };
 
   return (
     <CartContext.Provider
       value={{
-        items,
+        cart: cartState,
+        items: cartState.items, //items與cartState.items差了一個subtoal屬性
         addItem,
+        removeItem,
+        updateItem,
+        updateItemQty,
+        clearCart,
+        isInCart,
         increment,
         decrement,
-        remove,
-        calTotalItems,
-        calTotalPrice,
       }}
     >
       {children}
     </CartContext.Provider>
-  )
-}
+  );
+};
 
-export function useCart() {
-  return useContext(CartContext)
-}
+export const useCart = () => useContext(CartContext);

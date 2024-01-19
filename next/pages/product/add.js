@@ -1,7 +1,7 @@
-import { Layout } from "@/components/Layout";
+import { Layout } from "@/component/Layout";
 import { useState } from "react";
 import { z } from "zod";
-import { AB_ADD } from "@/components/product-const";
+import { AB_ADD } from "@/component/product-const";
 
 export default function ABAdd() {
   const [myForm, setMyForm] = useState({

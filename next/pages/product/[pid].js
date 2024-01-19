@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AB_LIST } from "@/component/product-const";
 import { Layout } from "@/component/Layout";
+import { useCart } from "@/hooks/useCart";
+import User from "../user";
 
 export default function Detail() {
   const [getData, setGetData] = useState({
@@ -16,10 +18,12 @@ export default function Detail() {
     product_pic: [],
     product_size: "",
     product_color: "",
+
     stock_quantity: "",
     product_description: "",
   });
   const [mainPicIndex, setMainPicIndex] = useState(0);
+  const [cartQuantity, setCartQuantity] = useState(1);
 
   const router = useRouter();
   useEffect(() => {
@@ -48,51 +52,50 @@ export default function Detail() {
     }
   }, [router]);
 
-  const [item, setItem] = useState();
-  const postForm = async (e) => {
-    e.preventDefault(); // 不要讓表單以傳統的方式送出
+  const decrementQuantity = () => {
+    if (cartQuantity > 1) {
+      setCartQuantity(cartQuantity - 1);
+    }
+  };
 
-    const r = await fetch(AB_LIST, {
-      method: "POST",
-      body: JSON.stringify({
-        product_pic,
-        product_name,
-        product_price,
-        stock_quantity,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const data = await r.json();
-    console.log(data);
-    if (data.success) {
-      const {
-        product_pic,
-        product_name,
-        product_price,
-        stock_quantity,
-        token,
-      } = data;
-      // 成功登入時, 寫入 localStorage 做長時間的狀態保存
-      localStorage.setItem(
-        "product",
-        JSON.stringify({
-          product_pic,
-          product_name,
-          product_price,
-          stock_quantity,
-          token,
-        })
-      );
-      setItem({
-        product_pic,
-        product_name,
-        product_price,
-        stock_quantity,
-        token,
+  const incrementQuantity = () => {
+    setCartQuantity(cartQuantity + 1);
+  };
+
+  const setNewLocalS = (selectProduct) => {
+    //判斷購物車是否有資料 =>如果有 :
+    if (localStorage.getItem("cartData")) {
+      // 判斷這個商品有沒有被加進購物車
+      let nowCart = JSON.parse(localStorage.getItem("cartData"));
+      // 找有沒有在購物車裡
+      let result = nowCart.find((d) => {
+        if (d.product_id === selectProduct.product_id) {
+          return true;
+        }
+        return false;
       });
-      router.push("/");
+      if (result) {
+        // 如果有相同商品 => 更新數量
+        nowCart.map((v) => {
+          if (v.product_id === selectProduct.product_id) {
+            v.user_buy_qty += selectProduct.user_buy_qty;
+            v.subTotalPrice +=
+              selectProduct.user_buy_qty * selectProduct.product_price;
+          }
+        });
+        localStorage.setItem("cartData", JSON.stringify(nowCart));
+      } else {
+        // 如果沒有相同商品 => 將就的購物車+選擇的這個商品
+        const newSelect = [...nowCart, selectProduct];
+        localStorage.setItem("cartData", JSON.stringify(newSelect));
+      }
+      alert(`成功加入${cartQuantity}筆進購物車！`);
+    } else {
+      // 購物車沒東西 => 將選擇商品加進去
+      const array = [selectProduct];
+      localStorage.setItem("cartData", JSON.stringify(array));
+
+      alert(`成功加入${cartQuantity}筆進購物車！`);
     }
   };
 
@@ -185,13 +188,13 @@ export default function Detail() {
                 <div className={styles.desc_title}>Quantity</div>
                 <div className={styles.quantity_desc}>
                   <div>
-                    <button>-</button>
+                    <button onClick={decrementQuantity}>-</button>
                   </div>
                   <div>
-                    <button>1</button>
+                    <button>{cartQuantity}</button>
                   </div>
                   <div>
-                    <button>+</button>
+                    <button onClick={incrementQuantity}>+</button>
                   </div>
                 </div>
               </div>
@@ -203,7 +206,22 @@ export default function Detail() {
               </div>
               <div className={styles.icon_flex}>
                 <i className="fa-regular fa-heart icon-heart"></i>
-                <i className="fa-solid fa-cart-shopping icon-cart"></i>
+                <i
+                  className="fa-solid fa-cart-shopping icon-cart"
+                  onClick={() => {
+                    const firstProductPic = getData.product_pic[0];
+                    // 先抓取商品資料、使用者選的數量
+                    // 把這些資料加進localstorage
+                    setNewLocalS({
+                      product_pic: firstProductPic,
+                      product_id: getData.product_id,
+                      product_name: getData.product_name,
+                      product_price: getData.product_price,
+                      subTotalPrice: getData.product_price * cartQuantity,
+                      user_buy_qty: cartQuantity,
+                    });
+                  }}
+                ></i>
               </div>
             </div>
           </div>

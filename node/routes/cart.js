@@ -1,5 +1,5 @@
 import express from "express";
-import db from "./../utils/connect-mysql.js"
+import db from "./../utils/connect-mysql.js";
 import upload from "./../utils/upload-imgs.js";
 import dayjs from "dayjs";
 
@@ -11,7 +11,7 @@ router.use((req, res, next) => {
   if (req.method === "GET" && u === "/") {
     return next();
   }
-/*
+  /*
   if (!req.session.admin) {
     return res.redirect("/login");
   } */
@@ -21,10 +21,13 @@ router.use((req, res, next) => {
 const getListData = async (req) => {
   const perPage = 20; // 每頁幾筆
   let page = +req.query.page || 1; // 用戶決定要看第幾頁
-  let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
+  let keyword =
+    req.query.keyword && typeof req.query.keyword === "string"
+      ? req.query.keyword.trim()
+      : "";
   let keyword_ = db.escape(`%${keyword}%`);
 
-  let qs = {};  // 用來把 query string 的設定傳給 template
+  let qs = {}; // 用來把 query string 的設定傳給 template
   // 起始的日期
   let startDate = req.query.startDate ? req.query.startDate.trim() : "";
   const startDateD = dayjs(startDate);
@@ -98,6 +101,14 @@ const getListData = async (req) => {
   return output;
 };
 
+//取得ibon資料
+router.get("/", async (req, res) => {
+  const sql =
+    "SELECT * FROM ibon_list JOIN ibon_status ON ibon_list.ibstatus_id = ibon_status.ibstatus_id ORDER BY ibon_id";
+  const [rows] = await db.query(sql);
+  res.json(rows);
+});
+
 router.get("/", async (req, res) => {
   res.locals.pageName = "PD-list";
   res.locals.title = "列表 | " + res.locals.title;
@@ -127,7 +138,6 @@ router.get("/api", async (req, res) => {
 // router.get("/add", async (req, res) => {
 //   res.render("cart/add");
 // });
-
 
 router.post("/add", upload.none(), async (req, res) => {
   const output = {
@@ -171,7 +181,6 @@ router.post("/add", upload.none(), async (req, res) => {
   res.json(output);
 });
 
-
 /*
 router.get("/edit/:product_id", async (req, res) => {
   const product_id = +req.params.product_id;
@@ -194,16 +203,15 @@ router.get("/edit/:product_id", async (req, res) => {
 router.get("/api/edit/:product_id", async (req, res) => {
   const product_id = +req.params.product_id;
 
-
   const sql = `SELECT * FROM product_list WHERE product_id=?`;
   const [rows] = await db.query(sql, [product_id]);
   if (!rows.length) {
-    return res.json({success: false});
+    return res.json({ success: false });
   }
   const row = rows[0];
   row.price = dayjs(row.price).format("YYYY-MM-DD");
 
-  res.json({success: true, row});
+  res.json({ success: true, row });
 });
 
 router.put("/edit/:product_id", async (req, res) => {

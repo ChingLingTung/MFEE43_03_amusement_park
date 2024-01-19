@@ -1,40 +1,55 @@
 import React from "react";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { AB_LIST } from "@/components/cartConst";
+import { AB_LIST } from "@/component/cartConst";
 import { FaChevronRight } from "react-icons/fa";
-
 import styles from "@/component/Cart/cart_withing.module.css";
 
-export default function CartList({ items = [], increment, decrement, remove }) {
-  const [data, setData] = useState({});
-  const router = useRouter();
-  const getListData = async () => {
-    let page = +router.query.page || 1;
-    if (page < 1) page = 1;
-    try {
-      const r = await fetch(AB_LIST);
-      const d = await r.json();
-      // console.log(value)
-      setData(d);
-    } catch (ex) {
-      console.log(ex);
+export default function CartList() {
+  // const [data, setData] = useState({});
+  //變更數量
+  const [cartQuantities, setCartQuantities] = useState({});
+
+  const [cartLS, setCartLS] = useState([]);
+  useEffect(() => {
+    const cartData = window.localStorage.getItem("cartData");
+    const items = cartData ? JSON.parse(cartData) : [];
+    setCartLS(items);
+
+    // 初始化購物車數量
+    const quantities = {};
+    items.forEach((item) => {
+      quantities[item.product_id] = item.user_buy_qty;
+    });
+    setCartQuantities(quantities);
+  }, []);
+
+  const decrementQuantity = (productId) => {
+    if (cartQuantities[productId] > 1) {
+      setCartQuantities({
+        ...cartQuantities,
+        [productId]: cartQuantities[productId] - 1,
+      });
     }
   };
-  useEffect(() => {
-    getListData();
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem("myData", JSON.stringify(data));
-  }, [data]);
+  const incrementQuantity = (productId) => {
+    setCartQuantities({
+      ...cartQuantities,
+      [productId]: cartQuantities[productId] + 1,
+    });
+  };
 
-  useEffect(() => {
-    let a = JSON.parse(localStorage.getItem("myData"));
-  }, []);
+  const removeItem = (productId) => {
+    // 從cartLS裡移除item
+    const updatedCart = cartLS.filter((item) => item.product_id !== productId);
+    setCartLS(updatedCart);
 
-  const clearLocalS = () => {
-    localStorage.removeItem("myData");
+    // 從cartQuantities裡移除數量
+    const { [productId]: removedQuantity, ...updatedQuantities } =
+      cartQuantities;
+    setCartQuantities(updatedQuantities);
+    window.localStorage.setItem("cartData", JSON.stringify(updatedCart));
   };
 
   return (
@@ -52,7 +67,6 @@ export default function CartList({ items = [], increment, decrement, remove }) {
       </div>
       <container className={styles.cartContainer}>
         <div className={styles.title}>購物車</div>
-
         <div className={styles.productDes}>
           <div>
             <input
@@ -68,58 +82,61 @@ export default function CartList({ items = [], increment, decrement, remove }) {
           <div className={styles.p_totalPrice}>總計</div>
           <div className={styles.p_del}>刪除</div>
         </div>
-        {items.map((v, i) => {
-            return (
-              <div key={v.product_id}>
-                <div className={styles.productIn}>
-                  <div className={styles.p_pic}>
-                    <input
-                      type="checkbox"
-                      className={styles.checkbox1}
-                      style={{ marginRight: "50px" }}
-                    />
-                    <img src={v.product_pic} />
-                  </div>
-                  <div className={styles.p_name}>{v.product_name}</div>
-                  <div className={styles.p_price}>{v.product_price}</div>
-                  <div className={styles.p_amount}>
-                    <button
-                      onClick={() => {
-                        increment(items, v.product_id);
-                      }}
-                    >
-                      +
-                    </button>
-                    <span>{v.stock_quantity}</span>
-                    <button
-                      onClick={() => {
-                        if (v.stock_quantity === 1) {
-                          // 移除商品數量要為0的
-                          remove(items, v.product_id);
-                          // alert('至少要買一樣商品')
-                          return; // 跳出函式，接下來的程式不執行
-                        }
 
-                        decrement(items, v.product_id);
-                      }}
-                    >
+        {cartLS.map((v, i) => {
+          return (
+            <div key={v.product_id}>
+              {/* <pre>{JSON.stringify(v, null, 4)}</pre> */}
+              <div className={styles.productIn}>
+                <div className={styles.p_pic}>
+                  <input
+                    type="checkbox"
+                    className={styles.checkbox1}
+                    style={{ marginRight: "50px" }}
+                  />
+                  <img src={`/images/product/list/${v.product_pic}`} />
+                </div>
+                <div className={styles.p_name}>{v.product_name}</div>
+                <div className={styles.p_price}>{v.product_price}</div>
+                <div className={styles.p_amount}>
+                  <div>
+                    <button onClick={() => decrementQuantity(v.product_id)}>
                       -
                     </button>
                   </div>
-                  <div className={styles.p_totalPrice}>0</div>
-                  <div className={styles.p_del}>
-                    <button
-                      onClick={() => {
-                        clearLocalS(data, v.product_id);
-                      }}
-                    >
-                      刪除
+                  <div>
+                    <button>{cartQuantities[v.product_id]}</button>
+                  </div>
+                  <div>
+                    <button onClick={() => incrementQuantity(v.product_id)}>
+                      +
                     </button>
                   </div>
                 </div>
+                <div className={styles.p_totalPrice}>
+                  {v.product_price * cartQuantities[v.product_id]}
+                </div>
+                <div className={styles.p_del}>
+                  <button
+                    type="button"
+                    className="btn btn-light"
+                    onClick={() => {
+                      removeItem(v.product_id);
+                    }}
+                  >
+                    刪除
+                  </button>
+                </div>
               </div>
-            );
-          })}
+            </div>
+          );
+        })}
+        {/* <div>
+          items: {cartData.totalItems} / total: {cartData.totalPrice}
+          <br />
+          {cartData.isEmpty && "購物車為空"}
+          <hr />
+        </div> */}
         <div>
           <div className={styles.title}>優惠券</div>
 

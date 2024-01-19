@@ -7,7 +7,7 @@ import React, { createContext, useReducer } from "react";
 const CartsContext = createContext(null);
 export default CartsContext;
 
-const localStorageId = "Carts";
+const localStorageId = "cartData";
 
 // 儲存到 localStorage
 const saveJSON = (dataObj) => {
@@ -17,7 +17,7 @@ const saveJSON = (dataObj) => {
 };
 
 // 判斷購物車裡是否已經有這個項目
-const cartIndexOf = (cart, item) => cart.findIndex((v) => v.id === item.id);
+const cartIndexOf = (cart, item) => cart.findIndex((v) => v.product_id === item.product_id);
 
 const reducer = (state, action) => {
   let { type, payload = null } = action;
@@ -30,8 +30,8 @@ const reducer = (state, action) => {
   nState[cartId] = nState[cartId] || [];
 
   const cart = nState[cartId];
-  let quantity = +payload.quantity || 1;
-  if (quantity <= 0) quantity = 1;
+  let user_buy_qty = +payload.user_buy_qty || 1;
+  if (user_buy_qty <= 0) user_buy_qty = 1;
 
   let index = cartIndexOf(cart, payload); // 取得所要變更項目的索引
   switch (type) {
@@ -40,7 +40,7 @@ const reducer = (state, action) => {
       if (index >= 0) {
         return state;
       }
-      cart.push({ ...payload, quantity });
+      cart.push({ ...payload, user_buy_qty });
       return saveJSON(nState);
 
     // *** 2. 移除項目
@@ -57,7 +57,7 @@ const reducer = (state, action) => {
         return state;
       }
       nState[cartId] = cart.map((v, i) =>
-        i === index ? { ...v, quantity } : v
+        i === index ? { ...v, user_buy_qty } : v
       );
       return saveJSON(nState);
 
@@ -67,7 +67,7 @@ const reducer = (state, action) => {
         return state;
       }
       nState[cartId] = cart.map((v, i) =>
-        i === index ? { ...v, quantity: v.quantity + 1 } : v
+        i === index ? { ...v, user_buy_qty: v.user_buy_qty + 1 } : v
       );
       return saveJSON(nState);
 
@@ -77,7 +77,7 @@ const reducer = (state, action) => {
         return state;
       }
       nState[cartId] = cart.map((v, i) =>
-        i === index && v.quantity > 1 ? { ...v, quantity: v.quantity - 1 } : v
+        i === index && v.user_buy_qty > 1 ? { ...v, user_buy_qty: v.user_buy_qty - 1 } : v
       );
       return saveJSON(nState);
 
@@ -97,12 +97,11 @@ export function CartsContextProvider({ children }) {
     const str = localStorage.getItem(localStorageId) || "{}";
     initState = JSON.parse(str);
   } catch (ex) {}
-
   const [state, dispach] = useReducer(reducer, initState);
 
   return (
     <CartsContext.Provider
-      value={{ Carts: state, CartsDispach: dispach }}
+      value={{ cartData: state, CartsDispach: dispach }}
     >
       {children}
     </CartsContext.Provider>

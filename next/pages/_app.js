@@ -1,11 +1,12 @@
-import '@/styles/globals.css'
-import { ThemeContextProvider } from "@/context/theme-context";
+import "@/styles/globals.css";
 import { AuthContextProvider } from "@/context/auth-context";
+import { CartProvider } from "@/hooks/useCart";
 export default function App({ Component, pageProps }) {
   return (
     <AuthContextProvider>
-      <ThemeContextProvider>
+      <CartProvider>
         <Component {...pageProps} />
-      </ThemeContextProvider>
+      </CartProvider>
     </AuthContextProvider>
-  )}
+  );
+}
