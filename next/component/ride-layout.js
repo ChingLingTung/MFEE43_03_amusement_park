@@ -1,4 +1,4 @@
-import Navbar from "@/component/navbar";
+import Navbar from "@/component/ride-navbar";
 import Head from "next/head";
 
 export function Layout({ children }) {
@@ -7,8 +7,8 @@ export function Layout({ children }) {
       <Head>
         <title>遊樂園網站</title>
       </Head>
+      <Navbar />
       <div className="container">
-        <Navbar />
         {children}
       </div>
       {/* <div className="container"></div> */}

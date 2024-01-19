@@ -39,7 +39,7 @@ export default function UserInfo() {
   },[parkAuth])
 
   useEffect(()=>{
-    if(!parkAuth.email){
+    if(!parkAuth.email && !data){
       Alert.fire({ 
   didOpen: () => { 
       Alert.fire({

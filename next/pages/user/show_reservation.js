@@ -90,6 +90,21 @@ export default function UserShowReservation() {
               <button className={styles.button} onClick={(e) => {
                     e.preventDefault();
                     logout();
+                    Alert.fire({ 
+                      didOpen: () => { 
+                          Alert.fire({
+                            titleText:'登出成功',
+                            text:'前往首頁',
+                          }),
+                          Alert.fire({
+                            titleText:'登出成功',
+                            text:'前往首頁',
+                            willClose:()=>{
+                              router.push('/');
+                            }
+                          })
+                        }
+                      })
                   }}>登出</button>
             </div>
 
