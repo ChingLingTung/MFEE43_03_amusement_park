@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link';
 import { Cursor } from 'react-custom-cursors';
 import "react-custom-cursors/dist/index.css";
+import { Layout } from '@/component/layout';
 
 
 export default function ShowDetail() {
@@ -77,7 +78,8 @@ export default function ShowDetail() {
   return (
     <>
     <div key={getData.show_id}>
-      <div className={styles.container}>
+    <Layout>
+      <div className={styles.contain}>
         <div style={{width:1200}}>
           <img className={styles.img} width='100%' height={300} src={`/images/show/${getData.show_pic}`} />
           <div className={styles.space_between}>
@@ -135,7 +137,9 @@ export default function ShowDetail() {
           )}
             <Head><title>表演詳細資訊</title></Head>
           </div>
-        </div>  
+        </div>
+    </Layout>
+        
       </div>
     </>
   )
