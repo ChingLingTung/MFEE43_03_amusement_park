@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head';
 import { SHOP_GET_ONE, GET_SAME_TYPE_SHOP } from '@/component/ride-const';
 import { useState,useEffect } from 'react';
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
 

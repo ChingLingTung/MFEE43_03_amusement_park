@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link';
 import { Cursor } from 'react-custom-cursors';
 import "react-custom-cursors/dist/index.css";
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 
 export default function ShowInfo() {
   const seat = [

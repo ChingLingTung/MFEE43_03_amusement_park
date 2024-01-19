@@ -3,7 +3,7 @@ import styles from '@/styles/user.module.css'
 import Head from 'next/head'
 import AuthContext from "@/context/auth-context";
 import { useState,useContext } from "react";
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';

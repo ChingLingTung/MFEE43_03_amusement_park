@@ -9,7 +9,7 @@ import multiMonthPlugin from '@fullcalendar/multimonth'
 import Head from 'next/head';
 import { MAINTAIN_GET_LIST } from '@/component/ride-const'; 
 import { useEffect, useState } from 'react';
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 
 
 export const StyleWrapper = styled.div`

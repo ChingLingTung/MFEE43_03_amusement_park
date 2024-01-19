@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/restaurant.module.css'
 import { FaChevronRight } from "react-icons/fa6";
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 import { SHOP_LIST } from '@/component/ride-const';
 import { useRouter } from 'next/router';
 import { useState,useContext,useEffect } from 'react';

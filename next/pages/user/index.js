@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { USER } from '@/component/ride-const';
 import { useRouter } from "next/router";
 import { useState,useEffect } from 'react';
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
 

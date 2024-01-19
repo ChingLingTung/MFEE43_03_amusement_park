@@ -3,7 +3,7 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/index.module.css'
 import { FaChevronRight } from "react-icons/fa6";
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 
 const inter = Inter({ subsets: ['latin'] })
 

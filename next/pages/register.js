@@ -6,7 +6,7 @@ import { z } from "zod";
 import Swal from 'sweetalert2' 
 import withReactContent from 'sweetalert2-react-content' 
 import { useRouter } from 'next/navigation';
-import { Layout } from '@/component/layout';
+import { Layout } from '@/component/ride-layout';
 
 
 export default function Register() {
