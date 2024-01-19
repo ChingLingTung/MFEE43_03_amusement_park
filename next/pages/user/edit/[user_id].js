@@ -176,7 +176,6 @@ export default function UserEditInfo() {
 
   };
   return (
-    <>
     <Layout>
         <div style={{padding:30}} className={styles.flex_center}>
           <div className={styles.left_section}>
@@ -302,8 +301,7 @@ export default function UserEditInfo() {
           </form>
           </div>
         </div>
+        <Head><title>會員中心</title></Head>
       </Layout>
-      <Head><title>會員中心</title></Head>
-    </>
   )
 }

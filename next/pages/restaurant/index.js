@@ -31,7 +31,6 @@ export default function Shop() {
     getListData();
   },[dataFromShopType]);
   return (
-    <>
       <Layout>
         <div className={styles.container}>
           <h2 className={styles.title}>餐廳列表</h2>
@@ -60,8 +59,8 @@ export default function Shop() {
 
           </div>
         </div>
+        <Head><title>餐廳列表</title></Head>
       </Layout>
-      <Head><title>餐廳列表</title></Head>
-    </>
+
   )
 }

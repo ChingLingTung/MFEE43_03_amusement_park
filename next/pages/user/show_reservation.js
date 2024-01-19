@@ -144,7 +144,7 @@ export default function UserShowReservation() {
                     <td className={styles.td}>{i.seat_number}</td>
                     <td className={styles.td}>
                       <button className={styles.show_info_button} onClick = {()=>{
-                        router.push(`/show/details/${i.show_id}`)
+                        router.push(`/show_reservation/${i.show_id}`)
                       }}>
                         點我看表演資訊
                       </button>

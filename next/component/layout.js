@@ -9,8 +9,9 @@ export function Layout({ children }) {
       </Head>
       <div className="container">
         <Navbar />
+        {children}
       </div>
-      <div className="container">{children}</div>
+      {/* <div className="container"></div> */}
     </>
   );
 }

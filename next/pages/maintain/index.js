@@ -47,12 +47,12 @@ export const StyleWrapper = styled.div`
   }
 `
 export default function Maintain() {
-  const [data, setData] = useState({});
-  // const [event, setEvent] = useState([]);
+  // const [data, setData] = useState({});
+  const [event, setEvent] = useState([]);
   function handleClick() {
     window.history.go(-1);
   }
-  let event = []; // 空list
+  // let event = []; // 空list
     // ajax 從資料庫獲取資料
     // async function post_api() {
     //     const url = 'api/Selectionperiod';
@@ -77,7 +77,7 @@ export default function Maintain() {
 useEffect(()=>{
   getListData();
   console.log(event)
-
+  
 },[])
 
   const getListData = async () => {
@@ -97,16 +97,18 @@ useEffect(()=>{
       //               end:value.maintenance_end
       //           })
       //       })
+      let newEvent=[];
 
-      d.rows.forEach((row) => {
+      newEvent =d.rows.forEach((row) => {
         event.push({
           title:row.amusement_ride_name,
           start:row.maintenance_begin,
           end:row.maintenance_end
         })
+        setEvent(newEvent);
       })
-      return event;
-      // setEvent(event);
+      return newEvent;
+      
     } catch (ex) {
       console.log(ex)
     }
@@ -142,7 +144,7 @@ useEffect(()=>{
             right: 'dayGridMonth,timeGridWeek,multiMonthYear',
           }}
           initialView="dayGridMonth"
-          events = {getListData()}
+          events = {event}
           // events={[
             // {data.rows && data.rows.map((i)=>{
             //   <div key= {i.maintenance_id}>

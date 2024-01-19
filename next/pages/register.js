@@ -6,7 +6,7 @@ import { z } from "zod";
 import Swal from 'sweetalert2' 
 import withReactContent from 'sweetalert2-react-content' 
 import { useRouter } from 'next/navigation';
-
+import { Layout } from '@/component/layout';
 
 
 export default function Register() {
@@ -216,8 +216,8 @@ export default function Register() {
 
   // console.log("re-render---", new Date());
   return (
-    <>
-      <div className={styles.container}>
+    <Layout>
+      <div className={styles.contain}>
         <h2 className={styles.title}>會員註冊</h2>
         <div>
           <p>前端取得資料:</p>
@@ -337,7 +337,7 @@ export default function Register() {
         </div>
       </div>
       <Head><title>註冊</title></Head>
-    </>
+    </Layout>
   )
 
 }
