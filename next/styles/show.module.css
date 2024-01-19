@@ -1,10 +1,10 @@
 .container{
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: center;
-  height: 900px;
+  height: 900px; */
 }
 .title{
   margin:50px auto;

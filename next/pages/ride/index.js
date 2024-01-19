@@ -1,61 +1,66 @@
 import React from 'react'
 import styles from '@/styles/ride.module.css'
 import { FaMagnifyingGlass } from "react-icons/fa6";
-import { FaStar } from "react-icons/fa6";
 import Image from 'next/image';
-import { Layout } from '@/component/Layout';
+import { Layout } from '@/component/ride-layout';
 import Head from 'next/head';
 import { RIDE_LIST } from '@/component/ride-const';
 import { useRouter } from 'next/router';
-import { useState,useContext,useEffect } from 'react';
+import { useState,useContext,useEffect} from 'react';
 import Link from 'next/link';
+import SearchTheme from '@/component/ride/search_theme';
+import SearchCategory from '@/component/ride/search_category';
+import SearchThrillerRating from '@/component/ride/search_thriller_rating';
+import SearchSupport from '@/component/ride/search_support';
 
 export default function Ride() {
   const [data, setData] = useState({});
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
-  const [classValue, setClassValue]=useState("ride_children_button__ZA1aw")
-  const [option, setOption] = useState("");
+  const [dataFromCategory, setDataFromCategory] = useState(0)
+  const [dataFromTheme, setDataFromTheme] = useState(0)
+  const [dataFromThrillerRating, setDataFromThrillerRating] = useState(0)
+  const [dataFromSupport, setDataFromSupport] = useState(0)
+  
   const getListData = async () => {
-    const usp = new URLSearchParams(router.query)
-    // console.log("router.query:", router.query);
-    let page = +router.query.page || 1;
-    let keyword = router.query.keyword || ''
+
+    // const usp = new URLSearchParams(router.query)
+    
+    let page = +router.query.page || 1
 
     if (page < 1) page = 1;
-    try {
-      const r = await fetch(RIDE_LIST + `?${usp.toString()}`);
+    
+      try {
+      const r = await fetch(
+        RIDE_LIST + `?page=${page}` +
+        (keyword==""? '' : `keyword=${keyword}`)+
+        (dataFromTheme===0? '' : '&'+`theme_id=${dataFromTheme}`)+
+        (dataFromCategory===0? '' : '&'+`ride_category_id=${dataFromCategory}`)+
+        (dataFromThrillerRating===0? '' : '&'+`thriller_rating=${dataFromThrillerRating}`)+
+        (dataFromSupport===0? '' : '&'+`ride_support_id=${dataFromSupport}`));
       const d = await r.json();
-      // console.log(value)
+
       setData(d);
     } catch (ex) {
       console.log(ex)
     }
-  };
-  // const getListData = async () => {
-  //   // console.log("router.query:", router.query);
-  //   let page = +router.query.page || 1;
-  //   // 關鍵字搜尋
-  //   let keyword = router.query.keyword || ''
-  //   if (page < 1) page = 1;
-  //   try {
-  //     const r = await fetch(RIDE_LIST + `?${usp.toString()}`);
-  //     const d = await r.json();
-  //     // console.log(value)
-  //     setData(d);
-  //   } catch (ex) {
-  //     console.log(ex)
-  //   }
-  // };
-  useEffect(() => {
-    getListData();
-  },[keyword]);
+    };
+    useEffect(() => {
+      getListData();
+    },[
+      keyword,
+      dataFromTheme,
+      dataFromCategory,
+      dataFromThrillerRating,
+      dataFromSupport
+    ]);
 
   return (
     <>
     <Layout>
         <h2 className={styles.title}>設施搜尋</h2>
         <div className={styles.flex_center} style={{height:50}}>
+        
           <span className={styles.flex_center}>
             <FaMagnifyingGlass style={{width:30,height:30.66,padding:5,borderRight:'none', position:'absolute',left:8}}/>
             <input name='ride_name' className={styles.searchbar} type={'text'} placeholder={'請輸入設施名稱'}  
@@ -75,159 +80,18 @@ export default function Ride() {
               />
           </span>
         </div>
+        {/* <p className={styles.flex_center}>theme:{dataFromTheme}</p>
+        <p className={styles.flex_center}>category:{dataFromCategory}</p>
+        <p className={styles.flex_center}>thrillerRating:{dataFromThrillerRating}</p>
+        <p className={styles.flex_center}>support:{dataFromSupport}</p> */}
         <div className={styles.flex_center_column}>
           <div className={styles.search_flex} style={{height:50}}>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:50}}>主題</span>
-              <span className={classValue} id='theme_1' style={{width:70}} value={option} 
-              onClick={() => {
-                const elements=document.getElementsByClassName("ride_selected_children_button__GjYPq");
-                if(option==="")
-                {
-                  setOption("theme_1");
-                  console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                if(classValue === 'ride_children_button__ZA1aw'){
-                  elements.classValue="ride_children_button__ZA1aw";
-                  setClassValue("ride_selected_children_button__GjYPq");
-                  console.log(classValue);
-                  }else{
-                    setClassValue("ride_children_button__ZA1aw");
-                    console.log(classValue)
-                  }
-                }}>水世界</span>
-              <span className={classValue} id='theme_2' style={{width:85}} value={option} onClick={() => {
-                if(option==="")
-                {setOption('theme_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                const elements=document.getElementsByClassName(styles.selected_children_button);
-                if(classValue === 'ride_children_button__ZA1aw'){
-                  elements.classValue="ride_children_button__ZA1aw";
-                  setClassValue("ride_selected_children_button__GjYPq");
-                  console.log(classValue);
-                  }else{
-                    setClassValue("ride_children_button__ZA1aw");
-                    console.log(classValue)
-                  }
-                }}>冒險之旅</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('theme_3');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>慢樂悠遊</span>
-                <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('theme_4');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>樂高天堂</span>
-            </span>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:50}}>類型</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('category_1');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>兒童友善</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('category_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>親子同樂</span>
-              <span className={styles.children_button} style={{width:85}} onClick={() => {
-                if(option==="")
-                {setOption('category_3');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>刺激冒險</span>
-            </span>
+            <SearchTheme setDataFromTheme={setDataFromTheme} />
+            <SearchCategory  setDataFromCategory={setDataFromCategory}/>
           </div>
           <div className={styles.search_flex} style={{height:50}}>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:85}}>刺激程度</span>
-              <span className={styles.children_button} style={{width:35}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_1');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /></span>
-              <span className={styles.children_button} style={{width:50}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /></span>
-              <span className={styles.children_button} style={{width:65}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_3');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /><FaStar /></span>
-              <span className={styles.children_button} style={{width:80}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_4');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /><FaStar /><FaStar /></span>
-              <span className={styles.children_button} style={{width:95}} onClick={() => {
-                if(option==="")
-                {setOption('thillerRating_5');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}><FaStar /><FaStar /><FaStar /><FaStar /><FaStar /></span>
-            </span>
-            <span  className={styles.search_flex} style={{width:500}}>
-              <span className={styles.button} style={{width:85}}>特殊支援</span>
-              <span className={styles.children_button} style={{width:100}} onClick={() => {
-                if(option==="")
-                {setOption('support_2');
-                console.log(option)}
-                else{
-                  setOption("");
-                  console.log(option);
-                };
-                }}>輪椅可搭乘</span>
-            </span>
+            <SearchThrillerRating setDataFromThrillerRating={setDataFromThrillerRating} />
+            <SearchSupport setDataFromSupport={setDataFromSupport} />
           </div>
           <div className={styles.card_flex}>
             {data.rows &&
