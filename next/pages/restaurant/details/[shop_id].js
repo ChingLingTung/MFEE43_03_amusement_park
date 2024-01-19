@@ -92,6 +92,12 @@ export default function RestaurantDetail() {
   return (
         <Layout key={getData.shop_id}>
           <h2 className={styles.title}>餐廳詳細資料</h2>
+          <div className={styles.button_flex}>
+            <Link href='/restaurant'>
+              <button className={styles.button}>返回餐廳列表頁</button>
+            </Link>
+          </div>
+          
           <div className={styles.flex_center}>
           <img className={styles.img} src={`/images/restaurant/${getData.shop_type_name2}/${getData.shop_name2}/food/${getData.shop_img}`}/>
             <div style={{width:600, lineHeight:2.3,paddingLeft:50}}>

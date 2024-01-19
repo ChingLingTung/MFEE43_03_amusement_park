@@ -76,15 +76,10 @@ export default function ShowDetail() {
 
   useEffect(()=>{},[])
   return (
-<<<<<<< HEAD
     <>
     <div key={getData.show_id}>
     <Layout>
       <div className={styles.contain}>
-=======
-    <Layout key={getData.show_id}>
-      <div className={styles.container}>
->>>>>>> 901fda1a6435bc4d2466381e29b408c8faf4dce2
         <div style={{width:1200}}>
           <img className={styles.img} width='100%' height={300} src={`/images/show/${getData.show_pic}`} />
           <div className={styles.space_between}>
@@ -118,7 +113,7 @@ export default function ShowDetail() {
                   <div key={i}>
                     {row.map((cell, j) => (
                       <span 
-                      className={seatClass} key={j} 
+                      className={`${seatClass} `} key={j} 
                       style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
                       value={cell} 
                       onClick={(value)=>{
@@ -142,15 +137,10 @@ export default function ShowDetail() {
           )}
             <Head><title>表演詳細資訊</title></Head>
           </div>
-<<<<<<< HEAD
         </div>
     </Layout>
         
       </div>
     </>
-=======
-        </div>  
-      </Layout>
->>>>>>> 901fda1a6435bc4d2466381e29b408c8faf4dce2
   )
 }

@@ -170,15 +170,13 @@ router.get("/api", async (req, res) => {
 router.get("/api/details/:amusement_ride_id", async (req, res) => {
   const amusement_ride_id = +req.params.amusement_ride_id;
 
-
-  const sql = `SELECT * FROM amusement_ride JOIN ride_category ON amusement_ride.ride_category_id=ride_category.ride_category_id JOIN ride_support ON amusement_ride.ride_support_id=ride_support.ride_support_id JOIN theme ON amusement_ride.theme_id=theme.theme_id JOIN maintenance ON amusement_ride.amusement_ride_name=maintenance.amusement_ride_name WHERE amusement_ride_id=?`;
+  const sql = `SELECT amusement_ride_id, amusement_ride.amusement_ride_name, amusement_ride_img, amusement_ride.ride_category_id, ride_category_name, thriller_rating, ride_support_name, theme_name, amusement_ride_description FROM amusement_ride JOIN ride_category ON amusement_ride.ride_category_id=ride_category.ride_category_id JOIN ride_support ON amusement_ride.ride_support_id=ride_support.ride_support_id JOIN theme ON amusement_ride.theme_id=theme.theme_id JOIN maintenance ON amusement_ride.amusement_ride_name=maintenance.amusement_ride_name WHERE amusement_ride_id=?` ;
   const [rows] = await db.query(sql, [amusement_ride_id]);
   if (!rows.length) {
     return res.json({success: false});
   }
   const row = rows[0];
   // row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
-
   res.json({success: true, row});
 });
 // 取得除了某個社使以外跟該設施相同類型的設施
@@ -242,5 +240,64 @@ const getTypeData = async(req)=>{
 router.get("/type/api", async (req, res) => {
 res.json( await getTypeData(req) );
 });
+
+const getMaintainTime = async(req)=>{
+  const perPage = 10; // 每頁幾筆
+  // 用戶決定要看第幾頁
+  let page = +req.query.page || 1;
+  let qs = {};  // 用來把 query string 的設定傳給 template
+  let amusement_ride_name = req.query.amusement_ride_name? req.query.amusement_ride_name : '';
+  // 設定綜合的where子句
+  let where = `WHERE 1 `;
+
+  // 關鍵字搜尋只有一欄的情況下要用符合任一的or
+  if (amusement_ride_name !=='') {
+    qs.amusement_ride_name = amusement_ride_name;
+    where += ` AND amusement_ride_name = '${amusement_ride_name}' `;
+  }
+
+  let totalRows = 0;
+  let totalPages = 0;
+  let rows = [];
+
+  let output = {
+    success: false,
+    page,
+    perPage,
+    rows,
+    totalRows,
+    totalPages,
+    qs,
+    redirect: "",
+    info: "",
+  };
+
+  const t_sql = `SELECT COUNT(1) totalRows FROM amusement_ride JOIN maintenance ON amusement_ride.amusement_ride_name=maintenance.amusement_ride_name ${where} AND unix_timestamp(maintenance_begin) >  unix_timestamp(Now()) ORDER BY maintenance_begin`;
+  [[{ totalRows }]] = await db.query(t_sql);
+  totalPages = Math.ceil(totalRows / perPage);
+  if (totalRows > 0) {
+    if (page > totalPages) {
+      output.redirect = `?page=${totalPages}`;
+      output.info = `頁碼值大於總頁數`;
+      return {...output, totalRows, totalPages};
+    }
+  }
+
+  const sql = `SELECT amusement_ride_id, amusement_ride.amusement_ride_name, maintenance_begin FROM amusement_ride JOIN maintenance ON amusement_ride.amusement_ride_name = maintenance.amusement_ride_name ${where} ORDER BY amusement_ride.amusement_ride_id`;
+  [rows] = await db.query(sql);
+    if (!rows.length) {
+      return res.json({success: false});
+    }
+
+    rows.forEach((row) => {
+      row.maintenance_begin = dayjs(row.maintenance_begin).format("YYYY/MM/DD HH:mm");
+  })
+
+    output = { ...output, success: true, rows, totalRows, totalPages };  
+  return output;
+}
+router.get("/time/api", async (req, res) => {
+  res.json( await getMaintainTime(req) );
+  });
 
 export default router;

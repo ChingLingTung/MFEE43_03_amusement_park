@@ -76,7 +76,7 @@ export default function ShowInfo() {
   useEffect(()=>{},[])
   return (
     <Layout key={getData.show_id}>
-      <div className={styles.container}>
+      <div className={styles.contain}>
         <div style={{width:1200}}>
           <img className={styles.img} width='100%' height={300} src={`/images/show/${getData.show_pic}`} />
           <div className={styles.space_between}>

@@ -48,7 +48,7 @@ export const StyleWrapper = styled.div`
 `
 export default function Maintain() {
   // const [data, setData] = useState({});
-  const [event, setEvent] = useState([]);
+  const [events, setEvents] = useState([]);
   function handleClick() {
     window.history.go(-1);
   }
@@ -76,7 +76,7 @@ export default function Maintain() {
     // }
 useEffect(()=>{
   getListData();
-  console.log(event)
+  console.log(events)
   
 },[])
 
@@ -97,21 +97,44 @@ useEffect(()=>{
       //               end:value.maintenance_end
       //           })
       //       })
-      let newEvent=[];
+      // d.rows.forEach((row) => {
+      //   event.push({
+      //     title:row.amusement_ride_name,
+      //     start:row.maintenance_begin,
+      //     end:row.maintenance_end
+      //   })
+      //   console.log(event)
+      //   setEvent(event);
+      // })
+      // return event;
 
-      newEvent =d.rows.forEach((row) => {
-        event.push({
-          title:row.amusement_ride_name,
-          start:row.maintenance_begin,
-          end:row.maintenance_end
-        })
-        setEvent(newEvent);
-      })
-      return newEvent;
-      
-    } catch (ex) {
-      console.log(ex)
-    }
+    //   const eventData =( await d.rows.forEach((row) => {
+    //       events.push({
+    //         title:row.amusement_ride_name,
+    //         start:row.maintenance_begin,
+    //         end:row.maintenance_end
+    //       })
+    //   }))
+    //   const newEventData= [...events, ...eventData]
+    //   console.log(eventData)
+    //   console.log(newEventData)
+    //   setEvents(newEventData);
+    // } catch (ex) {
+    //   console.log(ex)
+    // }
+    let newEvents = [...events]
+    await (d.rows.forEach((row) => {
+      events.push({
+      title:row.amusement_ride_name,
+      start:row.maintenance_begin,
+      end:row.maintenance_end
+    })
+  }))
+    console.log(newEvents)
+    setEvents(newEvents);
+  } catch (ex) {
+    console.log(ex)
+  }
     };
 
 
@@ -144,7 +167,7 @@ useEffect(()=>{
             right: 'dayGridMonth,timeGridWeek,multiMonthYear',
           }}
           initialView="dayGridMonth"
-          events = {event}
+          events = {events}
           // events={[
             // {data.rows && data.rows.map((i)=>{
             //   <div key= {i.maintenance_id}>

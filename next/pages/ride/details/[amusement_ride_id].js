@@ -6,7 +6,7 @@ import { FaStar } from "react-icons/fa";
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import Image from 'next/image';
-import { RIDE_GET_ONE, GET_3_SAME_TYPE_RIDE } from '@/component/ride-const';
+import { RIDE_GET_ONE, GET_3_SAME_TYPE_RIDE, MAINTAIN_GET_TIME } from '@/component/ride-const';
 import Head from 'next/head';
 import { Layout } from '@/component/layout';
 import { useState,useEffect } from 'react';
@@ -16,8 +16,6 @@ export default function RideDetail() {
     amusement_ride_id:"",
     amusement_ride_name:"",
     amusement_ride_img:"", 
-    amusement_ride_longitude:"", 
-    amusement_ride_latitude:"",
     ride_category_id:"", 
     ride_category_name:"", 
     thriller_rating:"", 
@@ -26,6 +24,7 @@ export default function RideDetail() {
     amusement_ride_description:"",
   });
   const [getTypeData, setGetTypeData] = useState({});
+  const [getMaintain, setGetMaintain] = useState('');
   const router = useRouter();
   useEffect(() => {
     const amusement_ride_id = +router.query.amusement_ride_id;
@@ -55,9 +54,22 @@ const getTypeList = async()=>{
     const r = await fetch(
       GET_3_SAME_TYPE_RIDE + 
       '?' + `ride_category_id=${getData.ride_category_id}` + '&'
-      + `amusement_ride_id=${getData.amusement_ride_id}`);
+      + `amusement_ride_id=${getData.amusement_ride_id}`
+      );
       const d = await r.json();
       setGetTypeData(d);
+  } catch (ex) {
+    console.log(ex)
+  }
+}
+
+const getMaintainTime = async()=>{
+  try {
+    const r = await fetch(
+      MAINTAIN_GET_TIME + '?' + `amusement_ride_name=${getData.amusement_ride_name}`
+      );
+      const d = await r.json();
+      setGetMaintain(d);
   } catch (ex) {
     console.log(ex)
   }
@@ -66,6 +78,10 @@ const getTypeList = async()=>{
 useEffect(()=>{
   getTypeList()
 },[getData.ride_category_id,getData.amusement_ride_id]);
+
+useEffect(()=>{
+  getMaintainTime()
+},[getData.amusement_ride_name]);
 
     return (
         
@@ -82,9 +98,9 @@ useEffect(()=>{
                 <p>身高限制：{getData.height_requirement}</p>
                 <p>特殊支援：{getData.ride_support_name}</p>
                 <p>設備維護狀況：目前開放中，可正常使用。</p>
-                {/* <p style={{color:"red"}}>下次維護時間：2024/2/20</p> */}
+                <p>下次維護時間：{getMaintain}</p>
                 <Link href={'/maintain'}>
-                  <p style={{color:"red"}}><FaRegCalendarDays />完整維護排程</p>
+                  <p style={{color:'#d7627b'}}><FaRegCalendarDays />完整維護排程</p>
                 </Link>
                 {/* <p style={{color:"red"}}>快速通關：本設施為快速通關套票可選擇的設施之一</p>
                 <p style={{color:"red"}}><FaTicketAlt />適用的快速通關票券</p> */}

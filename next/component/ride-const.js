@@ -31,7 +31,8 @@ export const USER_RESERVATION = API_SERVER + "/reservation/api";
 export const GET_3_SAME_TYPE_RIDE = API_SERVER + "/ride/type/api";
 // 餐廳詳細頁下方取得與該餐廳同樣類型的其他餐廳
 export const GET_SAME_TYPE_SHOP = API_SERVER + "/shop/type/api";
-
+// 取得下次維護時間
+export const MAINTAIN_GET_TIME = API_SERVER + "/maintenance/time/api";
 
 
 
