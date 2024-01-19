@@ -40,28 +40,30 @@
       <table class="table table-striped table-bordered">
         <thead>
           <tr>
-            <th>庫存編號</th>
-            <th>產品編號</th>
-            <th>產品類別</th>
-            <th>產品顏色</th>
-            <th>產品風格</th>
-            <th>產品數量</th>
-            <th>產品尺寸</th>
-            <th>產品圖片</th>
+
+            <th>收件人編號</th>
+            <th>收件人名字</th>
+            <th>收件人Email</th>
+            <th>收件人手機</th>
+            <th>收件人電話</th>
+            <th>發票類型</th>
+            <th>付款方式</th>
+            <th>收貨方式</th>
 
           </tr>
         </thead>
         <tbody>
           <% for(let i of rows) { %>
           <tr>
-            <td><%= i.pdstock_id %></td>
-            <td><%= i.product_name %></td>
-            <td><%= i.pdcate_name %></td>
-            <td><%= i.pdcolor_name %></td>
-            <td><%= i.pdstyle_name %></td>
-            <td><%= i.pdstock_quantity %></td>
-            <td><%= i.pdsize_name %></td>
-            <td><%= i.pd_picture %></td>
+            <td><%= i.recipient_id %></td>
+            <td><%= i.recipient_name %></td>
+            <td><%= i.recipient_email %></td>
+            <td><%= i.recipient_phone %></td>
+            <td><%= i.recipient_tel %></td>
+            <td><%= i.bill_name %></td>
+            <td><%= i.userpay_name %></td>
+            <td><%= i.recipient_address_name %></td>
+
           </tr>
           <% } %>
         </tbody>

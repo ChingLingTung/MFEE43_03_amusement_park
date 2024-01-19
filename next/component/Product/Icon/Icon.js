@@ -7,8 +7,8 @@ export default function Icon() {
   return (
     <>
       <div className={styles["icon-button"]}>
-        <FaRegHeart size={24} />
-        <IoCart size={24} />
+        <FaRegHeart size={30} />
+        <IoCart size={30} />
       </div>
     </>
   );

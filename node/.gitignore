@@ -14,6 +14,7 @@ public/img
 .env
 .vscode
 headers.txt
+.env
 package-lock.json
 
 # Compiled Java class files

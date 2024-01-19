@@ -7,10 +7,10 @@ import cors from "cors";
 import mysql_session from "express-mysql-session";
 import bcrypt from "bcryptjs";
 
-import jwt from "jsonwebtoken";
-import loginRouter from "./routes/login.js";
+import  jwt  from "jsonwebtoken";
+import loginRouter from "./routes/login.js"
 import rideRouter from "./routes/ride.js";
-import showRouter from "./routes/show.js";
+import showRouter from "./routes/show.js"
 import db from "./utils/connect-mysql.js";
 import upload from "./utils/upload-imgs.js";
 import sales from "./data/sales.json" assert { type: "json" };
@@ -22,6 +22,12 @@ import ticketRouter from "./routes/ticket.js";
 
 // import multer from "multer";
 // const upload = multer({ dest: "tmp_uploads/" });
+import orderRouter from './routes/order.js'
+import userpayRouter from './routes/userpay.js'
+
+// import multer from "multer";
+// const upload = multer({ dest: "tmp_uploads/" });
+
 
 const app = express();
 
@@ -51,13 +57,13 @@ app.use((req, res, next) => {
   res.locals.toDateString = (d) => dayjs(d).format("YYYY-MM-DD");
   res.locals.toDateTimeString = (d) => dayjs(d).format("YYYY-MM-DD HH:mm:ss");
 
-  res.locals.session = req.session; // 讓 templates 可以取用 session
+  res.locals.session = req.session;  // 讓 templates 可以取用 session
   const auth = req.get("Authorization");
   // 處理token，將Authorization的值去掉Bearer 只取單純的token值
-  if (auth && auth.indexOf("Bearer ") === 0) {
+  if(auth && auth.indexOf("Bearer ")===0){
     const token = auth.slice(7);
     // 避免因為token錯誤報錯，用try catch包起來但不對錯誤的token做任何處理
-    try {
+    try{
       const payload = jwt.verify(token, process.env.JWT_SECRET);
       // console.log({payload});
 
@@ -95,6 +101,8 @@ app.use("/product", productListRouter);
 app.use("/cart", cartRouter);
 app.use("/ticket", ticketRouter);
 app.use("/detail", detailRouter);
+app.use("/order", orderRouter);
+app.use("/userpay", userpayRouter);
 app.use("/show", showRouter);
 app.get("/try-sess", (req, res) => {
   req.session.n = req.session.n || 0;
@@ -191,3 +199,6 @@ const port = process.env.WEB_PORT || 3001;
 app.listen(port, () => {
   console.log(`express server: ${port}`);
 });
+
+
+

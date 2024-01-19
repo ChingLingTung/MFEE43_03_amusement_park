@@ -1,7 +1,6 @@
 import Head from "next/head";
-import Navbar from "@/component/navbar";
+import Navbar from "@/component/Navbar/Navbar"
 import Footer from "@/component/Footer/Footer";
-
 export function Layout({ children }) {
   return (
     <>

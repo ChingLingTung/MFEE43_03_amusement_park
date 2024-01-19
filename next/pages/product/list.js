@@ -45,7 +45,7 @@ export default function Ride() {
   };
   useEffect(() => {
     getListData();
-  }, [keyword, dataFromStyle, dataFromCate, dataFromSize, dataFromColor]);
+  }, [keyword, dataFromStyle, dataFromCate, dataFromSize, dataFromColor, router.query.page]);
 
   return (
     <>
@@ -57,19 +57,19 @@ export default function Ride() {
 
           <div className={styles.page_nav}>
             {data.success && data.totalPages
-              ? Array(11)
+              ? Array(7)
                   .fill(1)
                   .map((v, i) => {
-                    const p = data.page - 5 + i;
+                    const p = data.page - 3 + i;
                     if (p < 1 || p > data.totalPages) return null;
                     return (
                       <div
                         key={p}
                         className={
-                          p === data.page ? "page-item active" : "page-item"
+                          p === data.page ? `${styles.page_item} ${styles.active}` : styles.page_item
                         }
                       >
-                        <Link className="page-link" href={"?page=" + p}>
+                        <Link className={styles.page_link} href={"?page=" + p}>
                           {p}
                         </Link>
                       </div>

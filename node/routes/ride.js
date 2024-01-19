@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
 //     if (page > totalPages) {
 //       return res.redirect(`?page=${totalPages}`);
 //     }
-//     const sql = `SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC
+//     const sql = `SELECT * FROM amusement_ride ORDER BY amusement_ride_id DESC 
 //     LIMIT ${(page - 1) * perPage}, ${perPage}`;
 //     // 這裡的rows是上面的全域變數
 //     [rows] = await db.query(sql);
@@ -58,11 +58,11 @@ router.use((req, res, next) => {
   if (req.method === "GET" && u === "/") {
     return next();
   }
-  //   // 如果session裡沒有登入的資訊
-  //   if (!req.session.admin) {
-  //     // 跳轉到登入頁面
-  //     return res.redirect("/login");
-  //   }
+//   // 如果session裡沒有登入的資訊
+//   if (!req.session.admin) {
+//     // 跳轉到登入頁面
+//     return res.redirect("/login");
+//   }
   next();
 });
 
@@ -71,13 +71,10 @@ const getListData = async (req) => {
   // 用戶決定要看第幾頁
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
-  let keyword =
-    req.query.keyword && typeof req.query.keyword === "string"
-      ? req.query.keyword.trim()
-      : "";
+  let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
   let keyword_ = db.escape(`%${keyword}%`);
-
-  let qs = {}; // 用來把 query string 的設定傳給 template
+  
+  let qs = {};  // 用來把 query string 的設定傳給 template
 
   // // 日期的搜尋(在某個日期後的搜尋)
   // // 設定開始日期startDate用於搜尋某日期以後的資料

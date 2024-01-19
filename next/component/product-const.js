@@ -2,7 +2,13 @@ export const API_SERVER = "http://localhost:3002";
 
 export const AB_LIST = API_SERVER + "/product/api";
 
-export const AB_DETAIL = API_SERVER + "/detail/api";
+export const AB_USERPAY = API_SERVER + "/userpay/api";
+
+export const AB_ORDER = API_SERVER + "/order/api";
+
+export const AB_ORDER_DETAILS = API_SERVER + "/order/details";
+
+export const AB_ORDER_DETAILS2 = API_SERVER + "/order/details2";
 
 export const AB_ADD = API_SERVER + "/product/add";  // method: POST
 
