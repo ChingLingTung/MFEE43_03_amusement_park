@@ -240,7 +240,7 @@ export default function OrderADD() {
 
   return (
     <div className={styles.w100}>
-      <Layout >
+      <Layout>
         <Paystep />
         <main className={styles.form_container}>
           <div className={styles.recipient_information}>
@@ -253,7 +253,7 @@ export default function OrderADD() {
           </div>
         </main>
 
-        <main className={styles.w100}>
+        <main className={styles.w80}>
           <div className={styles.form_container1}>
             <div className={styles.recipient_descs}>
               <div className={styles.recipient_descs_title}>
