@@ -74,8 +74,8 @@ export default function Userpay({
             <div>
               <input type="radio" name="bill" /> 公司發票
             </div>
-            <div>
-              <input type="radio" name="bill" className={styles.ml30} /> 發票捐贈
+            <div className={styles.ml30}>
+              <input type="radio" name="bill"  /> 發票捐贈
             </div>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function Userpay({
             <div>總計</div>
             <div>$1800</div>
             <div className={styles.pay_button}>
-              <button className={styles.pay_button_word}>確認結帳</button>
+              <button className={styles.pay_button_word}>結帳</button>
             </div>
           </div>
         </div>

@@ -16,7 +16,7 @@ export const AuthContextProvider = ({ children }) => {
   
   const [parkAuth, setParkAuth] = useState(initAuth);
   useEffect(() => {
-    const str = localStorage.getItem("auth");
+    const str = localStorage.getItem("park_auth");
     if (str) {
       try {
         const data = JSON.parse(str);
@@ -31,7 +31,7 @@ export const AuthContextProvider = ({ children }) => {
   // 登出
   const logout = () => {
     // 登出時, 清除 localStorage 的記錄
-    localStorage.removeItem("auth");
+    localStorage.removeItem("park_auth");
     setParkAuth(initAuth);
   };
 

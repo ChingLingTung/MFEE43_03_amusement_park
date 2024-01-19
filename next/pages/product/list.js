@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 import Card from "@/component/Product/Card";
 import IconNav from "@/component/Icon-nav/Icon-nav";
 // import Slider from "@/component/Slider/Slider";
-import PageSelect from "@/component/Page-select/Page-select";
 import styles from '@/component/Page-select/Page-select.module.css'
 
 export default function Ride() {
