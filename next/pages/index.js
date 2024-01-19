@@ -3,13 +3,12 @@ import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/index.module.css'
 import { FaChevronRight } from "react-icons/fa6";
-import { Layout } from '@/component/Layout';
+import { Layout } from '@/component/ride-layout';
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   return (
-    <>
     <Layout>
       <div className={styles.container}>
         <h2 className={styles.title}>最新消息</h2>
@@ -122,8 +121,8 @@ export default function Home() {
           </div>
         </div>
       </div>
-      </Layout>
       <Head><title>首頁</title></Head>
-    </>
+      </Layout>
+
   )
 }

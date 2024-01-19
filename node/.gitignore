@@ -9,8 +9,9 @@ dist/
 
 tmp_uploads
 public/img
-
+.env
 .idea
+.env
 .vscode
 headers.txt
 .env

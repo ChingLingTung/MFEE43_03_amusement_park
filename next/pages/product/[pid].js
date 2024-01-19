@@ -14,6 +14,7 @@ export default function Detail() {
     product_pic: [],
     product_size: "",
     product_color: "",
+
     stock_quantity: "",
     product_description: "",
   });
@@ -39,6 +40,7 @@ export default function Detail() {
               const photoArray = data.row.product_pic.split(",");
               data.row.product_pic = photoArray;
               setGetData({ ...data.row });
+              // setMainPic(photoArray[0])
             }
           })
           .catch((ex) => console.log(ex));
@@ -93,7 +95,7 @@ export default function Detail() {
     }
   };
   return (
-    <>
+    <div className="">
       <Layout key={getData.product_id}>
         <main className={styles.container}>
           <div className={styles.detailContainer}>
@@ -184,6 +186,6 @@ export default function Detail() {
           </div>
         </main>
       </Layout>
-    </>
+    </div>
   );
 }

@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import styles from "@/component/Order/Order.module.css";
 import Image from "next/image";
 // import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa";
-import { FaChevronLeft } from "react-icons/fa";
 
 export default function Detail({
   photo,

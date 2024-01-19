@@ -239,8 +239,8 @@ export default function OrderADD() {
   // };
 
   return (
-    <>
-      <Layout>
+    <div className={styles.w100}>
+      <Layout >
         <Paystep />
         <main className={styles.form_container}>
           <div className={styles.recipient_information}>
@@ -403,6 +403,6 @@ export default function OrderADD() {
           </div>
         </main>
       </Layout>
-    </>
+    </div>
   );
 }

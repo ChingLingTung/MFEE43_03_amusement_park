@@ -1,4 +1,4 @@
-.container{
+.contain{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -9,29 +9,29 @@
 .title{
   margin:50px auto;
   text-align: center;
-  font-size: 50px;
+  font-size: 30px;
 }
 .formborder{
-  height: 900px;
+  height: 750px;
   width: 1000px;
   border: #F29BA5 2px solid;
   border-radius: 10px;
-  font-size: 30px;
+  font-size: 20px;
   margin:10px auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding: 10px;
 }
 .input{
   outline-style: none;
   border:0;
   border: #E4BEC6 1px solid;
-  font-size: 30px;
+  font-size: 20px;
   width: 550px;
-  height: 50px;
-  margin: 20px 0px;
+  height: 30px;
+  margin: 10px 0px;
   border-radius: 5px;
   font-family:'Zen Maru Gothic', serif;
   padding-inline-start: 5px;
@@ -42,8 +42,8 @@
   background-color: #E4BEC6;
   border-radius: 5px;
   width: 100%;
-  height: 50px;
-  font-size: 30px;
+  height: 30px;
+  font-size: 20px;
   margin: 20px 0px;
   color: #fff;
   font-family:'Zen Maru Gothic', serif;
@@ -77,19 +77,29 @@
   width: 100%;
   margin:20px 2px;
 }
+.upload_button{
+  font-family:'Zen Maru Gothic', serif;
+  border:0;
+  background-color:none;
+  font-size: 20px;
+  outline: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 .nickname{
   outline-style: none;
   border:0;
   border-bottom: #E4BEC6 1px solid;
-  font-size: 30px;
+  font-size: 20px;
   width: 200px;
-  height: 40px;
+  height: 30px;
   margin: 10px 0px;
   font-family:'Zen Maru Gothic', serif;
   padding-inline-start: 10px;
 }
 .icon{
   object-fit: fill;
-  height:40px;
+  height:30px;
   margin:0px 2px;
 }

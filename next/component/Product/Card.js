@@ -6,7 +6,7 @@ import Link from "next/link";
 export default function Card({ data }) {
   return (
     <>
-    {/* <pre>{JSON.stringify(data,null,4)}</pre> */}
+      {/* <pre>{JSON.stringify(data,null,4)}</pre> */}
       <div className={styles["w-262"]}>
         <Link href={`/product/${data.product_id}`}>
           <img
@@ -17,7 +17,7 @@ export default function Card({ data }) {
           <p className={styles["card-text"]}>{data.product_name}</p>
           <span className={styles["price-text"]}>$ {data.product_price}</span>
         </Link>
-          <Icon />
+        <Icon />
       </div>
     </>
   );

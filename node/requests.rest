@@ -7,7 +7,7 @@
 POST http://localhost:3002/login-jwt
 Content-Type: application/json
 
-{"email": "DrinkAllDay@iSpan.com", "password": "0123456789"}
+{"email": "pigpig@zzz.com", "password": "123zzzZZZ"}
 
 ### 測試 JWT 登入 - 確定是錯誤的 
 
