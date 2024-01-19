@@ -210,6 +210,7 @@ router.get("/", async (req, res) => {
   // }
 });
 
+
 router.post("/api", async (req, res) => {
   res.json(await getListData(req));
 });
@@ -236,6 +237,45 @@ router.get("/api/:order_id", async (req, res) => {
   row.order_date = dayjs(row.order_date).format("YYYY-MM-DD");
 
   res.json({ success: true, row });
+});
+
+//新增訂單
+router.get("/add", async (req, res) => {
+  res.render("/add");
+});
+router.post("/add", upload.none(), async (req, res) => {
+  const output = {
+    success: false,
+    postData: req.body, // 除錯用
+  };
+
+  const { user_id, recipient_name, recipient_email, recipient_phone, recipient_tel, bill_id, userpay_id, odstatus_id, ibon_id, recipient_address_id, address_detail, bill_detail, order_date } = req.body;
+  const sql =
+    "INSERT INTO `order_list`(`user_id`, `recipient_name`, `recipient_email`, `recipient_phone`, `recipient_tel`, `bill_id`, `userpay_id`, `odstatus_id`, `ibon_id`, `recipient_address_id`, `address_detail`, `bill_detail`, `order_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() )";
+
+  try {
+    const [result] = await db.query(sql, [
+      user_id,
+      recipient_name,
+      recipient_email,
+      recipient_phone,
+      recipient_tel,
+      bill_id,
+      userpay_id,
+      odstatus_id,
+      ibon_id,
+      recipient_address_id,
+      address_detail,
+      bill_detail,
+      order_date,
+    ]);
+    output.result = result;
+    output.success = !!result.affectedRows;
+  } catch (ex) {
+    output.exception = ex;
+  }
+
+  res.json(output);
 });
 
 export default router;

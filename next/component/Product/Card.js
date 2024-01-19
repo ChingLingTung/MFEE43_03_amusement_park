@@ -16,8 +16,8 @@ export default function Card({ data }) {
           />
           <p className={styles["card-text"]}>{data.product_name}</p>
           <span className={styles["price-text"]}>$ {data.product_price}</span>
-          <Icon />
         </Link>
+          <Icon />
       </div>
     </>
   );
