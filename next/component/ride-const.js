@@ -33,6 +33,9 @@ export const GET_3_SAME_TYPE_RIDE = API_SERVER + "/ride/type/api";
 export const GET_SAME_TYPE_SHOP = API_SERVER + "/shop/type/api";
 // 取得下次維護時間
 export const MAINTAIN_GET_TIME = API_SERVER + "/ride/time/api";
+// 會員在登入狀態時進行表演預約
+export const USER_RESERVATION_ADD = API_SERVER + "/reservation/add/api";
+
 
 
 
