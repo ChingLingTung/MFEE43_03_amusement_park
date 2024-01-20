@@ -56,7 +56,7 @@ export default function UserInfo() {
     }
 })
 }
-  },[parkAuth.email])
+  },[])
 
   return (
     <>

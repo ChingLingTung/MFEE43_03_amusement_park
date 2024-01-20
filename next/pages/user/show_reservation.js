@@ -39,13 +39,10 @@ export default function UserShowReservation() {
       console.log(ex)
     }
     };
-    useEffect(()=>{
-      getListData()
-    },[])
 
     useEffect(()=>{
       getListData();
-    },[data]);
+    },[parkAuth]);
 
   return (
     <>

@@ -77,14 +77,14 @@ const getListData = async (req) => {
     };
     
     let { user_id, show_id, selected_seat } = req.body;
-    // if(!user_id){
-    //   output.error='使用者未登入'
-    //   return output
-    // }
-    // if(!show_id){
-    //   output.error='未取得預約的表演項目'
-    //   return output
-    // }
+    if(!user_id){
+      output.error='使用者未登入'
+      return output
+    }
+    if(!show_id){
+      output.error='未取得預約的表演項目'
+      return output
+    }
     if(selected_seat===""){
       output.error='使用者未選取任何座位'
       return output
