@@ -170,7 +170,7 @@ router.get("/api", async (req, res) => {
 router.get("/api/details/:amusement_ride_id", async (req, res) => {
   const amusement_ride_id = +req.params.amusement_ride_id;
 
-  const sql = `SELECT amusement_ride_id, amusement_ride.amusement_ride_name, amusement_ride_img, amusement_ride.ride_category_id, ride_category_name, thriller_rating, ride_support_name, theme_name, amusement_ride_description FROM amusement_ride JOIN ride_category ON amusement_ride.ride_category_id=ride_category.ride_category_id JOIN ride_support ON amusement_ride.ride_support_id=ride_support.ride_support_id JOIN theme ON amusement_ride.theme_id=theme.theme_id JOIN maintenance ON amusement_ride.amusement_ride_name=maintenance.amusement_ride_name WHERE amusement_ride_id=?` ;
+  const sql = `SELECT amusement_ride_id, amusement_ride.amusement_ride_name, amusement_ride_img, amusement_ride.ride_category_id, ride_category_name, thriller_rating, height_requirement, ride_support_name, theme_name, amusement_ride_description FROM amusement_ride JOIN ride_category ON amusement_ride.ride_category_id=ride_category.ride_category_id JOIN ride_support ON amusement_ride.ride_support_id=ride_support.ride_support_id JOIN theme ON amusement_ride.theme_id=theme.theme_id JOIN maintenance ON amusement_ride.amusement_ride_name=maintenance.amusement_ride_name WHERE amusement_ride_id=?` ;
   const [rows] = await db.query(sql, [amusement_ride_id]);
   if (!rows.length) {
     return res.json({success: false});
@@ -253,7 +253,7 @@ const getMaintainTime = async(req)=>{
   // 關鍵字搜尋只有一欄的情況下要用符合任一的or
   if (amusement_ride_name !=='') {
     qs.amusement_ride_name = amusement_ride_name;
-    where += ` AND amusement_ride_name = '${amusement_ride_name}' `;
+    where += ` AND amusement_ride.amusement_ride_name = '${amusement_ride_name}' `;
   }
 
   let totalRows = 0;
@@ -283,14 +283,15 @@ const getMaintainTime = async(req)=>{
     }
   }
 
-  const sql = `SELECT amusement_ride_id, amusement_ride.amusement_ride_name, maintenance_begin FROM amusement_ride JOIN maintenance ON amusement_ride.amusement_ride_name = maintenance.amusement_ride_name ${where} ORDER BY amusement_ride.amusement_ride_id`;
+  const sql = `SELECT amusement_ride_id, amusement_ride.amusement_ride_name, maintenance_begin, maintenance_end FROM amusement_ride JOIN maintenance ON amusement_ride.amusement_ride_name = maintenance.amusement_ride_name ${where} AND unix_timestamp(maintenance_begin) >  unix_timestamp(Now()) ORDER BY amusement_ride.amusement_ride_id LIMIT 1`;
   [rows] = await db.query(sql);
     if (!rows.length) {
-      return res.json({success: false});
+      return output;
     }
 
     rows.forEach((row) => {
       row.maintenance_begin = dayjs(row.maintenance_begin).format("YYYY/MM/DD HH:mm");
+      row.maintenance_end = dayjs(row.maintenance_end).format("YYYY/MM/DD HH:mm");
   })
 
     output = { ...output, success: true, rows, totalRows, totalPages };  

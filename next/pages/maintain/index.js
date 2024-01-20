@@ -8,6 +8,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import multiMonthPlugin from "@fullcalendar/multimonth";
 import Head from "next/head";
 import { MAINTAIN_GET_LIST } from "@/component/ride-const";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Layout } from "@/component/ride-layout";
 
@@ -46,9 +47,7 @@ export const StyleWrapper = styled.div`
 export default function Maintain() {
   // const [data, setData] = useState({});
   const [events, setEvents] = useState([]);
-  function handleClick() {
-    window.history.go(-1);
-  }
+  const router = useRouter();
   // let event = []; // 空list
   // ajax 從資料庫獲取資料
   // async function post_api() {
@@ -134,10 +133,9 @@ export default function Maintain() {
     <>
       <Layout>
         <div className={styles.container}>
-          <div className={styles.flex_spacebetween}>
+          {/* <div className={styles.flex_spacebetween}>
             <div className={styles.flex_center} style={{ height: 50 }}>
               <span className={styles.flex_center}>
-             
                 <FaMagnifyingGlass
                   style={{
                     width: 30,
@@ -160,7 +158,7 @@ export default function Maintain() {
                 返回上一頁
               </button>
             </div>
-          </div>
+          </div> */}
 
           <h2 className={styles.title}>維護時間</h2>
           <div
