@@ -6,7 +6,6 @@ import { useState,useEffect, useContext } from 'react';
 import AuthContext from '@/context/auth-context';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
-import { Cursor } from 'react-custom-cursors';
 import "react-custom-cursors/dist/index.css";
 import { Layout } from '@/component/ride-layout';
 import Swal from 'sweetalert2';
@@ -57,11 +56,6 @@ export default function ShowDetail() {
     })
   }
 
-  // const [formData,setFormdata]=useState({
-  //   user_id:0,
-  //   show_id:0,
-  //   selectedSeat:[]
-  // });
 
   useEffect(() => {
     // 取得該筆表演的詳細資料
@@ -92,12 +86,6 @@ export default function ShowDetail() {
     }
   }, [router.query.show_id]);
   
-
-  // useEffect(()=>{
-  //   setFormdata();
-  // },[formData])
-
-
 
   const onSubmit = async (e) => {
     e.preventDefault();

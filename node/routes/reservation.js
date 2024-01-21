@@ -17,10 +17,15 @@ const getListData = async (req) => {
   // 設定綜合的where子句
   let where = `WHERE 1 `;
   let user_id = req.query.user_id? req.query.user_id : '';
+  let show_id = req.query.show_id? req.query.show_id : '';
 
   if (user_id !==0 && user_id !== '') {
     qs.user_id = user_id;
     where += ` AND user_id = '${user_id}' `;
+  };
+  if (show_id) {
+    qs.show_id = show_id;
+    where += ` AND show.show_id = '${show_id}' `;
   }
   let totalRows = 0;
   let totalPages = 0;

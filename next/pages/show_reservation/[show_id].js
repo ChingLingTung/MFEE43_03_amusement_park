@@ -1,13 +1,15 @@
 import React from 'react'
 import styles from '@/styles/show_detail.module.css'
 import Head from 'next/head';
-import {SHOW_GET_ONE} from '@/component/ride-const'
-import { useState,useEffect } from 'react';
+import {SHOW_GET_ONE, USER_RESERVATION} from '@/component/ride-const'
+import { useState,useEffect, useContext } from 'react';
+import AuthContext from '@/context/auth-context';
 import { useRouter } from 'next/router'
 import Link from 'next/link';
-import { Cursor } from 'react-custom-cursors';
 import "react-custom-cursors/dist/index.css";
 import { Layout } from '@/component/ride-layout';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content' 
 
 export default function ShowInfo() {
   const seat = [
@@ -30,18 +32,29 @@ export default function ShowInfo() {
     show_group:"", 
     show_day:"", 
   });
+  const { parkAuth } = useContext(AuthContext);
+  const Alert = withReactContent(Swal) ;
   const [toggle,setToggle]=useState(false)
   const handleToggle=()=>{
     setToggle(true)
   }
-  const [seatClass,setSeatClass]=useState(styles.seat);
-  // const [selectedSeat, setSelectedSeat]=useState(false);
-  // const [getSelectedSeat, setGetSelectedSeat]=useState([]);
+
+  const [selectedSeat,setSelectedSeat]=useState([]);
   const router = useRouter();
 
-  // const changeClass=()=>{
-    
-  // }
+  const toggleSelectedSeat = (cell) =>{
+    setSelectedSeat((selectedSeat)=>{
+      let nowSelected = [];
+      if(selectedSeat.includes(cell)){
+        nowSelected =  selectedSeat.filter((seat) => seat !==cell);
+      }else{
+        nowSelected = [...selectedSeat, cell];
+      }
+      console.log(nowSelected)
+      return nowSelected;
+    })
+  }
+
   useEffect(() => {
     const show_id = +router.query.show_id;
     console.log({show_id, raw: router.query.show_id });
@@ -58,22 +71,120 @@ export default function ShowInfo() {
               router.push("/show"); // 沒拿到資料, 跳到列表頁
             } else {
               setGetData({ ...data.row });
+              getListData();
             }
           })
           .catch((ex) => console.log(ex));
       }
     }
   }, [router.query.show_id]);
-  
-  // useEffect(()=>{
-  //   setSelectedSeat
-  // },[selectedSeat])
 
-  useEffect(()=>{
-    setSeatClass
-  },[seatClass])
+  const getListData = async () => {
 
-  useEffect(()=>{},[])
+    // const usp = new URLSearchParams(router.query)
+    
+    let page = +router.query.page || 1
+
+    if (page < 1) page = 1;
+    const show_id = +router.query.show_id;
+      try {
+      const r = await fetch(USER_RESERVATION + '?'+ `user_id=${parkAuth.id}`+'&'+ `show_id=${show_id}`);
+      const d = await r.json();
+      setSelectedSeat(d.row.seat_number);
+      // console.log(d)
+    } catch (ex) {
+      console.log(ex)
+    }
+    };
+
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    let ispass = true
+    if(!parkAuth){
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'預約失敗',
+              text:'請先登入會員才能預約喔',
+            }),
+            Alert.fire({
+              titleText:'預約失敗',
+              text:'請先登入會員才能預約喔',
+              willClose:()=>{
+                router.push('/login');
+              }
+            })
+          }
+        })
+        return ispass=false;
+      }
+    if(parkAuth && selectedSeat==[]){
+      // formData['user_id'] = parkAuth.id;
+      // setFormdata({
+      //   user_id : parkAuth.id
+      // });
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'預約失敗',
+              text:'您尚未選擇座位',
+            })
+          }
+    })
+    return ispass=false;
+    }
+
+    if(ispass){
+      // setFormdata({
+      //   user_id : parkAuth.id,
+      // })
+      const formData = new FormData();
+      formData.append("user_id", parkAuth.id);
+      formData.append("show_id", getData.show_id);
+      if(selectedSeat != []){
+        selectedSeat.forEach((seat)=>{
+          formData.append("selected_seat", seat);
+        })
+      }
+      
+      
+      const r = await fetch(USER_RESERVATION_ADD,{
+        method: "POST",
+        body: formData,
+      //   headers: {
+      //   "Content-Type": "application/json",
+      // },
+      });
+    const responseData = await r.json();
+    if (responseData.success) {
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:'預約成功',
+              text:'前往確認預約資訊：您預約的表演為'+ getData.show_group + '帶來的'+ getData.show_name + '，演出時間：' + getData.show_day + '的' + getData.start + '至' + getData.finish + '，預約座位：' + selectedSeat.join('，'),
+            }),
+            Alert.fire({
+              titleText:'預約成功',
+              text:'前往確認預約資訊：您預約的表演為'+ getData.show_group + '帶來的'+ getData.show_name + '，演出時間：' + getData.show_day + '的' + getData.start + '至' + getData.finish + '，預約座位：' + selectedSeat.join('，'),
+              willClose:()=>{
+                router.push('/user/show_reservation');
+              }
+            })
+          }
+    })
+    } else {
+      Alert.fire({ 
+        didOpen: () => { 
+            Alert.fire({
+              titleText:"預約失敗",
+              text:responseData.error,
+            })
+          }
+    })
+    }
+    }
+  };
   return (
     <Layout key={getData.show_id}>
       <div className={styles.contain}>
@@ -115,15 +226,10 @@ export default function ShowInfo() {
                   <div key={i}>
                     {row.map((cell, j) => (
                       <span 
-                      className={seatClass} key={j} 
+                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat}`} key={j} 
                       style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
-                      value={cell} 
-                      onClick={(value)=>{
-                        if(seatClass===styles.seat && value===cell){
-                          setSeatClass(styles.selected_seat)
-                        }else{
-                          setSeatClass(styles.seat)
-                        }
+                      id={cell} 
+                      onClick={()=>{toggleSelectedSeat(cell);
                         console.log("這是編號："+cell)
                         }}>{cell? cell : "0"}</span>
                     ))}
@@ -131,10 +237,10 @@ export default function ShowInfo() {
                 ))}
               </div>
               </div>
-              <button style={{width:1200}} className={styles.button}>確定更改</button>
+              <button onClick={onSubmit} style={{width:1200}} className={styles.button}>確定更改</button>
               <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
               <p>演出時間：{getData.show_day}的{getData.start} 至 {getData.finish}</p>
-              <p>預約座位：</p>
+              <p>預約座位：{selectedSeat.join('，')}</p>
             </>
           )}
             <Head><title>預約表演資訊</title></Head>
