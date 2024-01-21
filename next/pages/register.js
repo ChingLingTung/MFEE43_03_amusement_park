@@ -27,13 +27,13 @@ export default function Register() {
   );
   const Alert = withReactContent(Swal) 
   
-  const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
+  // const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
 
   const changeHandler = (e) => {
     const { name, id, value } = e.target;
     console.log({ name, id, value });
     
-    setDisplayInfo("");
+    // setDisplayInfo("");
     setRegisterForm({ ...registerForm, [id]: value });
     /*
     setMyForm((old) => {
@@ -162,7 +162,7 @@ export default function Register() {
       ispass = false;
     }
     if(!ispass){
-      setDisplayInfo("fail");
+      // setDisplayInfo("fail");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -182,7 +182,7 @@ export default function Register() {
     });
     const responseData = await r.json();
     if (responseData.success) {
-      setDisplayInfo("succ");
+      // setDisplayInfo("succ");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -199,7 +199,7 @@ export default function Register() {
           }
     })
     } else {
-      setDisplayInfo("fail");
+      // setDisplayInfo("fail");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -219,7 +219,7 @@ export default function Register() {
     <Layout>
       <div className={styles.contain}>
         <h2 className={styles.title}>會員註冊</h2>
-        <div>
+        {/* <div>
           <p>前端取得資料:</p>
           <p>會員姓名：{registerForm.user_name}</p>
           <p>帳號：{registerForm.user_email}</p>
@@ -230,7 +230,7 @@ export default function Register() {
           <p>頭貼：{registerForm.avatar}</p>
           <p>生日:{registerForm.birthday}</p>
           <p>地址:{registerForm.address}</p>
-        </div>
+        </div> */}
         <div className={styles.formborder}>
           <form name="form1" onSubmit={onSubmit}>
             <div className={styles.flex}>
@@ -321,7 +321,7 @@ export default function Register() {
             <div className={styles.flex}>
               
               <button type='submit' className={styles.button}>註冊</button>
-              {displayInfo ? (
+              {/* {displayInfo ? (
                     displayInfo === "succ" ? (
                       <div>
                         資料新增成功
@@ -331,7 +331,7 @@ export default function Register() {
                         新增發生錯誤!!!
                       </div>
                     )
-                  ) : null}
+                  ) : null} */}
             </div>
           </form>
         </div>

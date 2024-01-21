@@ -34,7 +34,7 @@ export default function Shop() {
       <Layout>
         <div className={styles.container}>
           <h2 className={styles.title}>餐廳列表</h2>
-          <p>篩選狀態：{dataFromShopType}</p>
+          {/* <p>篩選狀態：{dataFromShopType}</p> */}
           <SearchShopType setDataFromShopType={setDataFromShopType}/>
           <div className={styles.card_flex}>
           {data.rows &&

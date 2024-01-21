@@ -117,7 +117,7 @@ export default function Navbar() {
                 </Link>
               </div>
               <div className={styles.nav_login}>
-                <Link href="/register" className={styles.nav_login_title}>
+                <Link href="/login" className={styles.nav_login_title}>
                   <FaUserAlt className={styles.mr_10} />
                 </Link>
               </div>

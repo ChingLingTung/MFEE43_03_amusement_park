@@ -59,7 +59,7 @@ export default function Ride() {
     <>
     <Layout>
         <h2 className={styles.title}>設施搜尋</h2>
-        <div className={styles.flex_center} style={{height:50}}>
+        {/* <div className={styles.flex_center} style={{height:50}}>
         
           <span className={styles.flex_center}>
             <FaMagnifyingGlass style={{width:30,height:30.66,padding:5,borderRight:'none', position:'absolute',left:8}}/>
@@ -89,7 +89,7 @@ export default function Ride() {
 
               />
           </span>
-        </div>
+        </div> */}
         {/* <p className={styles.flex_center}>theme:{dataFromTheme}</p>
         <p className={styles.flex_center}>category:{dataFromCategory}</p>
         <p className={styles.flex_center}>thrillerRating:{dataFromThrillerRating}</p>

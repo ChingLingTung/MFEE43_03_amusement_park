@@ -217,7 +217,12 @@ router.get("/edit/:user_id", async (req, res) => {
     return res.redirect(req.baseUrl);
   }
   const row = rows[0];
-  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+  if(row.birthday){
+    row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+  }else{
+    row.birthday = '';
+  }
+  
 
   res.render("user/edit", row);
 });
@@ -233,7 +238,11 @@ router.get("/api/edit/:user_id", async (req, res) => {
     return res.json({success: false});
   }
   const row = rows[0];
-  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+  if(row.birthday){
+    row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+  }else{
+    row.birthday = '';
+  }
 
   res.json({success: true, row});
 });
@@ -246,7 +255,11 @@ router.post("/edit/:user_id", async (req, res) => {
     return res.json({success: false});
   }
   const row = rows[0];
-  row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+  if(row.birthday){
+    row.birthday = dayjs(row.birthday).format("YYYY-MM-DD");
+  }else{
+    row.birthday = '';
+  }
 
   const output = {
     success: false,

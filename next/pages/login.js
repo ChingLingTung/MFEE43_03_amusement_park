@@ -127,9 +127,9 @@ export default function Login() {
     <Layout>
       <div className={styles.container}>
         <h2 className={styles.title}>會員登入</h2>
-        <p>前端取得資料</p>
+        {/* <p>前端取得資料</p>
         <p>帳號：{email}</p>
-        <p>密碼：{password}</p>
+        <p>密碼：{password}</p> */}
         <div className={styles.formborder}>
           <form name="form1" onSubmit={onSubmit}>
             <label htmlFor='email'>Email：<br/>

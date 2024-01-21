@@ -132,4 +132,69 @@ const getListData = async (req) => {
   
     res.json(output);
   });
+
+  // 預約表演更改預約資料
+  router.post("/edit/api", upload.none(), async (req, res) => {
+
+    const output = {
+      success: false,
+      error:'',
+      postData: req.body,
+    };
+    
+    let { user_id, show_id, selected_seat } = req.body;
+    if(!user_id){
+      output.error='使用者未登入'
+      return output
+    }
+    if(!show_id){
+      output.error='未取得預約的表演項目'
+      return output
+    }
+    if(selected_seat===""){
+      output.error='使用者未選取任何座位'
+      return output
+    }
+
+
+    // if(user_id && show_id && selectedSeat !=[]){
+    //   qs.user_id = user_id;
+    //   qs.show_id = show_id;
+    //   qs.selectedSeat = selectedSeat;
+    // }
+
+    const sql =
+      "UPDATE \`show_reservation\` SET seat_number = ? WHERE `user_id`=? AND show_id = ?";
+  
+    try {
+      const [result] = await db.query(sql, [
+        JSON.stringify(selected_seat),
+        user_id,
+        show_id
+      ]);
+      output.result = result;
+      output.success = !!result.affectedRows;
+    } catch (ex) {
+      output.exception = ex;
+    }
+  
+    /*
+    const sql = "INSERT INTO `user` SET ?";
+    // INSERT INTO `user` SET `name`='abc',
+    req.body.created_at = new Date();
+    const [result] = await db.query(sql, [req.body]);
+    */
+  
+    // {
+    //   "fieldCount": 0,
+    //   "affectedRows": 1,  # 影響的列數
+    //   "insertId": 1021,   # 取得的 PK
+    //   "info": "",
+    //   "serverStatus": 2,
+    //   "warningStatus": 0,
+    //   "changedRows": 0    # 修改時真正有變動的資料筆數
+    // }
+  
+    res.json(output);
+  });
   export default router;

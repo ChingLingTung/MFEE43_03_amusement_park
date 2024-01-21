@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '@/styles/show_detail.module.css'
 import Head from 'next/head';
-import {SHOW_GET_ONE, USER_RESERVATION} from '@/component/ride-const'
+import {SHOW_GET_ONE, USER_RESERVATION,USER_RESERVATION_EDIT} from '@/component/ride-const'
 import { useState,useEffect, useContext } from 'react';
 import AuthContext from '@/context/auth-context';
 import { useRouter } from 'next/router'
@@ -90,7 +90,7 @@ export default function ShowInfo() {
       try {
       const r = await fetch(USER_RESERVATION + '?'+ `user_id=${parkAuth.id}`+'&'+ `show_id=${show_id}`);
       const d = await r.json();
-      setSelectedSeat(d.row.seat_number);
+      setSelectedSeat(d.rows[0].seat_number);
       // console.log(d)
     } catch (ex) {
       console.log(ex)
@@ -148,8 +148,7 @@ export default function ShowInfo() {
         })
       }
       
-      
-      const r = await fetch(USER_RESERVATION_ADD,{
+      const r = await fetch(USER_RESERVATION_EDIT,{
         method: "POST",
         body: formData,
       //   headers: {
@@ -161,11 +160,11 @@ export default function ShowInfo() {
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
-              titleText:'預約成功',
+              titleText:'預約修改成功',
               text:'前往確認預約資訊：您預約的表演為'+ getData.show_group + '帶來的'+ getData.show_name + '，演出時間：' + getData.show_day + '的' + getData.start + '至' + getData.finish + '，預約座位：' + selectedSeat.join('，'),
             }),
             Alert.fire({
-              titleText:'預約成功',
+              titleText:'預約修改成功',
               text:'前往確認預約資訊：您預約的表演為'+ getData.show_group + '帶來的'+ getData.show_name + '，演出時間：' + getData.show_day + '的' + getData.start + '至' + getData.finish + '，預約座位：' + selectedSeat.join('，'),
               willClose:()=>{
                 router.push('/user/show_reservation');
