@@ -1,32 +1,29 @@
 import Link from "next/link";
-import ThemeContext, { themes } from "@/context/theme-context";
 import AuthContext from "@/context/auth-context";
 import { useContext } from "react";
-import styles from '@/styles/navbar.module.css'
+import styles from '@/component/Navbar/Navbar.module.css'
 import { FaUserAlt } from "react-icons/fa";
 import { LuRollerCoaster } from "react-icons/lu";
 import { FaTicketAlt } from "react-icons/fa";
 import { FaBagShopping } from "react-icons/fa6";
+import { IoCart } from "react-icons/io5";
 import Swal from 'sweetalert2' 
 import withReactContent from 'sweetalert2-react-content' 
 import { useRouter } from 'next/navigation';
 
 
 export default function Navbar() {
-  const { theme, setTheme } = useContext(ThemeContext);
   const { parkAuth, logout } = useContext(AuthContext);
   const Alert = withReactContent(Swal) 
   const router = useRouter();
   return (
     <>
       <nav className={styles.flex_spacebetween}>
-        <span className={styles.option}>
           <Link href="/">
             <img className={styles.logo} src='/images/logo.png'/>
           </Link>
-        </span>
         <div className={styles.flex_center}>
-          <span className={styles.option} onClick={()=>{
+          <div className={styles.option} onClick={()=>{
                 if(!parkAuth.email){
                   Alert.fire({ 
                     didOpen: () => { 
@@ -47,38 +44,44 @@ export default function Navbar() {
                 router.push('/user');
               }
           }}>
-            <Link href="#">
-            <FaUserAlt color="white"/>會員中心
+            <Link href="#" className={styles.nav_title}>
+            <FaUserAlt className={styles.mr_10}/>會員中心
             </Link>
-          </span>
-          <span className={styles.option}>
-            <Link href="/ticket">
-            <FaTicketAlt color="white"/>購票資訊
+          </div>
+          <div className={styles.option}>
+            <Link href="/ticket" className={styles.nav_title}>
+            <FaTicketAlt className={styles.mr_10}/>購票資訊
             </Link>
-          </span>
-          <span className={styles.option}>
-            <Link href="/ride">
-            <LuRollerCoaster color="white"/>設施介紹
+          </div>
+          <div className={styles.option}>
+            <Link href="/ride" className={styles.nav_title}>
+            <LuRollerCoaster className={styles.mr_10}/>設施介紹
             </Link>
-          </span>
-          <span className={styles.option}>
-            <Link  href="/product">
-            <FaBagShopping color="white"/>商品專區
+          </div>
+          <div className={styles.option}>
+            <Link  href="/product/list" className={styles.nav_title}>
+            <FaBagShopping className={styles.mr_10}/>商品專區
             </Link>
-          </span>
+          </div>
+          <div className={styles.option_ticket}>
+            <Link href="/product" className={styles.nav_ticket}>
+              馬上去購票
+            </Link>
+          </div>
         </div>
         
           {parkAuth.email ? (
             <>
-            <div className={styles.flex_center}>
-              <span className={styles.option}>
-                <p>{parkAuth.nickname}</p>
-              </span>
-              {/* <span className={styles.option}>
-                <Link  href="/profile">profile</Link>
-              </span> */}
-              <span className={styles.option}>
+            <div className={styles.nav_logout_flex}>
+              <div className={styles.nav_login}>
+                <p className={styles.nav_login_title}>
+                {parkAuth.nickname}
+                </p>
+              </div>
+
+              <div className={styles.nav_login}>
                 <a
+                  className={styles.nav_login_title}
                   href="#"
                   onClick={(e) => {
                     e.preventDefault();
@@ -102,22 +105,22 @@ export default function Navbar() {
                 >
                   登出
                 </a>
-              </span>
+              </div>
             </div>
             </>
           ) : (
             <>
-            <div className={styles.flex_center}>
-              <span className={styles.option}>
-                <Link href="/login">
-                  登入
+            <div className={styles.nav_logout_flex}>
+              <div className={styles.nav_login}>
+                <Link href="#" className={styles.nav_login_title}>
+                  <IoCart className={styles.mr_10} />
                 </Link>
-              </span>
-              <span className={styles.option}>
-                <Link href="/register">
-                  註冊
+              </div>
+              <div className={styles.nav_login}>
+                <Link href="/register" className={styles.nav_login_title}>
+                  <FaUserAlt className={styles.mr_10} />
                 </Link>
-              </span>
+              </div>
             </div>
             </>
           )}

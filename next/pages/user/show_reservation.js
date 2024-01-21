@@ -153,7 +153,7 @@ export default function UserShowReservation() {
                     <td className={styles.td}>{i.show_day}</td> 
                     <td className={styles.td}>{i.start}-{i.finish}</td>
                     <td className={styles.td}>廣場旁演藝廳</td>
-                    <td className={styles.td}>{i.seat_number}</td>
+                    <td className={styles.td}>{i.seat_number.join(',')}</td>
                     <td className={styles.td}>
                       <button className={styles.show_info_button} onClick = {()=>{
                         router.push(`/show_reservation/${i.show_id}`)

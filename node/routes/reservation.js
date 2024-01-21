@@ -7,14 +7,11 @@ import dayjs from "dayjs";
 const router = express.Router();
 
 const getListData = async (req) => {
-
+  // 取得該使用者的表演預約資料
   const perPage = 20; // 每頁幾筆
-  // 用戶決定要看第幾頁
+
   let page = +req.query.page || 1;
-  // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
-  // let keyword = (req.query.keyword && typeof req.query.keyword ==='string' ) ? req.query.keyword.trim() : "";
-  // let keyword_ = db.escape(`%${keyword}%`);
-  
+
   let qs = {};  // 用來把 query string 的設定傳給 template
 
   // 設定綜合的where子句
@@ -56,6 +53,7 @@ const getListData = async (req) => {
       row.show_day = dayjs(row.show_day).format("YYYY/MM/DD");
       row.start = dayjs(row.start).format("HH:mm");
       row.finish = dayjs(row.finish).format("HH:mm");
+      row.seat_number = JSON.parse(row.seat_number);
   })
     output = { ...output, success: true, rows, totalRows, totalPages };
   }
@@ -66,7 +64,7 @@ const getListData = async (req) => {
     res.json( await getListData(req) );
   });
 
-  // TODO:預約表演新增預約資料
+  // 預約表演新增預約資料
   
   router.post("/add/api", upload.none(), async (req, res) => {
 
