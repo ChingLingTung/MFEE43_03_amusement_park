@@ -27,6 +27,11 @@ import ticketRouter from "./routes/ticket.js";
 // const upload = multer({ dest: "tmp_uploads/" });
 import orderRouter from './routes/order.js'
 import userpayRouter from './routes/userpay.js'
+import shipmentRouter from './routes/shipment.js'
+import paymentRouter from './routes/payment.js'
+import maintainRouter from './routes/maintain.js'
+import registerRouter from './routes/register.js'
+import reservationRouter from './routes/reservation.js'
 
 
 // import multer from "multer";
