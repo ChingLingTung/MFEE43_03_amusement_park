@@ -1,16 +1,18 @@
+import Navbar from "@/component/ride-navbar";
 import Head from "next/head";
-import Navbar from "@/component/navbar.js"
+import Footer from "./Footer/Footer";
+
 export function Layout({ children }) {
   return (
     <>
-      <Head>
-        <title>遊樂園</title>
-      </Head>
+      {/* <Head>
+        <title>遊樂園網站</title>
+      </Head> */}
+      <Navbar />
       <div className="container">
-        <Navbar />
         {children}
       </div>
-
+      <Footer/>
     </>
   );
 }

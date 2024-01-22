@@ -52,19 +52,7 @@
   border-radius: 10px;
   background-color: grey;
 }
-/* .seat{
-  display: inline-flex;
-  width: 60px;
-  height: 60px;
-  background-color: #fff;
-  border-radius: 5px;
-  margin: 3px;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  font-size: 20px;
-  cursor: pointer;
-}
+
 .not_seat{
   display: inline-flex;
   width: 60px;
@@ -76,7 +64,9 @@
   justify-content: center;
   align-items: center;
   font-size: 20px;
-} */
+  opacity:0,;
+  cursor:'not-allowed';
+} 
 .seat{
   display: inline-flex;
   width: 60px;
@@ -94,7 +84,7 @@
   display: inline-flex;
   width: 60px;
   height: 60px;
-  background-color: #ff5076;
+  background-color: #efbcc4;
   color:#fff;
   border-radius: 5px;
   margin: 3px;

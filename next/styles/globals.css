@@ -41,7 +41,7 @@ background-image: url("../public/images/back-pattern-1920x1080.png");
   src: url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;500&display=swap');
   src:url('https://fonts.googleapis.com/earlyaccess/cwtexyen.css');
 } */
-.formborder{
+/* .formborder{
   border: #F29BA5 2px solid;
   border-radius: 10px;
 }
@@ -53,5 +53,6 @@ background-image: url("../public/images/back-pattern-1920x1080.png");
   margin: 10px 0px;
   border-radius: 5px;
   padding-inline-start: 5px;
-}
+} */
+
 

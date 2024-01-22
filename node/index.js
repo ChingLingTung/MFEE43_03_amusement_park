@@ -27,13 +27,11 @@ import ticketRouter from "./routes/ticket.js";
 // const upload = multer({ dest: "tmp_uploads/" });
 import orderRouter from './routes/order.js'
 import userpayRouter from './routes/userpay.js'
-import maintainRouter from './routes/maintain.js'
-import registerRouter from "./routes/register.js"
-import reservationRouter from "./routes/reservation.js"
 import shipmentRouter from './routes/shipment.js'
 import paymentRouter from './routes/payment.js'
-
-
+import maintainRouter from './routes/maintain.js'
+import registerRouter from './routes/register.js'
+import reservationRouter from './routes/reservation.js'
 
 
 // import multer from "multer";
@@ -295,7 +293,12 @@ app.get("/user", async (req, res) => {
   output.success = true;
   output.data = rows[0];
   const row = rows[0];
-  row.birthday = dayjs(row.birthday).format("YYYY/MM/DD");
+  if(row.birthday){
+    row.birthday = dayjs(row.birthday).format("YYYY/MM/DD");
+  }else{
+    row.birthday="";
+  }
+  
   
   res.json(output);
 });

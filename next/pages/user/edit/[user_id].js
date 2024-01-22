@@ -26,11 +26,11 @@ export default function UserEditInfo() {
   })
   const router = useRouter();
   const Alert = withReactContent(Swal) ;
-  const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
+  // const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
   const changeHandler = (e) => {
     const { name, id, value } = e.target;
     console.log({ name, id, value });
-    setDisplayInfo("");
+    // setDisplayInfo("");
     setData({ ...data, [id]: value });
   };
   const [nameError,setNameError]=useState('')
@@ -123,7 +123,7 @@ export default function UserEditInfo() {
     }
 
     if(!ispass){
-      setDisplayInfo("fail");
+      // setDisplayInfo("fail");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -144,7 +144,7 @@ export default function UserEditInfo() {
     });
     const responseData = await r.json();
     if (responseData.success) {
-      setDisplayInfo("succ");
+      // setDisplayInfo("succ");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -161,7 +161,7 @@ export default function UserEditInfo() {
           }
     })
     } else {
-      setDisplayInfo("fail");
+      // setDisplayInfo("fail");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -286,7 +286,7 @@ export default function UserEditInfo() {
             <div className={styles.flex}>
               
               <button type='submit' className={styles.form_button}>確定</button>
-              {displayInfo ? (
+              {/* {displayInfo ? (
                     displayInfo === "succ" ? (
                       <div>
                         資料修改成功
@@ -296,7 +296,7 @@ export default function UserEditInfo() {
                         資料沒有修改
                       </div>
                     )
-                  ) : null}
+                  ) : null} */}
             </div>
           </form>
           </div>

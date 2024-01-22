@@ -19,10 +19,9 @@ export default function UserInfo() {
   const Alert = withReactContent(Swal) ;
 
 // 如果parkAuth存在,傳送parkAuth
-    
-  useEffect(()=>{
-    if(parkAuth.email){
-      fetch(USER,{
+  
+  const getUserInfo = async() =>{
+    const r = await fetch(USER,{
         method: "GET",
         headers: {
           Authorization: "Bearer " + parkAuth.token,
@@ -35,11 +34,13 @@ export default function UserInfo() {
         }
       })
       .catch((ex) => console.log(ex));
-    }
-  },[parkAuth])
+  };
 
   useEffect(()=>{
-    if(!parkAuth.email){
+    if(parkAuth.email){
+      getUserInfo();
+    }
+    if(!parkAuth.email && !data){
       Alert.fire({ 
   didOpen: () => { 
       Alert.fire({
@@ -56,7 +57,9 @@ export default function UserInfo() {
     }
 })
 }
-  },[parkAuth.email])
+},[])
+
+
 
   return (
     <>
