@@ -8,12 +8,13 @@ import { useRouter } from "next/router";
 import { Layout } from '@/component/ride-layout';
 import Link from 'next/link';
 import Swal from 'sweetalert2' 
-import withReactContent from 'sweetalert2-react-content' 
+import withReactContent from 'sweetalert2-react-content';
+import { FaStar } from "react-icons/fa";
 
 
 
 export default function Login() {
-  const [displayInfo, setDisplayInfo] = useState("");
+  // const [displayInfo, setDisplayInfo] = useState("");
   const [email, setEmail]=useState('')
   const [password, setPassword]=useState('')
   const [emailError,setEmailError]=useState('')
@@ -130,8 +131,22 @@ export default function Login() {
         {/* <p>前端取得資料</p>
         <p>帳號：{email}</p>
         <p>密碼：{password}</p> */}
+        
         <div className={styles.formborder}>
           <form name="form1" onSubmit={onSubmit}>
+            <div 
+            onClick={()=>{
+              if(email==="" || password===""){
+                setEmail('pigpigpig@123.com');
+                setPassword('pig3ZZZ');
+                setEmailError('');
+                setPasswordError('');
+              }else{
+                setEmail('');
+                setPassword('');
+              }
+            }}
+            ><FaStar className={styles.star}/></div>
             <label htmlFor='email'>Email：<br/>
             <input type='text' id="email"
                       name="email"
@@ -165,7 +180,7 @@ export default function Login() {
             <div>---------------或---------------</div>
             <br/>
             <button type='button' className={styles.google_login}><img className={styles.img} src='../images/google_icon.png'/>快速登入</button>
-            {displayInfo ? (
+            {/* {displayInfo ? (
                     displayInfo === "succ" ? (
                       <div>
                         登入成功
@@ -175,7 +190,7 @@ export default function Login() {
                         登入失敗
                       </div>
                     )
-                  ) : null}
+                  ) : null} */}
           </form>
         </div>
        

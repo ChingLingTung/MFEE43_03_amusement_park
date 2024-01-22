@@ -3,10 +3,11 @@ import styles from '@/styles/register.module.css';
 import Head from 'next/head';
 import { USER_ADD } from '@/component/ride-const';
 import { z } from "zod";
-import Swal from 'sweetalert2' 
-import withReactContent from 'sweetalert2-react-content' 
+import Swal from 'sweetalert2'; 
+import withReactContent from 'sweetalert2-react-content'; 
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/component/ride-layout';
+import { FaStar } from "react-icons/fa";
 
 
 export default function Register() {
@@ -233,6 +234,36 @@ export default function Register() {
         </div> */}
         <div className={styles.formborder}>
           <form name="form1" onSubmit={onSubmit}>
+          <div 
+            onClick={()=>{
+              if(registerForm.user_name==="" || 
+              registerForm.user_email==="" ||
+              registerForm.user_password==="" ||
+              registerForm.rePassword==="" ||
+              registerForm.phone=== "" ||
+              registerForm.address=== "" ||
+              registerForm.user_nickname===""
+              ){
+                setRegisterForm(
+                  {
+                    user_name: "豬豬豬",
+                    user_email: "pigpigpig@123.com",
+                    user_password:"pig3ZZZ",
+                    rePassword:"pig3ZZZ",
+                    avatar: "/images/user/profile.png",
+                    phone: "0915151515",
+                    address: "豬豬的窩",
+                    user_nickname:"豬3",
+                  }
+                );
+                setNameError('');
+                setEmailError('');
+                setPasswordError('');
+                setPassword2Error('');
+                setPhoneError('');
+              }
+            }}
+            ><FaStar className={styles.star}/></div>
             <div className={styles.flex}>
               <div className={styles.column}>
                   <div className={styles.padding30}>

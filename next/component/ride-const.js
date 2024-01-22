@@ -37,6 +37,8 @@ export const MAINTAIN_GET_TIME = API_SERVER + "/ride/time/api";
 export const USER_RESERVATION_ADD = API_SERVER + "/reservation/add/api";
 // 會員在登入狀態時更改表演預約
 export const USER_RESERVATION_EDIT = API_SERVER + "/reservation/edit/api";
+// 會員在登入狀態時刪除某筆預約資料
+export const USER_RESERVATION_DELET = API_SERVER + "/reservation/delete";
 
 
 

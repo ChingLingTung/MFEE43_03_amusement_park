@@ -13,6 +13,7 @@ import SearchCategory from '@/component/ride/search_category';
 import SearchThrillerRating from '@/component/ride/search_thriller_rating';
 import SearchSupport from '@/component/ride/search_support';
 
+
 export default function Ride() {
   const [data, setData] = useState({});
   const router = useRouter();
@@ -120,7 +121,7 @@ export default function Ride() {
                     );
                   })} 
           </div>
-          <div className={styles.theme_img}>
+          {/* <div className={styles.theme_img}>
             <img className={styles.theme_img} src={'/images/ride/w1.jpg'} style={{width:'100%',height:200,marginTop:100}} alt='' />
           </div>
           <div className={styles.flex_center} style={{marginTop:50,marginBottom:100}}>
@@ -143,7 +144,7 @@ export default function Ride() {
           </div>
           <div className={styles.flex_center}  style={{marginTop:50,marginBottom:100}}>
             <img src='/images/ride/b4.jpg' width='380px' height='430px' className={styles.slide_card} alt=''/>
-          </div>
+          </div> */}
         </div>
       </Layout>
       <Head><title>設施介紹</title></Head>

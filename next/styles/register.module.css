@@ -12,6 +12,7 @@
   font-size: 30px;
 }
 .formborder{
+  position: relative;
   height: 750px;
   width: 1000px;
   border: #F29BA5 2px solid;
@@ -102,4 +103,11 @@
   object-fit: fill;
   height:30px;
   margin:0px 2px;
+}
+.star{
+  color:rgb(251, 86, 86);
+  position: absolute;
+  top:20px;
+  left:950px;
+  cursor: pointer;
 }
