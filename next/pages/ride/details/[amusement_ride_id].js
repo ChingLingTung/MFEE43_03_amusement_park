@@ -13,7 +13,7 @@ import { useState,useEffect } from 'react';
 
 export default function RideDetail() {
   const [getData, setGetData] = useState({
-    amusement_ride_id:"",
+    amusement_ride_id:0,
     amusement_ride_name:"",
     amusement_ride_img:"", 
     ride_category_id:"", 
@@ -22,9 +22,14 @@ export default function RideDetail() {
     ride_support_name:"", 
     theme_name:"", 
     amusement_ride_description:"",
+    height_requirement:""
   });
   const [getTypeData, setGetTypeData] = useState({});
-  const [getMaintain, setGetMaintain] = useState('');
+  const [getMaintain, setGetMaintain] = useState({
+    amusement_ride_name:"",
+    maintenance_begin:"",
+    maintenance_end:""
+  });
   const router = useRouter();
   useEffect(() => {
     const amusement_ride_id = +router.query.amusement_ride_id;
@@ -66,7 +71,7 @@ const getTypeList = async()=>{
 const getMaintainTime = async()=>{
   try {
     const r = await fetch(
-      MAINTAIN_GET_TIME + '?' + `amusement_ride_name=${getData.amusement_ride_name}`
+      MAINTAIN_GET_TIME + `?amusement_ride_name=${getData.amusement_ride_name}`
       );
       const d = await r.json();
       setGetMaintain(d);
@@ -80,6 +85,7 @@ useEffect(()=>{
 },[getData.ride_category_id,getData.amusement_ride_id]);
 
 useEffect(()=>{
+  console.log(getData.amusement_ride_name)
   getMaintainTime()
 },[getData.amusement_ride_name]);
 
@@ -93,12 +99,20 @@ useEffect(()=>{
               <div style={{width:600, lineHeight:2}}>
                 <p>設施簡介：</p>
                 <p>{getData.amusement_ride_description}</p>
+                <p>主題名稱：{getData.theme_name}</p>
                 <p>刺激程度：{new Array(getData.thriller_rating).fill(<FaStar />)}</p>
-                <p>適合：{getData.ride_category_name}</p>
+                <p>類型：{getData.ride_category_name}</p>
                 <p>身高限制：{getData.height_requirement}</p>
                 <p>特殊支援：{getData.ride_support_name}</p>
                 <p>設備維護狀況：目前開放中，可正常使用。</p>
-                <p>下次維護時間：{getMaintain}</p>
+                {getMaintain.rows && getMaintain.rows.map((i)=>{
+                return(
+                  <p key= {i.amusement_ride_name}>
+                  下次維護時間：{i.maintenance_begin} - {i.maintenance_end}
+                  </p>
+                  )
+                })
+                }
                 <Link href={'/maintain'}>
                   <p style={{color:'#d7627b'}}><FaRegCalendarDays />完整維護排程</p>
                 </Link>

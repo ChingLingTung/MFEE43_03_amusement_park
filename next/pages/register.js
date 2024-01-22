@@ -3,10 +3,11 @@ import styles from '@/styles/register.module.css';
 import Head from 'next/head';
 import { USER_ADD } from '@/component/ride-const';
 import { z } from "zod";
-import Swal from 'sweetalert2' 
-import withReactContent from 'sweetalert2-react-content' 
+import Swal from 'sweetalert2'; 
+import withReactContent from 'sweetalert2-react-content'; 
 import { useRouter } from 'next/navigation';
 import { Layout } from '@/component/ride-layout';
+import { FaStar } from "react-icons/fa";
 
 
 export default function Register() {
@@ -27,13 +28,13 @@ export default function Register() {
   );
   const Alert = withReactContent(Swal) 
   
-  const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
+  // const [displayInfo, setDisplayInfo] = useState(""); // "", "succ", "fail"
 
   const changeHandler = (e) => {
     const { name, id, value } = e.target;
     console.log({ name, id, value });
     
-    setDisplayInfo("");
+    // setDisplayInfo("");
     setRegisterForm({ ...registerForm, [id]: value });
     /*
     setMyForm((old) => {
@@ -162,7 +163,7 @@ export default function Register() {
       ispass = false;
     }
     if(!ispass){
-      setDisplayInfo("fail");
+      // setDisplayInfo("fail");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -182,7 +183,7 @@ export default function Register() {
     });
     const responseData = await r.json();
     if (responseData.success) {
-      setDisplayInfo("succ");
+      // setDisplayInfo("succ");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -199,7 +200,7 @@ export default function Register() {
           }
     })
     } else {
-      setDisplayInfo("fail");
+      // setDisplayInfo("fail");
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -219,7 +220,7 @@ export default function Register() {
     <Layout>
       <div className={styles.contain}>
         <h2 className={styles.title}>會員註冊</h2>
-        <div>
+        {/* <div>
           <p>前端取得資料:</p>
           <p>會員姓名：{registerForm.user_name}</p>
           <p>帳號：{registerForm.user_email}</p>
@@ -230,9 +231,39 @@ export default function Register() {
           <p>頭貼：{registerForm.avatar}</p>
           <p>生日:{registerForm.birthday}</p>
           <p>地址:{registerForm.address}</p>
-        </div>
+        </div> */}
         <div className={styles.formborder}>
           <form name="form1" onSubmit={onSubmit}>
+          <div 
+            onClick={()=>{
+              if(registerForm.user_name==="" || 
+              registerForm.user_email==="" ||
+              registerForm.user_password==="" ||
+              registerForm.rePassword==="" ||
+              registerForm.phone=== "" ||
+              registerForm.address=== "" ||
+              registerForm.user_nickname===""
+              ){
+                setRegisterForm(
+                  {
+                    user_name: "豬豬豬",
+                    user_email: "pigpigpig@123.com",
+                    user_password:"pig3ZZZ",
+                    rePassword:"pig3ZZZ",
+                    avatar: "/images/user/profile.png",
+                    phone: "0915151515",
+                    address: "豬豬的窩",
+                    user_nickname:"豬3",
+                  }
+                );
+                setNameError('');
+                setEmailError('');
+                setPasswordError('');
+                setPassword2Error('');
+                setPhoneError('');
+              }
+            }}
+            ><FaStar className={styles.star}/></div>
             <div className={styles.flex}>
               <div className={styles.column}>
                   <div className={styles.padding30}>
@@ -321,7 +352,7 @@ export default function Register() {
             <div className={styles.flex}>
               
               <button type='submit' className={styles.button}>註冊</button>
-              {displayInfo ? (
+              {/* {displayInfo ? (
                     displayInfo === "succ" ? (
                       <div>
                         資料新增成功
@@ -331,7 +362,7 @@ export default function Register() {
                         新增發生錯誤!!!
                       </div>
                     )
-                  ) : null}
+                  ) : null} */}
             </div>
           </form>
         </div>

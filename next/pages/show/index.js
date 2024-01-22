@@ -29,28 +29,31 @@ export default function Show() {
   return (
     <>
       <Layout>
-        <div className={styles.container}>
+        <div className={styles.contain}>
+          <img className={styles.head_img} width='100%' height={300} src={'/images/show/show.jpg'} />
           <h2 className={styles.title}>表演節目</h2>
-          <div className={styles.card_flex}>
-          {data.rows &&
-            data.rows.map((i)=>{
-              return (
-                <div key={i.show_id}>
-                  <Link href={`/show/details/${i.show_id}`}>
-                    <div className={styles.card}>
-                      <img className={styles.card_img} src={`/images/show/${i.show_pic}`}/>
-                      <div style={{padding:10}}>
-                        <div className={styles.card_title}>{i.show_group}</div>
-                        <div className={styles.card_title}>{i.show_name}</div>
-                      </div>
+          <div className={styles.card_contain}>
+            <div className={styles.card_flex}>
+              {data.rows &&
+                data.rows.map((i)=>{
+                  return (
+                    <div key={i.show_id}>
+                      <Link href={`/show/details/${i.show_id}`}>
+                        <div className={styles.card}>
+                          <img className={styles.card_img} src={`/images/show/${i.show_pic}`}/>
+                          <div style={{padding:10}}>
+                            <div className={styles.card_title}>{i.show_group}</div>
+                            <div className={styles.card_title}>{i.show_name}</div>
+                          </div>
+                        </div>
+                      </Link>
                     </div>
-                  </Link>
-                </div>
-              )
-            })
-          }
-
+                  )
+                })
+              }
+            </div>
           </div>
+          
         </div>
       </Layout>
       <Head><title>表演列表</title></Head>

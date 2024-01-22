@@ -288,7 +288,12 @@ app.get("/user", async (req, res) => {
   output.success = true;
   output.data = rows[0];
   const row = rows[0];
-  row.birthday = dayjs(row.birthday).format("YYYY/MM/DD");
+  if(row.birthday){
+    row.birthday = dayjs(row.birthday).format("YYYY/MM/DD");
+  }else{
+    row.birthday="";
+  }
+  
   
   res.json(output);
 });
