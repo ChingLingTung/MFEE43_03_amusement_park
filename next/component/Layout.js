@@ -3,6 +3,7 @@ import Navbar from "@/component/Navbar/Navbar"
 import Footer from "@/component/Footer/Footer";
 import styles from '@/component/Icon-nav/Icon-nav.module.css'
 
+
 export function Layout({ children }) {
   return (
     <>

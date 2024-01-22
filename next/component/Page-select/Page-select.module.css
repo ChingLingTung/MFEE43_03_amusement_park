@@ -34,3 +34,8 @@
   justify-content: space-around;
   align-items: center;
 }
+
+.active{
+  background-color: red;
+  color: white;
+}

@@ -30,6 +30,8 @@ import userpayRouter from './routes/userpay.js'
 import maintainRouter from './routes/maintain.js'
 import registerRouter from "./routes/register.js"
 import reservationRouter from "./routes/reservation.js"
+import shipmentRouter from './routes/shipment.js'
+import paymentRouter from './routes/payment.js'
 
 
 
@@ -127,6 +129,8 @@ app.use("/cart", cartRouter);
 app.use("/ticket", ticketRouter);
 app.use("/order", orderRouter);
 app.use("/userpay", userpayRouter);
+app.use("/shipment", shipmentRouter);
+app.use("/payment", paymentRouter);
 app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);

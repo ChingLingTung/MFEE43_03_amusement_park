@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from '@/component/Footer/Footer.module.css'
+import Link from 'next/link'
 
 export default function Footer() {
   return (
@@ -9,15 +10,15 @@ export default function Footer() {
         <div className={styles['footer-desc']}>
           <div className={styles['footer-flex']}>
             <div className={styles['footer-desc-title']}>提供服務</div>
-            <div className={styles['footer-desc-descs']}>導覽地圖</div>
-            <div className={styles['footer-desc-descs']}>周邊美食</div>
+            <div className={styles['footer-desc-descs']}><Link href='/show'>表演預約</Link></div>
+            <div className={styles['footer-desc-descs']}><Link href='/restaurant'>周邊美食</Link></div>
             <div className={styles['footer-desc-descs']}>販賣商品</div>
           </div>
           <div className={styles['footer-flex']}>
             <div className={styles['footer-desc-title']}>常見問題</div>
             <div className={styles['footer-desc-descs']}>票券購買</div>
             <div className={styles['footer-desc-descs']}>客製商品</div>
-            <div className={styles['footer-desc-descs']}>設施維護</div>
+            <div className={styles['footer-desc-descs']}><Link href='/maintain'>設施維護</Link></div>
           </div>
           <div className={styles['footer-flex']}>
             <div className={styles['footer-desc-title']}>聯絡我們</div>

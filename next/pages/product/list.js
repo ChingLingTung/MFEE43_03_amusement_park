@@ -11,7 +11,7 @@ import styles from '@/component/Page-select/Page-select.module.css'
 
 
 
-export default function Ride() {
+export default function List() {
   const [data, setData] = useState({});
   const router = useRouter();
   const [keyword, setKeyword] = useState("");

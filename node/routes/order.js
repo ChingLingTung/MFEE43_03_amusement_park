@@ -240,16 +240,16 @@ router.get("/api/:order_id", async (req, res) => {
 });
 
 //新增訂單
-router.get("/add", async (req, res) => {
-  res.render("/add");
-});
+// router.get("/add", async (req, res) => {
+//   res.render("/add");
+// });
 router.post("/add", upload.none(), async (req, res) => {
   const output = {
     success: false,
     postData: req.body, // 除錯用
   };
 
-  const { user_id, recipient_name, recipient_email, recipient_phone, recipient_tel, bill_id, userpay_id, odstatus_id, ibon_id, recipient_address_id, address_detail, bill_detail, order_date } = req.body;
+  const { user_id, recipient_name, recipient_email, recipient_phone, recipient_tel, bill_id, userpay_id, odstatus_id, ibon_id, recipient_address_id, address_detail, bill_detail } = req.body;
   const sql =
     "INSERT INTO `order_list`(`user_id`, `recipient_name`, `recipient_email`, `recipient_phone`, `recipient_tel`, `bill_id`, `userpay_id`, `odstatus_id`, `ibon_id`, `recipient_address_id`, `address_detail`, `bill_detail`, `order_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() )";
 
@@ -267,7 +267,6 @@ router.post("/add", upload.none(), async (req, res) => {
       recipient_address_id,
       address_detail,
       bill_detail,
-      order_date,
     ]);
     output.result = result;
     output.success = !!result.affectedRows;

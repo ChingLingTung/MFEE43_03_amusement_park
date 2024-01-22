@@ -6,6 +6,10 @@ export const AB_ORDER_ADD = API_SERVER + "/order/add";
 
 export const AB_ORDER = API_SERVER + "/order/api";
 
+export const AB_711 = API_SERVER + "/shipment/711";
+
+export const AB_ECPAY = API_SERVER + "/payment/payment";
+
 export const AB_ORDER_DETAILS = API_SERVER + "/order/details";
 
 export const AB_ORDER_DETAILS2 = API_SERVER + "/order/details2";

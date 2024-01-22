@@ -62,3 +62,12 @@
   font-weight: bold;
   margin-top: 50px;
 }
+
+.active{
+  background-color: #F29BA5;
+  color: white;
+}
+
+.page_item{
+  color: black;
+}

@@ -15,6 +15,7 @@ export default function Detail2({
         <span>付款方式: {userpay}</span>
         <span>發票類型: {bill}</span>
         <span>取貨方式: {recipient_address}</span>
+        {/* <span>優惠券: {ibon_name}</span> */}
       </div>
 
       <div className={styles.payment_address}>
