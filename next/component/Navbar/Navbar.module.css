@@ -91,7 +91,7 @@
 /****登入後****/
 
 .user_nickname{
-  width: 30%;
+  width: 70%;
   height: 100%;
   display: flex;
   justify-content: end;
@@ -102,7 +102,7 @@
 }
 
 .nav_login_true{
-  width: 35%;
+  width: 20%;
   height: 100%;
   display: flex;
   justify-content: center;

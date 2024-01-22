@@ -72,8 +72,8 @@ export default function Navbar() {
         
           {parkAuth.email ? (
             <>
-            <div className={styles.nav_logout_flex}>
-              <div className={styles.nav_login}>
+            <div className={styles.nav_login_true}>
+              <div className={styles.user_nickname}>
                 <p className={styles.nav_login_title}>
                 {parkAuth.nickname}
                 </p>
