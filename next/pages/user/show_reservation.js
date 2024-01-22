@@ -47,6 +47,17 @@ export default function UserShowReservation() {
 
     useEffect(()=>{
       getListData();
+      if(!data.rows){
+        Alert.fire({  
+          titleText:'您沒有預約紀錄',
+          text:'要前往預約嗎？',
+          showCancelButton: true,
+        }).then((check) => {
+        if(check.isConfirmed){
+          router.push('/show')
+        }
+      })
+      }
     },[parkAuth]);
 
     const checkRemove = (show_reserve_id) =>{
@@ -145,44 +156,42 @@ export default function UserShowReservation() {
           </div>
           <div className={styles.info_section}>
             <h2 className={styles.title}>表演預約</h2>
-            <table className={styles.table}> 
-            <tbody>
-              <tr> 
-                <th className={styles.th}>演出節目</th> 
-                <th className={styles.th}>演出日期</th>
-                <th className={styles.th}>演出時段</th>
-                <th className={styles.th}>演出地點</th>
-                <th className={styles.th}>預約座位</th>
-                <th className={styles.th}>查看表演資訊</th>
-                <th className={styles.th}>取消預約</th>
-              </tr> 
-            {data.rows && data.rows.map((i)=>{
-              return(
-                  <tr key = {i.show_reserve_id}>
-
-                    <td className={styles.td}>{i.show_name}</td> 
-                    <td className={styles.td}>{i.show_day}</td> 
-                    <td className={styles.td}>{i.start}-{i.finish}</td>
-                    <td className={styles.td}>廣場旁演藝廳</td>
-                    <td className={styles.td}>{i.seat_number.join(',')}</td>
-                    <td className={styles.td}>
-                      <button className={styles.show_info_button} onClick = {()=>{
-                        router.push(`/show_reservation/${i.show_id}`)
-                      }}>
-                        點我看表演資訊
-                      </button>
-                    </td>
-                    <td className={styles.td}>
-                      <button className={styles.reservation_delete_button} onClick = {()=>checkRemove(i.show_reserve_id)}>
-                        取消預約
-                      </button>
-                    </td>
-                  </tr> 
-              )
-            })}
-              
-            </tbody>
-            </table>
+              {data.rows && data.rows.map((i)=>{
+                return(
+                  <table className={styles.table}  key = {i.show_reserve_id}> 
+                    <tbody>
+                      <tr> 
+                        <th className={styles.th}>演出節目</th> 
+                        <th className={styles.th}>演出日期</th>
+                        <th className={styles.th}>演出時段</th>
+                        <th className={styles.th}>演出地點</th>
+                        <th className={styles.th}>預約座位</th>
+                        <th className={styles.th}>查看表演資訊</th>
+                        <th className={styles.th}>取消預約</th>
+                      </tr> 
+                      <tr>
+                        <td className={styles.td}>{i.show_name}</td> 
+                        <td className={styles.td}>{i.show_day}</td> 
+                        <td className={styles.td}>{i.start}-{i.finish}</td>
+                        <td className={styles.td}>廣場旁演藝廳</td>
+                        <td className={styles.td}>{i.seat_number.join(',')}</td>
+                        <td className={styles.td}>
+                          <button className={styles.show_info_button} onClick = {()=>{
+                            router.push(`/show_reservation/${i.show_id}`)
+                          }}>
+                            點我看表演資訊
+                          </button>
+                        </td>
+                        <td className={styles.td}>
+                          <button className={styles.reservation_delete_button} onClick = {()=>checkRemove(i.show_reserve_id)}>
+                            取消預約
+                          </button>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table> 
+                )
+              })}
           </div>
         </div>
         </Layout>
