@@ -65,6 +65,16 @@
   font-family:'Zen Maru Gothic', sans-serif;
   cursor:pointer;
 } 
+.reservation_delete_button { 
+  outline-style: none;
+  border:0;
+  border-radius: 5px;
+  padding:5px;
+  background-color:red;
+  color:#fff;
+  font-family:'Zen Maru Gothic', sans-serif;
+  cursor:pointer;
+} 
 .button{
   outline-style: none;
   border:0;

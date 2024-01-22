@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
 
 export default function ShowInfo() {
+  // 會員中心連過去的修改預約頁面
   const seat = [
     ["","","","A4","A5","","A7","A8","A9","","A11","A12","","",""],
     ["","","B3","B4","B5","","B7","B8","B9","","B11","B12","B13","",""],

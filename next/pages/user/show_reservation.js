@@ -8,13 +8,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
-import { USER_RESERVATION } from '@/component/ride-const';
+import { USER_RESERVATION, USER_RESERVATION_DELET } from '@/component/ride-const';
 
 export default function UserShowReservation() {
+  // 會員中心查看表演預約表格
   const { parkAuth, logout } = useContext(AuthContext);
   const router = useRouter();
   const Alert = withReactContent(Swal) ;
   const [data, setData] = useState({
+    show_reserve_id:0,
     show_name:"",
     show_day:"",
     start:"",
@@ -29,6 +31,7 @@ export default function UserShowReservation() {
 
     if (page < 1) page = 1;
     
+    if(parkAuth.id){
       try {
       const r = await fetch(USER_RESERVATION + '?'+ `user_id=${parkAuth.id}`);
       const d = await r.json();
@@ -38,11 +41,45 @@ export default function UserShowReservation() {
     } catch (ex) {
       console.log(ex)
     }
+    }
+
     };
 
     useEffect(()=>{
       getListData();
     },[parkAuth]);
+
+    const checkRemove = (show_reserve_id) =>{
+      Alert.fire({ 
+        titleText:'確定要刪除預約嗎？',
+        showCancelButton: true,
+      }).then((check) => {
+      if(check.isConfirmed){
+        removeItemAndReload(show_reserve_id)
+      }
+    })
+    }
+    const removeItemAndReload = async (show_reserve_id) => {
+      console.log({ show_reserve_id });
+      const r = await fetch(USER_RESERVATION_DELET + "/" + show_reserve_id, {
+        method: "DELETE",
+      });
+      const result = await r.json();
+      console.log(result)
+      if (result.success) {
+        getListData();
+        Alert.fire({
+          titleText:'成功刪除預約',
+          text:'去看看其他表演？',
+          showCancelButton: true,
+        }).then((check) => {
+          if(check.isConfirmed){
+            router.push('/show');
+          }
+        })
+        // router.reload(); 避免重載
+      }
+    };
 
   return (
     <>
@@ -117,10 +154,11 @@ export default function UserShowReservation() {
                 <th className={styles.th}>演出地點</th>
                 <th className={styles.th}>預約座位</th>
                 <th className={styles.th}>查看表演資訊</th>
+                <th className={styles.th}>取消預約</th>
               </tr> 
             {data.rows && data.rows.map((i)=>{
               return(
-                  <tr key = {i.show_name}>
+                  <tr key = {i.show_reserve_id}>
 
                     <td className={styles.td}>{i.show_name}</td> 
                     <td className={styles.td}>{i.show_day}</td> 
@@ -133,7 +171,12 @@ export default function UserShowReservation() {
                       }}>
                         點我看表演資訊
                       </button>
-                      </td>
+                    </td>
+                    <td className={styles.td}>
+                      <button className={styles.reservation_delete_button} onClick = {()=>checkRemove(i.show_reserve_id)}>
+                        取消預約
+                      </button>
+                    </td>
                   </tr> 
               )
             })}

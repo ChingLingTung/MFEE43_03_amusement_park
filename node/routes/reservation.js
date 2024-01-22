@@ -6,8 +6,9 @@ import dayjs from "dayjs";
 
 const router = express.Router();
 
+// 取得該使用者的表演預約資料
 const getListData = async (req) => {
-  // 取得該使用者的表演預約資料
+  
   const perPage = 20; // 每頁幾筆
 
   let page = +req.query.page || 1;
@@ -70,7 +71,6 @@ const getListData = async (req) => {
   });
 
   // 預約表演新增預約資料
-  
   router.post("/add/api", upload.none(), async (req, res) => {
 
     const output = {
@@ -195,6 +195,24 @@ const getListData = async (req) => {
     //   "changedRows": 0    # 修改時真正有變動的資料筆數
     // }
   
+    res.json(output);
+  });
+
+  // 刪除某筆表演預約資料
+  router.delete("/delete/:show_reserve_id", async (req, res) => {
+    const output = {
+      success: false,
+      result: null,
+    };
+    const show_reserve_id = +req.params.show_reserve_id;
+    if (!show_reserve_id || show_reserve_id < 1) {
+      return res.json(output);
+    }
+  
+    const sql = ` DELETE FROM \`show_reservation\` WHERE show_reserve_id=${show_reserve_id}`;
+    const [result] = await db.query(sql);
+    output.result = result;
+    output.success = !!result.affectedRows;
     res.json(output);
   });
   export default router;
