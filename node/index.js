@@ -27,11 +27,6 @@ import ticketRouter from "./routes/ticket.js";
 // const upload = multer({ dest: "tmp_uploads/" });
 import orderRouter from './routes/order.js'
 import userpayRouter from './routes/userpay.js'
-import maintainRouter from './routes/maintain.js'
-import registerRouter from "./routes/register.js"
-import reservationRouter from "./routes/reservation.js"
-
-
 
 
 // import multer from "multer";
@@ -127,6 +122,8 @@ app.use("/cart", cartRouter);
 app.use("/ticket", ticketRouter);
 app.use("/order", orderRouter);
 app.use("/userpay", userpayRouter);
+app.use("/shipment", shipmentRouter);
+app.use("/payment", paymentRouter);
 app.use("/show", showRouter);
 app.use("/shop", shopRouter);
 app.use("/maintenance", maintainRouter);

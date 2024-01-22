@@ -9,7 +9,9 @@ import IconNav from "@/component/Icon-nav/Icon-nav";
 // import Slider from "@/component/Slider/Slider";
 import styles from '@/component/Page-select/Page-select.module.css'
 
-export default function Ride() {
+
+
+export default function List() {
   const [data, setData] = useState({});
   const router = useRouter();
   const [keyword, setKeyword] = useState("");
@@ -50,7 +52,7 @@ export default function Ride() {
     <>
       <Layout>
         <IconNav />
-        <div className="product-container">
+        <div className={styles.product_container}>
           {data.rows?.length &&
             data.rows.map((v) => <Card key={v.product_id} data={v} />)}
 

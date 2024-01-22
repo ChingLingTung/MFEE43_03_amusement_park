@@ -95,7 +95,7 @@ export default function Detail() {
     }
   };
   return (
-    <>
+    <div className="">
       <Layout key={getData.product_id}>
         <main className={styles.container}>
           <div className={styles.detailContainer}>
@@ -186,6 +186,6 @@ export default function Detail() {
           </div>
         </main>
       </Layout>
-    </>
+    </div>
   );
 }

@@ -1,12 +1,23 @@
+.product-container {
+  width: 80%;
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
 .recipient_information {
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: auto;
   font-size: 40px;
   font-weight: bold;
+  margin-bottom: 50px;
 }
+
 
 .recipient_information_title1{
   margin-left: 5%;
@@ -22,11 +33,13 @@
 }
 
 .form_container {
-  width: 100%;
+  width:80%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   margin-top: 50px;
   margin: auto;
+
 }
 
 .form_container1 {
@@ -34,7 +47,6 @@
   display: flex;
   margin-top: 50px;
   margin: auto;
-  margin-top: 50px;
 
 }
 
@@ -118,9 +130,10 @@
   align-items: center;
   font-size: 30px;
   font-weight: bold;
-  margin-top: 50px;
   border: 1px solid black;
   border-radius: 20px;
+  margin: auto;
+  margin-top: 50px;
 }
 
 .logistics_title {
@@ -189,6 +202,7 @@
 
 .total_container{
   width: 100%;
+  margin: auto;
   display: flex;
   justify-content: end
 }
@@ -240,4 +254,15 @@
   width: 100%;
   border: 1px solid black;
   border-radius: 20px;
+}
+
+.w80{
+  width: 80%;
+  margin: auto;
+  border: 1px solid black;
+  border-radius: 20px;
+}
+
+.w101{
+  width: 100%;
 }
