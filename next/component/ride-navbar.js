@@ -64,7 +64,7 @@ export default function Navbar() {
             </Link>
           </div>
           <div className={styles.option_ticket}>
-            <Link href="/product" className={styles.nav_ticket}>
+            <Link href="/ticket" className={styles.nav_ticket}>
               馬上去購票
             </Link>
           </div>

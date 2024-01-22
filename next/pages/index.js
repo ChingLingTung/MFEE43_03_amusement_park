@@ -10,7 +10,8 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   return (
     <Layout>
-      <div className={styles.container}>
+      <div className={styles.contain}>
+        <img  className={styles.head_img} src="/images/home_pic.jpg"/>
         <h2 className={styles.title}>最新消息</h2>
         <div className={styles.flex_center}>
           <div className={styles.card} style={{marginRight:10}}>
@@ -96,7 +97,7 @@ export default function Home() {
       <div className={styles.flex_spacebetween} style={{marginTop:200}}>
         <div className={styles.flex_center} style={{width:800}}>
           <div>
-            <h2 style={{textAlign:'center',lineHeight:5}}>水世界</h2>
+            <h1 style={{textAlign:'center',lineHeight:5}}>水世界</h1>
             <p>炎炎夏日，最適合來到水世界，和親朋好友愉快地玩水消暑！</p>
           </div>
         </div>
@@ -110,7 +111,7 @@ export default function Home() {
         </div>
         <div className={styles.flex_center} style={{width:800}}>
           <div>
-            <h2 style={{textAlign:'center',lineHeight:5}}>冒險之旅</h2>
+            <h1 style={{textAlign:'center',lineHeight:5}}>冒險之旅</h1>
             <p>你是愛好刺激的人嗎？這裡是喜歡刺激的朋友最佳的去處！</p>
           </div>
         </div>
@@ -118,7 +119,7 @@ export default function Home() {
       <div className={styles.flex_spacebetween} style={{marginTop:200}}>
         <div className={styles.flex_center} style={{width:800}}>
           <div>
-            <h2 style={{textAlign:'center',lineHeight:5}}>慢樂悠遊</h2>
+            <h1 style={{textAlign:'center',lineHeight:5}}>慢樂悠遊</h1>
             <p>想要愉快體驗設施卻害怕刺激？這裡可以讓你好好放鬆！</p>
           </div>
         </div>
@@ -132,7 +133,7 @@ export default function Home() {
         </div>
         <div className={styles.flex_center} style={{width:800}}>
           <div>
-            <h2 style={{textAlign:'center',lineHeight:5}}>樂高天堂</h2>
+            <h1 style={{textAlign:'center',lineHeight:5}}>樂高天堂</h1>
             <p>盡情徜徉在積木的世界裡，這是喜歡建構積木的小朋友們的天堂！</p>
           </div>
         </div>
