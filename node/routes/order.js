@@ -132,7 +132,7 @@ const getListData = async (req) => {
   //   output.info = `頁碼值小於 1`;
   //   return output;
   // }
-  const t_sql = `SELECT COUNT(1) totalRows FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user_list ON order_list.user_id = user_list.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where}`;
+  const t_sql = `SELECT COUNT(1) totalRows FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user ON order_list.user_id = user.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
   if (totalRows > 0) {
@@ -141,7 +141,7 @@ const getListData = async (req) => {
       output.info = `頁碼值大於總頁數`;
       return { ...output, totalRows, totalPages };
     }
-    // const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user_list ON order_list.user_id = user_list.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where} ORDER BY order_list.order_id
+    // const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user ON order_list.user_id = user.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where} ORDER BY order_list.order_id
     // LIMIT ${(page - 1) * perPage}, ${perPage}`;
 
     // 訂單總表
@@ -227,7 +227,7 @@ router.post("/details2", async (req, res) => {
 router.get("/api/:order_id", async (req, res) => {
   const order_id = +req.params.order_id;
 
-  const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user_list ON order_list.user_id = user_list.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id WHERE order_list.order_id=?`;
+  const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user ON order_list.user_id = user.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id WHERE order_list.order_id=?`;
   const [rows] = await db.query(sql, [order_id]);
   if (!rows.length) {
     return res.json({ success: false });

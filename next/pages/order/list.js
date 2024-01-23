@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Layout } from "@/component/Layout";
+import { Layout } from "@/component/product-layout";
 import { AB_ORDER, AB_ORDER_DETAILS } from "@/component/product-const";
 import { useRouter } from "next/router";
 import Paystep from "@/component/Userpay/Paystep/Paystep";

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AB_LIST } from "@/component/product-const";
-import { Layout } from "@/component/Layout";
+import { Layout } from "@/component/product-layout";
 
 export default function Detail() {
   const [getData, setGetData] = useState({
