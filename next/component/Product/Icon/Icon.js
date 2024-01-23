@@ -5,7 +5,8 @@ import styles from "@/component/Product/Icon/Icon.module.css";
 import { FaRegHeart } from "react-icons/fa";
 import { IoCart } from "react-icons/io5";
 
-export default function Icon() {
+export default function Icon({data}) {
+  console.log('913',data);
   const [getData, setGetData] = useState({
     product_id: "",
     product_name: "",
@@ -41,10 +42,6 @@ export default function Icon() {
       }
     }
   }, [router]);
-
-  const incrementQuantity = () => {
-    setCartQuantity(cartQuantity + 1);
-  };
 
   const setNewLocalS = (selectProduct) => {
     //判斷購物車是否有資料 =>如果有 :
@@ -87,13 +84,12 @@ export default function Icon() {
           onClick={() => {
             // 先抓取商品資料、使用者選的數量
             // 把這些資料加進localstorage
-            incrementQuantity()
             setNewLocalS({
-              product_pic: getData.product_pic,
-              product_id: getData.product_id,
-              product_name: getData.product_name,
-              product_price: getData.product_price,
-              subTotalPrice: getData.product_price * cartQuantity,
+              product_pic: data.product_pic,
+              product_id: data.product_id,
+              product_name: data.product_name,
+              product_price: data.product_price,
+              subTotalPrice: data.product_price * cartQuantity,
               user_buy_qty: cartQuantity,
             });
           }}

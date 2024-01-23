@@ -100,10 +100,25 @@ router.get("/api", async (req, res) => {
 });
 
 // 取得單筆的資料
-router.get("/api/:sid", async (req, res) => {
+// router.get("/api/details/:sid", async (req, res) => {
+//   const sid = +req.params.sid;
+
+//   const sql = `SELECT * FROM (ticket_list JOIN ticketcategory1 ON ticket_list.tc1_id = ticketcategory1.tc1_id) JOIN ticketcategory2 ON ticket_list.tc2_id = ticketcategory2.tc2_id`;
+//   const [rows] = await db.query(sql, [sid]);
+//   if (!rows.length) {
+//     return res.json({ success: false });
+//   }
+//   const row = rows[0];
+//   row.beginTime = dayjs(row.beginTime).format("YYYY/MM/DD");
+//   row.endTime = dayjs(row.endTime).format("YYYY/MM/DD");
+
+//   res.json({ success: true, row });
+// });
+
+router.get("/api/details/:sid", async (req, res) => {
   const sid = +req.params.sid;
 
-  const sql = `SELECT * FROM (ticket_list JOIN ticketcategory1 ON ticket_list.tc1_id = ticketcategory1.tc1_id) JOIN ticketcategory2 ON ticket_list.tc2_id = ticketcategory2.tc2_id`;
+  const sql = `SELECT * FROM (ticket_list JOIN ticketcategory1 ON ticket_list.tc1_id = ticketcategory1.tc1_id) JOIN ticketcategory2 ON ticket_list.tc2_id = ticketcategory2.tc2_id WHERE sid=?`;
   const [rows] = await db.query(sql, [sid]);
   if (!rows.length) {
     return res.json({ success: false });
