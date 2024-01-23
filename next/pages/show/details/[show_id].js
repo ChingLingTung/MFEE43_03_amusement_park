@@ -91,7 +91,7 @@ export default function ShowDetail() {
   const onSubmit = async (e) => {
     e.preventDefault();
     let ispass = true
-    if(!parkAuth){
+    if(!parkAuth.id){
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
