@@ -5,9 +5,7 @@ import styles from "@/component/Icon-nav/Icon-nav.module.css";
 export default function Card({ product_name = "女鞋", product_price = 1990 }) {
   return (
     <>
-      <div className={styles["icon-nav"]}>
-        <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
-        <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
+      <div className={styles.icon_nav}>
         <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
         <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />
         <img src="\images\icon-button\iconshirt.jpg" classname="" alt="..." />

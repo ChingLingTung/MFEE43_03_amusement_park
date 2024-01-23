@@ -4,20 +4,26 @@ import Icon from "./Icon/Icon";
 import Link from "next/link";
 
 export default function Card({ data }) {
+  // 確保 data.product_pic 是字串
+  const photoArray = typeof data.product_pic === 'string' ? data.product_pic.split(",") : [];
+
+  // 確認陣列至少有一張圖片
+  const firstImage = photoArray.length > 0 ? photoArray[0] : "";
+
   return (
     <>
-    {/* <pre>{JSON.stringify(data,null,4)}</pre> */}
+      {/* <pre>{JSON.stringify(data, null, 4)}</pre> */}
       <div className={styles["w-262"]}>
         <Link href={`/product/${data.product_id}`}>
           <img
-            src="/images/product/list/p1-thumb.webp"
-            classname=""
+            src={`/images/product/list/${firstImage}`}
+            className=""
             alt="..."
           />
           <p className={styles["card-text"]}>{data.product_name}</p>
           <span className={styles["price-text"]}>$ {data.product_price}</span>
-          <Icon />
         </Link>
+        <Icon data={data} />
       </div>
     </>
   );

@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "@/context/auth-context";
 import { useRouter } from "next/router";
 import { USER } from "@/component/ride-const";
-import { Layout } from "@/component/Layout";
+import { Layout } from "@/component/ride-layout";
 
 export default function Profile() {
   const [data, setData] = useState({}); // 暫存取得的資料

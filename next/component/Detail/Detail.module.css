@@ -1,3 +1,10 @@
+.container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+}
+
 .detailContainer {
   width: 100%;
   height: 50%;
@@ -12,14 +19,17 @@
 }
 
 .w450 img {
-  width: 100%;
-  height: 100%;
+  width: 600px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 15px;
   overflow: hidden;
 }
 
 .w100 {
-  width: 100%;
+  width: 98%;
   height: 100%;
   margin-top: 30px;
   display: flex;
@@ -27,8 +37,8 @@
 }
 
 .w100 img{
-  width: 22%;
-  height: 100%;
+  width: 150px;
+  height: 150px;
   border-radius: 15px;
   overflow: hidden;
   cursor: pointer;
@@ -54,9 +64,14 @@
 }
 
 .product_name{
-  font-size: 48px;
-  margin-bottom: 30px;
+  font-size: 40px;
   font-weight: bold;
+}
+
+.product_desc{
+  width: 85%;
+  font-size: 28px;
+  margin-top: 50px;
 }
 
 .desc_flex{
@@ -64,6 +79,20 @@
   display: flex;
   justify-content: start;
   margin-top: 50px;
+}
+
+.desc_flex2{
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.desc_flex3{
+  width: 50%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
 .desc_title{
@@ -79,8 +108,9 @@
   display: flex;
   justify-content: start;
   align-items: center;
-  font-size: 30px;
+  font-size: 36px;
   margin-left: 50px;
+  color: #F29BA5;
 }
 
 .size_desc div , .quantity_desc div{
@@ -96,7 +126,7 @@
   cursor: pointer;
 }
 
-.size_desc div button, .quantity_desc div button, .color_desc div button {
+.quantity_desc div button {
   background-color: #F29BA5;
   color: white;
   border: none;
@@ -108,8 +138,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 30px;
+  font-size: 36px;
   margin-left: 50px;
+  color: #F29BA5;
 }
 
 .color_desc div {
@@ -150,11 +181,19 @@
   display: flex;
   justify-content: space-between;
   margin-top: 60px;
-  padding: 0px 90px 0px 200px;
+  padding: 0px 150px 0px 200px;
   font-size: 80px;
   color: #F29BA5;
 }
 
 .icon_flex i{
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.selected{
+  background-color: red;
+  color: black;
 }

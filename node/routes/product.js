@@ -6,51 +6,6 @@ import dayjs from "dayjs";
 
 const router = express.Router();
 
-// router.get("/", async (req, res) => {
-//   const sql = "SELECT * FROM product_list ORDER BY product_id";
-//   const [rows] = await db.query(sql);
-//   res.json(rows);
-// });
-
-// router.get("/", async (req, res) => {
-//   const perPage = 20; // 每頁固定20筆資料
-//   // +轉換成數字，若無法轉換變成NAN則設定為1(使用者意外使用了不存在的頁數直接跳轉到第一頁)
-//   let page = +req.query.page || 1;;
-//   let totalRows;
-//   let totalPages;
-//   let rows = [];
-
-//   // 如果頁數小於一(不存在)，用重新導向方法redirect()頁面跳轉回第一頁
-//   // 放在上面先判斷頁數本身有沒有可能存在，有存在才進行下一步
-//   // 不存在直接return即結束不執行下面的程式
-
-//   const total_sql = "SELECT COUNT(1) totalRows FROM amusement_ride";
-//   // 用括號們將totalRows解構得到純數字
-//   [[{ totalRows }]] = await db.query(total_sql);
-//   // 將資料總筆數除以一頁的資料筆數後以Math.ceil()小數直接進位成整數
-//   totalPages = Math.ceil(totalRows / perPage);
-//   // 如果資料總筆數大於零(可能存在)
-//   if(totalRows > 0){
-//     // 如果頁數大於總頁數直接重新導向到上次的最後一頁
-//     if (page > totalPages) {
-//       return res.redirect(`?page=${totalPages}`);
-//     }
-//     const sql = `SELECT * FROM amusement_ride ORDER BY product_id DESC
-//     LIMIT ${(page - 1) * perPage}, ${perPage}`;
-//     // 這裡的rows是上面的全域變數
-//     [rows] = await db.query(sql);
-//   }
-//     return {
-//     page,
-//     totalRows,
-//     totalPages,
-//     rows,
-//     };
-//   });
-//   res.render('rides/ride_list', {
-
-//   });
-
 // 設定要在近其他頁面前要先登入，沒登入會跳轉到登入頁面
 router.use((req, res, next) => {
   const u = req.url.split("?")[0]; // 用split擷取路徑
@@ -129,7 +84,6 @@ const getListData = async (req) => {
     return output;
   }
 
-
   const t_sql = `SELECT COUNT(1) totalRows FROM (((((((product_list JOIN product_color ON product_list.pdcolor_id = product_color.pdcolor_id) JOIN product_category ON product_list.pdcate_id = product_category.pdcate_id) JOIN product_style ON product_list.pdstyle_id = product_style.pdstyle_id) JOIN product_size ON product_list.pdsize_id = product_size.pdsize_id) JOIN pdasize_list ON product_list.product_id = pdasize_list.product_id) JOIN pdacolor_list ON product_list.product_id = pdacolor_list.product_id) JOIN pdastyle_list ON product_list.product_id = pdastyle_list.product_id) JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id ${where}`;
   [[{ totalRows }]] = await db.query(t_sql);
   totalPages = Math.ceil(totalRows / perPage);
@@ -148,22 +102,6 @@ const getListData = async (req) => {
 
   return output;
 };
-
-// router.get("/", async (req, res) => {
-//   const output = await getListData(req);
-//   res.locals.pageName = "ride_list";
-//   res.locals.title = "列表|" + res.locals.title;
-//   if(output.redirect){
-//     return res.redirect(output.redirect);
-//   }
-//   // 限制權限，如果沒登入無法使用編輯和刪除的功能(另外弄一個檔案拿掉)
-//   if (!req.session.admin) {
-//     res.render("rides/no_login_ride_list", output);
-//   } else {
-//     // res.render("rides/list", output);
-//     res.render('rides/ride_list', output);
-//   }
-// });
 
 router.get("/api", async (req, res) => {
   res.json(await getListData(req));

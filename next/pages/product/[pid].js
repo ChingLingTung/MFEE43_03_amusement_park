@@ -2,14 +2,10 @@ import React from "react";
 import styles from "@/component/Detail/Detail.module.css";
 import Image from "next/image";
 import Link from "next/link";
-import { FaChevronRight } from "react-icons/fa";
-import { FaChevronLeft } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AB_LIST } from "@/component/product-const";
-import { Layout } from "@/component/Layout";
-import { useCart } from "@/hooks/useCart";
-import User from "../user";
+import { Layout } from "@/component/product-layout";
 
 export default function Detail() {
   const [getData, setGetData] = useState({
@@ -98,9 +94,8 @@ export default function Detail() {
       alert(`成功加入${cartQuantity}筆進購物車！`);
     }
   };
-
   return (
-    <>
+    <div className="">
       <Layout key={getData.product_id}>
         <main className={styles.container}>
           <div className={styles.detailContainer}>
@@ -113,21 +108,6 @@ export default function Detail() {
               </div>
 
               <div className={styles.w100}>
-                <div className={styles.w100_icon}>
-                  <FaChevronLeft />
-                </div>
-                {/* <Image
-                  src={"/images/product/list/micky-2.webp"}
-                  alt="..."
-                  width={100}
-                  height={100}
-                />
-                <Image
-                  src={"/images/product/list/micky-2.webp"}
-                  alt="..."
-                  width={100}
-                  height={100}
-                /> */}
                 {getData.product_pic.map((v, i) => {
                   return (
                     <Image
@@ -142,48 +122,27 @@ export default function Detail() {
                     />
                   );
                 })}
-                <div className={styles.w100_icon}>
-                  <FaChevronRight />
-                </div>
               </div>
             </div>
 
             <div className={styles.detail_desc}>
               <div className={styles.product_name}>{getData.product_name}</div>
-              <div className={styles.desc_flex}>
-                <div className={styles.desc_title}>Size</div>
-                <div className={styles.size_desc}>
-                  <div>
-                    <button>XS</button>
-                  </div>
-                  <div>
-                    <button>S</button>
-                  </div>
-                  <div>
-                    <button>M</button>
-                  </div>
-                  <div>
-                    <button>L</button>
-                  </div>
-                  <div>
-                    <button>XL</button>
+              <div className={styles.product_desc}>
+                {getData.product_description}
+              </div>
+              <div className={styles.desc_flex2}>
+                <div className={styles.desc_flex3}>
+                  <div className={styles.desc_title}>Size</div>
+                  <div className={styles.size_desc}>{getData.pdsize_name}</div>
+                </div>
+                <div className={styles.desc_flex3}>
+                  <div className={styles.desc_title}>Color</div>
+                  <div className={styles.color_desc}>
+                    {getData.pdcolor_name}
                   </div>
                 </div>
               </div>
-              <div className={styles.desc_flex}>
-                <div className={styles.desc_title}>Color</div>
-                <div className={styles.color_desc}>
-                  <div>
-                    <button>白</button>
-                  </div>
-                  <div>
-                    <button>黑</button>
-                  </div>
-                  <div>
-                    <button>黃</button>
-                  </div>
-                </div>
-              </div>
+
               <div className={styles.desc_flex}>
                 <div className={styles.desc_title}>Quantity</div>
                 <div className={styles.quantity_desc}>
@@ -227,6 +186,6 @@ export default function Detail() {
           </div>
         </main>
       </Layout>
-    </>
+    </div>
   );
 }

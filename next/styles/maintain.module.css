@@ -1,4 +1,4 @@
-.container{
+.contain{
   display: flex;
   flex-direction: column;
   /* justify-content: center; */
@@ -9,7 +9,7 @@
 .title{
   margin-top:50px;
   text-align: center;
-  font-size: 50px;
+  font-size: 30px;
 }
 .searchbar{
   width: 250px;
