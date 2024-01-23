@@ -201,6 +201,9 @@ export default function UserShowReservation() {
                   <div className={styles.center_column}>
                     <img src='/images/Document.png' height={100} width={100}/>
                     <p>沒有預約資料</p>
+                    <Link href='/show'>
+                      <p style={{color:'#d7627b'}}>前往查看目前可以預約的表演</p>
+                    </Link>
                   </div>
                 </>)}
               
