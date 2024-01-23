@@ -110,6 +110,13 @@
   align-items: center;
 }
 
+.productTotalPrice {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .p_del {
   width: 100px;
   display: flex;
@@ -117,7 +124,7 @@
   align-items: center;
 }
 
-.p_del button{
+.p_del button {
   background-color: #F29BA5;
   color: red;
   font-size: 24px;

@@ -145,9 +145,7 @@ export default function CartList() {
           <div className={styles.title}>優惠券</div>
 
           <div className={styles.couponDes}>
-            <div className={styles.c_name}> 
-              優惠券名稱
-            </div>
+            <div className={styles.c_name}>優惠券名稱</div>
             <div className={styles.c_price}>金額</div>
             <div className={styles.c_desc}>描述</div>
             <div className={styles.titleTotalPrice}>總計</div>
@@ -182,24 +180,25 @@ export default function CartList() {
             <div className={styles.totalPrice}>-$200</div>
           </div>
 
-          {cartLS.map((v, i) => {
-            const productTotalPrice =
-              v.product_price * cartQuantities[v.product_id];
-
-            return (
-              <div key={v.product_id}>
-                <div className={styles.totalDes}>
-                  <div className={styles.total}>總計</div>
-                  <div className={styles.p_totalPrice}>
+          <div className={styles.totalDes}>
+            <div className={styles.total}>總計</div>
+            {cartLS.map((v, i) => {
+              const productTotalPrice =
+                v.product_price * cartQuantities[v.product_id];
+              return (
+                <div key={v.product_id}>
+                  <div className={styles.productTotalPrice}>
                     {applyCoupon ? productTotalPrice - 100 : productTotalPrice}
                   </div>
-                  <button className={styles.btn_checkout}>
-                    <a href="../order/list">去買單</a>
-                  </button>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+
+            
+            <button className={styles.btn_checkout}>
+              <a href="../order/list">去買單</a>
+            </button>
+          </div>
         </div>
       </container>
     </>
