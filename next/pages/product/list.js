@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { Layout } from "@/component/Layout";
+import { Layout } from "@/component/product-layout";
 import { AB_LIST } from "@/component/product-const";
 // import ThemeContext from "@/context/ThemeContext";
 import Link from "next/link";

@@ -238,9 +238,9 @@ export default function ShowInfo() {
               </div>
               </div>
               <button onClick={onSubmit} style={{width:1200}} className={styles.button}>確定更改</button>
-              <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
+              {/* <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
               <p>演出時間：{getData.show_day}的{getData.start} 至 {getData.finish}</p>
-              <p>預約座位：{selectedSeat.join('，')}</p>
+              <p>預約座位：{selectedSeat.join('，')}</p> */}
             </>
           )}
             <Head><title>預約表演資訊</title></Head>

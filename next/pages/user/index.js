@@ -75,7 +75,7 @@ export default function UserInfo() {
             <Link href='/user'>
               <button className={styles.selected_button}>會員資料</button>
             </Link>
-              <button className={styles.button}>會員訂單</button>
+              <Link href='/order/list'><button className={styles.button}>會員訂單</button></Link>
               <button className={styles.button}>優惠券</button>
               <button className={styles.button}>我的收藏</button>
               <button className={styles.button} onClick={()=>{

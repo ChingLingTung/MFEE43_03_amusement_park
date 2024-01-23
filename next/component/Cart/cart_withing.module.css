@@ -90,7 +90,27 @@
   align-items: center;
 }
 
+.p_amount button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  font-size: 36px;
+  margin: 30px;
+  background-color: #F29BA5;
+  color: white;
+  cursor: pointer;
+}
+
 .p_totalPrice {
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.productTotalPrice {
   width: 100px;
   display: flex;
   justify-content: center;
@@ -104,6 +124,12 @@
   align-items: center;
 }
 
+.p_del button {
+  background-color: #F29BA5;
+  color: red;
+  font-size: 24px;
+  cursor: pointer;
+}
 
 .couponDes {
   display: flex;

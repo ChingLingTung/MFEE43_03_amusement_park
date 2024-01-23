@@ -261,6 +261,19 @@ export default function Register() {
                 setPasswordError('');
                 setPassword2Error('');
                 setPhoneError('');
+              }else{
+                setRegisterForm(
+                  {
+                    user_name: "",
+                    user_email: "",
+                    user_password:"",
+                    rePassword:"",
+                    avatar: "/images/user/profile.png",
+                    phone: "",
+                    address: "",
+                    user_nickname:"",
+                  }
+                );
               }
             }}
             ><FaStar className={styles.star}/></div>

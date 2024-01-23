@@ -56,7 +56,7 @@ const createCheckMac = (params) => {
 
 // const macValue = createCheckMac({
 //   MerchantID: "3002607",
-//   MerchantTradeNo: "test334567890",
+//   MerchantTradeNo: "test334567890123",
 //   MerchantTradeDate: "2023/01/21 15:30:13",
 //   PaymentType: "aio",
 //   TotalAmount: 8787,
