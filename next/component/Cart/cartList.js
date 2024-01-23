@@ -173,16 +173,15 @@ export default function CartList() {
             {cartLS.map((v, i) => {
               const productTotalPrice =
                 v.product_price * cartQuantities[v.product_id];
-              return (
-                <div key={v.product_id}>{/* 不在这里显示每个商品的总价 */}</div>
-              );
+              return <div key={v.product_id}></div>;
             })}
 
-            {/* 在这里显示总和 */}
             <div className={styles.productTotalPrice}>
               {cartLS.reduce((total, v) => {
-                return total + v.product_price * cartQuantities[v.product_id];
-              }, 0)}
+                const productTotalPrice =
+                  v.product_price * cartQuantities[v.product_id];
+                return total + productTotalPrice;
+              }, 0) - (applyCoupon ? 100 : 0)}{" "}
             </div>
 
             <button className={styles.btn_checkout}>
