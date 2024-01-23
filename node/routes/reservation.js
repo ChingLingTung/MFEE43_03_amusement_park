@@ -70,6 +70,73 @@ const getListData = async (req) => {
     res.json( await getListData(req) );
   });
 
+  // 取得某表演已經被預約的位置
+const getSelectedSeat = async(req) =>{
+
+  const perPage = 20; // 每頁幾筆
+
+  let page = +req.query.page || 1;
+  let qs = {};  // 用來把 query string 的設定傳給 template
+
+  // 設定綜合的where子句
+  let where = `WHERE 1 `;
+  let show_id = req.query.show_id? req.query.show_id : '';
+
+  if (show_id && show_id !== 0) {
+    qs.show_id = show_id;
+    where += ` AND show_id = '${show_id}' `;
+  }
+  let totalRows = 0;
+  let totalPages = 0;
+  let rows = [];
+
+  let output = {
+    success: false,
+    page,
+    perPage,
+    rows,
+    totalRows,
+    totalPages,
+    qs,
+    redirect: "",
+    info: "",
+  };
+  const t_sql = `SELECT COUNT(1) totalRows FROM \`show_reservation\` ${where} ORDER BY user_id `;
+  [[{ totalRows }]] = await db.query(t_sql);
+  totalPages = Math.ceil(totalRows / perPage);
+  if (totalRows > 0) {
+    if (page > totalPages) {
+      output.redirect = `?page=${totalPages}`;
+      output.info = `頁碼值大於總頁數`;
+      return {...output, totalRows, totalPages};
+    }
+
+    const sql = `SELECT * FROM \`show_reservation\` ${where} ORDER BY user_id LIMIT ${(page - 1) * perPage}, ${perPage}`;
+    [rows] = await db.query(sql,[show_id]);
+    
+    try {
+      const [result] = await db.query(sql, [
+        show_id,
+        user_id,
+        seat_number,
+        rows.forEach((row) => {
+          row.seat_number = JSON.parse(row.seat_number);
+        })
+      ]);
+      output.result = result;
+      output.success = !!result.affectedRows;
+    } catch (ex) {
+      output.exception = ex;
+    }
+    
+    output = { ...output, success: true, rows, totalRows, totalPages };
+  }
+  return output;
+}
+
+  router.get("/get_seat/api", async(req,res) =>{
+    res.json( await getSelectedSeat(req) );
+  } )
   // 預約表演新增預約資料
   router.post("/add/api", upload.none(), async (req, res) => {
 
@@ -80,11 +147,11 @@ const getListData = async (req) => {
     };
     
     let { user_id, show_id, selected_seat } = req.body;
-    if(!user_id){
+    if(!user_id || user_id===0){
       output.error='使用者未登入'
       return output
     }
-    if(!show_id){
+    if(!show_id || show_id===0){
       output.error='未取得預約的表演項目'
       return output
     }

@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '@/styles/show_detail.module.css'
 import Head from 'next/head';
-import {SHOW_GET_ONE, USER_RESERVATION,USER_RESERVATION_EDIT} from '@/component/ride-const'
+import {SHOW_GET_ONE, USER_RESERVATION,GET_DISABLEDSEAT,USER_RESERVATION_EDIT} from '@/component/ride-const'
 import { useState,useEffect, useContext } from 'react';
 import AuthContext from '@/context/auth-context';
 import { useRouter } from 'next/router'
@@ -33,6 +33,7 @@ export default function ShowInfo() {
     show_group:"", 
     show_day:"", 
   });
+  const [disabledSeat, setDisabledSeat] = useState([])
   const { parkAuth } = useContext(AuthContext);
   const Alert = withReactContent(Swal) ;
   const [toggle,setToggle]=useState(false)
@@ -73,12 +74,33 @@ export default function ShowInfo() {
             } else {
               setGetData({ ...data.row });
               getListData();
+              disabled_seat();
             }
           })
           .catch((ex) => console.log(ex));
       }
     }
   }, [router.query.show_id]);
+
+  const disabled_seat = async () => {
+
+    // const usp = new URLSearchParams(router.query)
+    
+    let page = +router.query.page || 1
+
+    if (page < 1) page = 1;
+    const show_id = +router.query.show_id;
+      try {
+      const r = await fetch(GET_DISABLEDSEAT + '?'+ `show_id=${show_id}`);
+      const d = await r.json();
+      setDisabledSeat(d.rows.forEach((row)=>{
+        row.seat_number
+      }));
+      // console.log(d)
+    } catch (ex) {
+      console.log(ex)
+    }
+    };
 
   const getListData = async () => {
 
@@ -212,6 +234,7 @@ export default function ShowInfo() {
             <p>表演簡介：</p>
           </div>
           <p style={{marginTop:7}}>{getData.show_info}{getData.show_info2}</p>
+          <p>{disabledSeat}</p>
           {!toggle? (
             <>
               <button className={styles.button} onClick={handleToggle}>更改預約</button>
