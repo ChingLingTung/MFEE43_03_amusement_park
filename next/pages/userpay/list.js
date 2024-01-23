@@ -194,15 +194,15 @@ export default function OrderADD() {
           const ele = document.createElement("div");
           ele.innerHTML = data;
           document.body.appendChild(ele);
-          if (
-            (setEmailError("") &&
-            setUsernameError("") &&
-            setUserphoneError("") &&
-            setUsertelError("") &&
-            setUseraddressError(""))
-          ) {
+          // if (
+          //   (setEmailError("") &&
+          //   setUsernameError("") &&
+          //   setUserphoneError("") &&
+          //   setUsertelError("") &&
+          //   setUseraddressError(""))
+          // ) {
             ele.getElementsByTagName("form")[0].submit();
-          }
+          // }
         });
       // const r = await fetch(AB_ORDER_ADD, {
       //   method: "POST",
