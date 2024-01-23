@@ -10,7 +10,7 @@ import "react-custom-cursors/dist/index.css";
 import { Layout } from '@/component/ride-layout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
-import { USER_RESERVATION_ADD } from '@/component/ride-const';
+import { USER_RESERVATION_ADD , GET_DISABLEDSEAT } from '@/component/ride-const';
 
 export default function ShowDetail() {
   // 表演詳細頁預約頁面
@@ -42,8 +42,9 @@ export default function ShowDetail() {
     setToggle(true)
   }
   const [selectedSeat,setSelectedSeat]=useState([]);
+  const [disabledSeat,setDisabledSeat]=useState([]);
   const router = useRouter();
-
+  const [disableClass,setDisableClass]=useState('');
   const toggleSelectedSeat = (cell) =>{
     setSelectedSeat((selectedSeat)=>{
       let nowSelected = [];
@@ -57,6 +58,28 @@ export default function ShowDetail() {
     })
   }
 
+  const getDisabledSeat = async() =>{
+    if(getData.show_id !==0){
+      try {
+      const r = await fetch(GET_DISABLEDSEAT + '?'+ `show_id=${getData.show_id}`);
+      const d = await r.json();
+      console.log(d);
+      let seats = [];
+      d.rows.forEach((row) => {
+        // seats.concat(row.seat_number);
+        seats = [...seats, ...row.seat_number];
+        console.log(row.seat_number)
+      })
+      
+      console.log(seats)
+      setDisabledSeat(...seats);
+      // console.log(d)
+    } catch (ex) {
+      console.log(ex)
+    }
+    }
+    
+  }
 
   useEffect(() => {
     // 取得該筆表演的詳細資料
@@ -79,19 +102,24 @@ export default function ShowDetail() {
               // setFormdata({
               //   show_id:getData.show_id
               // })
+              getDisabledSeat();
+              console.log(disabledSeat)
             }
           })
 
           .catch((ex) => console.log(ex));
       }
     }
-  }, [router.query.show_id]);
+  }, [router.query.show_id, disabledSeat]);
   
+  useEffect(()=>{
+    getDisabledSeat();
+  },[disabledSeat,getData.show_id])
 
   const onSubmit = async (e) => {
     e.preventDefault();
     let ispass = true
-    if(!parkAuth.id){
+    if(!parkAuth.id || parkAuth.id ===0){
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -215,10 +243,14 @@ export default function ShowDetail() {
                   <div key={i}>
                     {row.map((cell, j) => (
                       <span 
-                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat}`} key={j} 
+                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat} ${disabledSeat.includes(cell)? styles.disabled_seat : styles.seat}`} key={j} 
                       style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
-                      id={cell} 
-                      onClick={()=>{toggleSelectedSeat(cell);
+                      id={cell}
+                      disabled={disabledSeat.includes(cell)}
+                      onClick={()=>{
+                        if(cell !=='' && !disabledSeat.includes(cell)){
+                          toggleSelectedSeat(cell);
+                        }
                         console.log("這是編號："+cell)
                         }}>{cell? cell : "0"}</span>
                     ))}

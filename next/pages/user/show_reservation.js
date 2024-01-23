@@ -38,7 +38,7 @@ export default function UserShowReservation() {
       const d = await r.json();
       setData(d);
       // console.log(d)
-      if(!d.rows){
+      if(!d.rows || d.rows.length < 1){
         Alert.fire({  
           titleText:'您沒有預約紀錄',
           text:'要前往預約嗎？',

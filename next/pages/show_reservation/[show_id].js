@@ -252,7 +252,10 @@ export default function ShowInfo() {
                       className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat}`} key={j} 
                       style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
                       id={cell} 
-                      onClick={()=>{toggleSelectedSeat(cell);
+                      onClick={()=>{
+                        if(cell !==''){
+                          toggleSelectedSeat(cell);
+                        }
                         console.log("這是編號："+cell)
                         }}>{cell? cell : "0"}</span>
                     ))}

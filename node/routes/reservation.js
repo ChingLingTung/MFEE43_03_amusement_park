@@ -84,7 +84,7 @@ const getSelectedSeat = async(req) =>{
 
   if (show_id && show_id !== 0) {
     qs.show_id = show_id;
-    where += ` AND show_id = '${show_id}' `;
+    where += ` AND \`show_id\` = '${show_id}' `;
   }
   let totalRows = 0;
   let totalPages = 0;
@@ -112,18 +112,19 @@ const getSelectedSeat = async(req) =>{
     }
 
     const sql = `SELECT * FROM \`show_reservation\` ${where} ORDER BY user_id LIMIT ${(page - 1) * perPage}, ${perPage}`;
-    [rows] = await db.query(sql,[show_id]);
+    
     
     try {
-      const [result] = await db.query(sql, [
-        show_id,
-        user_id,
-        seat_number,
+      [rows] = await db.query(sql,[show_id]);
+      // const [result] = await db.query(sql, [
+      //   show_id,
+      //   user_id,
+      //   seat_number,
         rows.forEach((row) => {
           row.seat_number = JSON.parse(row.seat_number);
         })
-      ]);
-      output.result = result;
+      // ]);
+      // output.rows = rows;
       output.success = !!result.affectedRows;
     } catch (ex) {
       output.exception = ex;
