@@ -98,6 +98,13 @@ const getListData = async (req) => {
     //   qs.selectedSeat = selectedSeat;
     // }
 
+    let data_seat = [];
+    if(Array.isArray(selected_seat)){
+      data_seat = selected_seat;
+    }else{
+      data_seat.push(selected_seat);
+    }
+
     const sql =
       "INSERT INTO \`show_reservation\`(`user_id`, `show_id`, `seat_number` ) VALUES (?, ?, ? )";
   
@@ -105,7 +112,7 @@ const getListData = async (req) => {
       const [result] = await db.query(sql, [
         user_id,
         show_id,
-        JSON.stringify(selected_seat)
+        JSON.stringify(data_seat)
       ]);
       output.result = result;
       output.success = !!result.affectedRows;
@@ -156,6 +163,12 @@ const getListData = async (req) => {
       return output
     }
 
+    let data_seat = [];
+    if(Array.isArray(selected_seat)){
+      data_seat = selected_seat;
+    }else{
+      data_seat.push(selected_seat);
+    }
 
     // if(user_id && show_id && selectedSeat !=[]){
     //   qs.user_id = user_id;
@@ -168,7 +181,7 @@ const getListData = async (req) => {
   
     try {
       const [result] = await db.query(sql, [
-        JSON.stringify(selected_seat),
+        JSON.stringify(data_seat),
         user_id,
         show_id
       ]);

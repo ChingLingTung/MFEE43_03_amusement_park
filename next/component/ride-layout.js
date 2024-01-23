@@ -1,6 +1,6 @@
 import Navbar from "@/component/ride-navbar";
 import Head from "next/head";
-import Footer from "./Footer/Footer";
+import Footer from "@/component/Footer/ride_footer";
 
 export function Layout({ children }) {
   return (

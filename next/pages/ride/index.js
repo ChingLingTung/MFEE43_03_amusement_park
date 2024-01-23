@@ -94,11 +94,15 @@ export default function Ride() {
             <SearchThrillerRating setDataFromThrillerRating={setDataFromThrillerRating} />
             <SearchSupport setDataFromSupport={setDataFromSupport} />
           </div>
-          <div className={styles.card_flex}>
-            {data.rows &&
+          
+
+          {data.rows && data.rows.length > 0 ? 
+          (<>
+            <div style={{height:1100}}>
+              <div className={styles.card_flex}>
+                {data.rows &&
                   data.rows.map((i) => {
-                  return (
-                      
+                    return (
                       <div key={i.amusement_ride_id}>
                           <Link href={`/ride/details/${i.amusement_ride_id}`}>
                             <div  className={styles.card}>
@@ -107,10 +111,18 @@ export default function Ride() {
                             </div>
                           </Link>
                       </div>
-                      
-                    );
-                  })} 
-          </div>
+                      );
+                    })} 
+              </div>
+            </div>
+          </>)
+          :
+          (<>
+            <div style={{height:700}}>
+              <img src='/images/Document.png' height={100} width={100} style={{marginTop:350}}/>
+              <p>查無資料，請變更篩選條件再次嘗試</p>
+            </div>
+          </>)}
           {/* <div className={styles.theme_img}>
             <img className={styles.theme_img} src={'/images/ride/w1.jpg'} style={{width:'100%',height:200,marginTop:100}} alt='' />
           </div>

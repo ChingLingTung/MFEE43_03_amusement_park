@@ -23,7 +23,8 @@ export default function Navbar() {
             <img className={styles.logo} src='/images/logo.png'/>
           </Link>
         <div className={styles.flex_center}>
-          <div className={styles.option} onClick={()=>{
+          <div className={styles.option} onClick={(e)=>{
+            e.preventDefault()
                 if(!parkAuth.email){
                   Alert.fire({ 
                     didOpen: () => { 
@@ -44,7 +45,7 @@ export default function Navbar() {
                 router.push('/user');
               }
           }}>
-            <Link href="#" className={styles.nav_title}>
+            <Link href="" className={styles.nav_title}>
             <FaUserAlt className={styles.mr_10}/>會員中心
             </Link>
           </div>
