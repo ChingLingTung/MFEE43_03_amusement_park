@@ -9,6 +9,10 @@ export default function CartList() {
   // const [data, setData] = useState({});
   //變更數量
   const [cartQuantities, setCartQuantities] = useState({});
+  const [applyCoupon, setApplyCoupon] = useState(false);
+  const handleCouponCheckboxChange = () => {
+    setApplyCoupon(!applyCoupon);
+  };
 
   const [cartLS, setCartLS] = useState([]);
   useEffect(() => {
@@ -141,17 +145,27 @@ export default function CartList() {
           <div className={styles.title}>優惠券</div>
 
           <div className={styles.couponDes}>
-            <div className={styles.c_name}>
-              <input
-                type="checkbox"
-                className={styles.checkbox1}
-                style={{ marginRight: "50px" }}
-              />
+            <div className={styles.c_name}> 
               優惠券名稱
             </div>
             <div className={styles.c_price}>金額</div>
             <div className={styles.c_desc}>描述</div>
             <div className={styles.titleTotalPrice}>總計</div>
+          </div>
+
+          <div className={styles.coupon}>
+            <div className={styles.c_name}>
+              <input
+                type="checkbox"
+                className={styles.checkbox1}
+                style={{ marginRight: "50px" }}
+                onChange={handleCouponCheckboxChange}
+              />
+              {/* {i.ibon_name} */}$100折價券
+            </div>
+            <div className={styles.c_price}>$100</div>
+            <div className={styles.c_desc}>消費$1000以上可使用</div>
+            <div className={styles.totalPrice}>-$100</div>
           </div>
           <div className={styles.coupon}>
             <div className={styles.c_name}>
@@ -159,19 +173,33 @@ export default function CartList() {
                 type="checkbox"
                 className={styles.checkbox1}
                 style={{ marginRight: "50px" }}
+                onChange={handleCouponCheckboxChange}
               />
-              {/* {i.ibon_name} */}ibon_name
+              {/* {i.ibon_name} */}$200折價券
             </div>
-            <div className={styles.c_price}>$100</div>
-            <div className={styles.c_desc}>消費$1000以上可使用</div>
-            <div className={styles.totalPrice}>-$100</div>
+            <div className={styles.c_price}>$200</div>
+            <div className={styles.c_desc}>消費$2000以上可使用</div>
+            <div className={styles.totalPrice}>-$200</div>
           </div>
 
-          <div className={styles.totalDes}>
-            <div className={styles.total}>總計</div>
-            <div className={styles.totalPrice}>$1800</div>
-            <div className={styles.btn_checkout}>去買單</div>
-          </div>
+          {cartLS.map((v, i) => {
+            const productTotalPrice =
+              v.product_price * cartQuantities[v.product_id];
+
+            return (
+              <div key={v.product_id}>
+                <div className={styles.totalDes}>
+                  <div className={styles.total}>總計</div>
+                  <div className={styles.p_totalPrice}>
+                    {applyCoupon ? productTotalPrice - 100 : productTotalPrice}
+                  </div>
+                  <button className={styles.btn_checkout}>
+                    <a href="../order/list">去買單</a>
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </container>
     </>
