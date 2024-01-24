@@ -181,7 +181,6 @@ export default function TicketUserBuy() {
               </Link>
               <button className={styles.button}>會員訂單</button>
               <button className={styles.selected_button}>入園票券</button>
-              <button className={styles.button}>我的收藏</button>
               <button
                 className={styles.button}
                 onClick={() => {
@@ -254,7 +253,7 @@ export default function TicketUserBuy() {
                         <td className={styles.td}>{v.tc2_name}</td>
                         <td className={styles.td}>{v.tc_amount}</td>
                         <td className={styles.td}>
-                          {v.tc_amount * cartQuantities[v.sid]}
+                          {v.user_buy_qty}
                         </td>
                         <td className={styles.td}>
                           <button
