@@ -72,14 +72,7 @@ export default function CartList() {
       <container className={styles.cartContainer}>
         <div className={styles.title}>購物車</div>
         <div className={styles.productDes}>
-          <div>
-            <input
-              type="checkbox"
-              className={styles.checkbox1}
-              style={{ marginRight: "50px" }}
-            />
-            商品照片
-          </div>
+          <div>商品照片</div>
           <div className={styles.p_name}>商品名稱</div>
           <div className={styles.p_price}>單價</div>
           <div className={styles.p_amount}>數量</div>
@@ -93,11 +86,6 @@ export default function CartList() {
               {/* <pre>{JSON.stringify(v, null, 4)}</pre> */}
               <div className={styles.productIn}>
                 <div className={styles.p_pic}>
-                  <input
-                    type="checkbox"
-                    className={styles.checkbox1}
-                    style={{ marginRight: "50px" }}
-                  />
                   <img src={`/images/product/list/${v.product_pic}`} />
                 </div>
                 <div className={styles.p_name}>{v.product_name}</div>
@@ -185,18 +173,19 @@ export default function CartList() {
             {cartLS.map((v, i) => {
               const productTotalPrice =
                 v.product_price * cartQuantities[v.product_id];
-              return (
-                <div key={v.product_id}>
-                  <div className={styles.productTotalPrice}>
-                    {applyCoupon ? productTotalPrice - 100 : productTotalPrice}
-                  </div>
-                </div>
-              );
+              return <div key={v.product_id}></div>;
             })}
 
-            
+            <div className={styles.productTotalPrice}>
+              {cartLS.reduce((total, v) => {
+                const productTotalPrice =
+                  v.product_price * cartQuantities[v.product_id];
+                return total + productTotalPrice;
+              }, 0) - (applyCoupon ? 100 : 0)}{" "}
+            </div>
+
             <button className={styles.btn_checkout}>
-              <a href="../order/list">去買單</a>
+              <a href="../userpay/list">去買單</a>
             </button>
           </div>
         </div>
