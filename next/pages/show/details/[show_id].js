@@ -72,7 +72,8 @@ export default function ShowDetail() {
       })
       
       console.log(seats)
-      setDisabledSeat(...seats);
+      console.log(...seats)
+      setDisabledSeat(seats);
       // console.log(d)
     } catch (ex) {
       console.log(ex)
@@ -102,19 +103,19 @@ export default function ShowDetail() {
               // setFormdata({
               //   show_id:getData.show_id
               // })
-              getDisabledSeat();
-              console.log(disabledSeat)
+              // getDisabledSeat();
+              // console.log(disabledSeat)
             }
           })
 
           .catch((ex) => console.log(ex));
       }
     }
-  }, [router.query.show_id, disabledSeat]);
+  }, [router.query.show_id]);
   
   useEffect(()=>{
     getDisabledSeat();
-  },[disabledSeat,getData.show_id])
+  },[getData.show_id])
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -237,16 +238,20 @@ export default function ShowDetail() {
           :
           (
             <>
+              <div className={styles.flex_center} style={{width:400, margin:'auto' , marginTop:50, marginBottom:50}}>
+                <div className={styles.flex_center}><span className={styles.mini_seat}> </span>可預約</div>
+                <div className={styles.flex_center}><span className={styles.mini_disabled_seat}> </span>已被預約</div>
+                <div className={styles.flex_center}><span className={styles.mini_selected_seat}> </span>您的座位</div>
+              </div>
               <div style={{marginLeft:105,marginTop:50}} className={styles.seat_center}>
               <div>
                 {seat.map((row, i) => (
                   <div key={i}>
                     {row.map((cell, j) => (
                       <span 
-                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat} ${disabledSeat.includes(cell)? styles.disabled_seat : styles.seat}`} key={j} 
+                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat} ${disabledSeat.indexOf(cell)!==-1? styles.disabled_seat : styles.seat}`} key={j} 
                       style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
                       id={cell}
-                      disabled={disabledSeat.includes(cell)}
                       onClick={()=>{
                         if(cell !=='' && !disabledSeat.includes(cell)){
                           toggleSelectedSeat(cell);
