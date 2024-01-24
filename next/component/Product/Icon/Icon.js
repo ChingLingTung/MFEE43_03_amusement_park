@@ -1,12 +1,14 @@
 import React from "react";
-import { useState,useEffect } from "react";
-import {useRouter} from "next/router";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import styles from "@/component/Product/Icon/Icon.module.css";
 import { FaRegHeart } from "react-icons/fa";
 import { IoCart } from "react-icons/io5";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
-export default function Icon({data}) {
-  console.log('913',data);
+export default function Icon({ data }) {
+  console.log("913", data);
   const [getData, setGetData] = useState({
     product_id: "",
     product_name: "",
@@ -17,6 +19,7 @@ export default function Icon({data}) {
     product_description: "",
   });
   const [cartQuantity, setCartQuantity] = useState(1);
+  const Alert = withReactContent(Swal);
 
   const router = useRouter();
 
@@ -60,7 +63,8 @@ export default function Icon({data}) {
         nowCart.map((v) => {
           if (v.product_id === selectProduct.product_id) {
             v.user_buy_qty += selectProduct.user_buy_qty;
-            v.subTotalPrice += selectProduct.user_buy_qty * selectProduct.product_price;
+            v.subTotalPrice +=
+              selectProduct.user_buy_qty * selectProduct.product_price;
           }
         });
         localStorage.setItem("cartData", JSON.stringify(nowCart));
@@ -91,6 +95,10 @@ export default function Icon({data}) {
               product_price: data.product_price,
               subTotalPrice: data.product_price * cartQuantity,
               user_buy_qty: cartQuantity,
+            });
+            Alert.fire({
+              titleText: "加入購物車",
+              text: "成功加入1筆購物車",
             });
           }}
         />

@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { AB_LIST } from "@/component/product-const";
 import { Layout } from "@/component/product-layout";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 export default function Detail() {
   const [getData, setGetData] = useState({
@@ -20,6 +22,7 @@ export default function Detail() {
   });
   const [mainPicIndex, setMainPicIndex] = useState(0);
   const [cartQuantity, setCartQuantity] = useState(1);
+  const Alert = withReactContent(Swal);
 
   const router = useRouter();
   useEffect(() => {
@@ -85,13 +88,19 @@ export default function Detail() {
         const newSelect = [...nowCart, selectProduct];
         localStorage.setItem("cartData", JSON.stringify(newSelect));
       }
-      alert(`成功加入${cartQuantity}筆進購物車！`);
+      Alert.fire({
+        titleText: "加入購物車",
+        text: `成功加入${cartQuantity}筆進購物車！`,
+      });
     } else {
       // 購物車沒東西 => 將選擇商品加進去
       const array = [selectProduct];
       localStorage.setItem("cartData", JSON.stringify(array));
 
-      alert(`成功加入${cartQuantity}筆進購物車！`);
+      Alert.fire({
+        titleText: "加入購物車",
+        text: `成功加入${cartQuantity}筆進購物車！`,
+      });
     }
   };
   return (
