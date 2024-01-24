@@ -23,6 +23,7 @@ export default function TicketDetail() {
   });
   const { parkAuth } = useContext(AuthContext);
   const Alert = withReactContent(Swal);
+  const [cartQuantity, setCartQuantity] = useState(1);
 
   const router = useRouter();
 
@@ -70,6 +71,62 @@ export default function TicketDetail() {
         },
       });
       return (ispass = false);
+    } else {
+      // 加入導向至"/ticketCart"
+      router.push("/cart/ticketCart");
+
+      setNewLocalS({
+        tc1_id: getData.tc1_d,
+        tc1_name: getData.tc1_name,
+        tc2_name: getData.tc2_name,
+        tc_amount: getData.tc_amount,
+        subTotalPrice: getData.tc_amount * cartQuantity,
+        user_buy_qty: cartQuantity,
+      });
+    }
+  };
+
+  const setNewLocalS = (selectProduct) => {
+    //判斷購物車是否有資料 =>如果有 :
+    if (localStorage.getItem("ticketCartData")) {
+      // 判斷這個商品有沒有被加進購物車
+      let nowCart = JSON.parse(localStorage.getItem("ticketCartData"));
+      // 找有沒有在購物車裡
+      let result = nowCart.find((d) => {
+        if (d.product_id === selectProduct.product_id) {
+          return true;
+        }
+        return false;
+      });
+      if (result) {
+        // 如果有相同商品 => 更新數量
+        nowCart.map((v) => {
+          if (v.product_id === selectProduct.product_id) {
+            v.user_buy_qty += selectProduct.user_buy_qty;
+            v.subTotalPrice +=
+              selectProduct.user_buy_qty * selectProduct.product_price;
+          }
+        });
+        localStorage.setItem("ticketCartData", JSON.stringify(nowCart));
+      } else {
+        // 如果沒有相同商品 => 將就的購物車+選擇的這個商品
+        const newSelect = [...nowCart, selectProduct];
+        localStorage.setItem("ticketCartData", JSON.stringify(newSelect));
+      }
+      Alert.fire({
+        titleText: "加入購物車",
+        text: `成功加入${cartQuantity}筆進購物車！`,
+      });
+    } else {
+      // 購物車沒東西 => 將選擇商品加進去
+      const array = [selectProduct];
+      localStorage.setItem("ticketCartData", JSON.stringify(array));
+
+      Alert.fire({
+        titleText: "加入購物車",
+        text: `成功加入${cartQuantity}筆進購物車！`,
+      });
+      // alert(`成功加入${cartQuantity}筆進購物車！`);
     }
   };
 
@@ -105,12 +162,11 @@ export default function TicketDetail() {
                 <p>票種與購票說明 : {getData.description}</p>
               </div>
               <div className={styles.buyTicket}>
-                <button
-                  onClick={onSubmit}
-                  className={styles.button}
-                >
-                  購買
-                </button>
+                <Link href={"/cart/ticketCart"}>
+                  <button onClick={onSubmit} className={styles.button}>
+                    購買
+                  </button>
+                </Link>
               </div>
               <Head>
                 <title>票券詳細資訊</title>

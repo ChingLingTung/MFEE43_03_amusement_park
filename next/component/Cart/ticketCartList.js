@@ -32,6 +32,20 @@ export default function TicketCartList() {
         ...cartQuantities,
         [productId]: cartQuantities[productId] - 1,
       });
+
+      // 更新cartLS中對應商品數量
+      const updatedCart = cartLS.map((item) =>
+        item.sid === productId
+          ? { ...item, user_buy_qty: cartQuantities[productId] - 1 }
+          : item
+      );
+      setCartLS(updatedCart);
+
+      // 儲存更新後的cartLS到localStorage
+      window.localStorage.setItem(
+        "ticketCartData",
+        JSON.stringify(updatedCart)
+      );
     }
   };
 
@@ -40,6 +54,17 @@ export default function TicketCartList() {
       ...cartQuantities,
       [productId]: cartQuantities[productId] + 1,
     });
+
+    // 更新cartLS中對應商品數量
+    const updatedCart = cartLS.map((item) =>
+      item.sid === productId
+        ? { ...item, user_buy_qty: cartQuantities[productId] + 1 }
+        : item
+    );
+    setCartLS(updatedCart);
+
+    // 儲存更新後的cartLS到localStorage
+    window.localStorage.setItem("ticketCartData", JSON.stringify(updatedCart));
   };
 
   const removeItem = (productId) => {
@@ -70,14 +95,7 @@ export default function TicketCartList() {
       <container className={styles.cartContainer}>
         <div className={styles.title}>購物車</div>
         <div className={styles.productDes}>
-          <div>
-            <input
-              type="checkbox"
-              className={styles.checkbox1}
-              style={{ marginRight: "50px" }}
-            />
-            票券種類
-          </div>
+          <div>票券種類</div>
           <div className={styles.p_name}>票券名稱</div>
           <div className={styles.p_price}>單價</div>
           <div className={styles.p_amount}>數量</div>
@@ -89,33 +107,22 @@ export default function TicketCartList() {
           return (
             <div key={v.sid}>
               <div className={styles.productIn}>
-                <div className={styles.p_pic}>
-                  <input
-                    type="checkbox"
-                    className={styles.checkbox1}
-                    style={{ marginRight: "50px" }}
-                  />
-                  {v.tc1_name}
-                </div>
+                <div className={styles.p_pic}>{v.tc1_name}</div>
                 <div className={styles.p_name}>{v.tc2_name}</div>
                 <div className={styles.p_price}>{v.tc_amount}</div>
                 <div className={styles.p_amount}>
                   <div>
-                    <button onClick={() => decrementQuantity(v.sid)}>
-                      -
-                    </button>
+                    <button onClick={() => decrementQuantity(v.sid)}>-</button>
                   </div>
                   <div>
                     <button>{cartQuantities[v.sid]}</button>
                   </div>
                   <div>
-                    <button onClick={() => incrementQuantity(v.sid)}>
-                      +
-                    </button>
+                    <button onClick={() => incrementQuantity(v.sid)}>+</button>
                   </div>
                 </div>
                 <div className={styles.p_totalPrice}>
-                  {v.product_price * cartQuantities[v.sid]}
+                  {v.tc_amount * cartQuantities[v.sid]}
                 </div>
                 <div className={styles.p_del}>
                   <button
@@ -136,8 +143,7 @@ export default function TicketCartList() {
           <div className={styles.totalDes}>
             <div className={styles.total}>總計</div>
             {cartLS.map((v, i) => {
-              const productTotalPrice =
-                v.product_price * cartQuantities[v.sid];
+              const productTotalPrice = v.tc_amount * cartQuantities[v.sid];
               return (
                 <div key={v.sid}>
                   <div className={styles.productTotalPrice}>
@@ -148,7 +154,7 @@ export default function TicketCartList() {
             })}
 
             <button className={styles.btn_checkout}>
-              <a href="../order/list">去買單</a>
+              <a href="../userpay/list">去買單</a>
             </button>
           </div>
         </div>

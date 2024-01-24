@@ -3,12 +3,9 @@ import Image from "next/image";
 // import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
-import styles from '@/component/Userpay/Paystep/Paystep.module.css'
+import styles from "@/component/Userpay/Paystep/Paystep.module.css";
 
-export default function Paystep({
-  product_name = "女鞋",
-  product_price = 1990,
-}) {
+export default function Paystep() {
   return (
     <>
       <div className={styles.shopping_step}>
