@@ -1,6 +1,7 @@
 import CartList from "@/component/Cart/cartList";
 import styles from "@/component/Cart/cart_withing.module.css";
 import { Layout } from "@/component/ride-layout";
+import Head from "next/head";
 
 export default function Cart() {
   return (
@@ -13,6 +14,7 @@ export default function Cart() {
             <CartList />
           </div>
         </div>
+        <Head><title>商品購物車</title></Head>
       </Layout>
     </>
   );

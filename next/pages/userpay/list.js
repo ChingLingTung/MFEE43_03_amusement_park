@@ -11,21 +11,52 @@ import AuthContext from "@/context/auth-context";
 // import Swal from 'sweetalert2'
 
 export default function OrderADD() {
-  // const [data, setdata] = useState({
-  //   order_id: "",
-  //   recipient_name: "",
-  //   recipient_email: "",
-  //   recipient_phone: "",
-  //   recipient_tel: "",
-  //   bill_id: "",
-  //   userpay_id: "",
-  //   odstatus_id: "",
-  //   ibon_id: "",
-  //   recipient_address_id: "",
-  //   address_detail: "",
-  //   bill_detail: "",
-  //   order_date: "",
-  // });
+  const [getData, setGetData] = useState({
+    sid: 0,
+    tc1_name: "",
+    tc2_name: "",
+    tc_amount: "",
+    beginTime: "",
+    endTime: "",
+    description: "",
+  });
+  const [cartQuantities, setCartQuantities] = useState({});
+  const [cartLS, setCartLS] = useState([]);
+  useEffect(() => {
+    const ticketCartData = window.localStorage.getItem("ticketCartData");
+    const items = ticketCartData ? JSON.parse(ticketCartData) : [];
+    setCartLS(items);
+
+    // 初始化購物車數量
+    const quantities = {};
+    items.forEach((item) => {
+      quantities[item.sid] = item.user_buy_qty;
+    });
+    setCartQuantities(quantities);
+  }, []);
+
+  const decrementQuantity = (productId) => {
+    if (cartQuantities[productId] > 1) {
+      setCartQuantities({
+        ...cartQuantities,
+        [productId]: cartQuantities[productId] - 1,
+      });
+
+      // 更新cartLS中對應商品數量
+      const updatedCart = cartLS.map((item) =>
+        item.sid === productId
+          ? { ...item, user_buy_qty: cartQuantities[productId] - 1 }
+          : item
+      );
+      setCartLS(updatedCart);
+
+      // 儲存更新後的cartLS到localStorage
+      window.localStorage.setItem(
+        "ticketCartData",
+        JSON.stringify(updatedCart)
+      );
+    }
+  };
 
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -184,7 +215,7 @@ export default function OrderADD() {
     const formElements = e.target.elements;
 
     console.log(formElements);
-    
+
     try {
       fetch(AB_ECPAY, {
         method: "POST",
@@ -201,7 +232,7 @@ export default function OrderADD() {
           //   setUsertelError("") &&
           //   setUseraddressError(""))
           // ) {
-            ele.getElementsByTagName("form")[0].submit();
+          ele.getElementsByTagName("form")[0].submit();
           // }
         });
       // const r = await fetch(AB_ORDER_ADD, {
@@ -413,11 +444,19 @@ export default function OrderADD() {
 
             <div className={styles.total_container}>
               <div className={styles.total_info}>
-                <div>總計</div>
-                <div>$1800</div>
-                <div className={styles.pay_button}>
+                <p>總計</p>
+                {cartLS.map((v, i) => {
+                  return (
+                    <div key={v.sid}>
+                      <div className={styles.totalPrice}>
+                        ${v.tc_amount * cartQuantities[v.sid]}
+                      </div>
+                    </div>
+                  );
+                })}
+                <p className={styles.pay_button}>
                   <button className={styles.pay_button_word}>結帳</button>
-                </div>
+                </p>
               </div>
             </div>
           </main>
