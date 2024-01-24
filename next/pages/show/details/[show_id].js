@@ -10,7 +10,7 @@ import "react-custom-cursors/dist/index.css";
 import { Layout } from '@/component/ride-layout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
-import { USER_RESERVATION_ADD , GET_DISABLEDSEAT } from '@/component/ride-const';
+import { USER_RESERVATION_ADD , GET_DISABLEDSEAT , USER_RESERVATION } from '@/component/ride-const';
 
 export default function ShowDetail() {
   // 表演詳細頁預約頁面
@@ -44,7 +44,6 @@ export default function ShowDetail() {
   const [selectedSeat,setSelectedSeat]=useState([]);
   const [disabledSeat,setDisabledSeat]=useState([]);
   const router = useRouter();
-  const [disableClass,setDisableClass]=useState('');
   const toggleSelectedSeat = (cell) =>{
     setSelectedSeat((selectedSeat)=>{
       let nowSelected = [];
@@ -138,6 +137,36 @@ export default function ShowDetail() {
         })
         return ispass=false;
       }
+    if(parkAuth.id !==0 && getData.show_id !==0){
+      // const show_id = +router.query.show_id;
+      // const user_id = +router.query.user_id;
+      fetch(USER_RESERVATION  
+      + `?show_id=${getData.show_id}`
+      + '&' + `user_id=${parkAuth.id}`)
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.rows && data.rows.length > 0) {
+              Alert.fire({ 
+                didOpen: () => { 
+                    Alert.fire({
+                      titleText:'您先前已預約',
+                      text:'要前往修改預約座位嗎？',
+                      showCancelButton: true,
+                    }).then((check) => {
+                      if(check.isConfirmed){
+                        router.push('/show_reservation/`${show_id}`')
+                      }else{
+                        return
+                      }
+                    })
+                  }
+                })
+            }
+            return
+          })
+
+          .catch((ex) => console.log(ex));
+    }
     if(parkAuth && selectedSeat==[]){
       // formData['user_id'] = parkAuth.id;
       // setFormdata({
@@ -241,7 +270,6 @@ export default function ShowDetail() {
               <div className={styles.flex_center} style={{width:400, margin:'auto' , marginTop:50, marginBottom:50}}>
                 <div className={styles.flex_center}><span className={styles.mini_seat}> </span>可預約</div>
                 <div className={styles.flex_center}><span className={styles.mini_disabled_seat}> </span>已被預約</div>
-                <div className={styles.flex_center}><span className={styles.mini_selected_seat}> </span>您的座位</div>
               </div>
               <div style={{marginLeft:105,marginTop:50}} className={styles.seat_center}>
               <div>

@@ -147,6 +147,19 @@ export default function Login() {
               }
             }}
             ><FaStar className={styles.star}/></div>
+            <div 
+            onClick={()=>{
+              if(email==="" || password===""){
+                setEmail('pigpig@zzz.com');
+                setPassword('123zzzZZZ');
+                setEmailError('');
+                setPasswordError('');
+              }else{
+                setEmail('');
+                setPassword('');
+              }
+            }}
+            ><FaStar className={styles.star2}/></div>
             <label htmlFor='email'>Email：<br/>
             <input type='text' id="email"
                       name="email"
