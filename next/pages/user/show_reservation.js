@@ -106,7 +106,9 @@ export default function UserShowReservation() {
                 <button className={styles.button}>會員資料</button>
               </Link>
               <button className={styles.button}>會員訂單</button>
-              <button className={styles.button}>入園票券</button>
+              <Link href='/user/userBuyTicket'>
+                <button className={styles.button}>入園票券</button>
+              </Link>
               <button className={styles.button} onClick={()=>{
                 if(parkAuth.email){
                   router.push(`/user/edit/${parkAuth.id}`)
