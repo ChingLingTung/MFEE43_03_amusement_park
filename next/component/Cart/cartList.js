@@ -58,17 +58,6 @@ export default function CartList() {
 
   return (
     <>
-      <div className={styles.pageChange}>
-        <div>1.購物車</div>
-        <div>
-          <FaChevronRight />
-        </div>
-        <div>2.填寫付款資料</div>
-        <div>
-          <FaChevronRight />
-        </div>
-        <div>3.成立訂單</div>
-      </div>
       <container className={styles.cartContainer}>
         <div className={styles.title}>購物車</div>
         <div className={styles.productDes}>
