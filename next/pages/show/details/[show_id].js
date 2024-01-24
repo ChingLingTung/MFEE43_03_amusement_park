@@ -10,7 +10,7 @@ import "react-custom-cursors/dist/index.css";
 import { Layout } from '@/component/ride-layout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
-import { USER_RESERVATION_ADD } from '@/component/ride-const';
+import { USER_RESERVATION_ADD , GET_DISABLEDSEAT , USER_RESERVATION } from '@/component/ride-const';
 
 export default function ShowDetail() {
   // 表演詳細頁預約頁面
@@ -42,8 +42,8 @@ export default function ShowDetail() {
     setToggle(true)
   }
   const [selectedSeat,setSelectedSeat]=useState([]);
+  const [disabledSeat,setDisabledSeat]=useState([]);
   const router = useRouter();
-
   const toggleSelectedSeat = (cell) =>{
     setSelectedSeat((selectedSeat)=>{
       let nowSelected = [];
@@ -57,6 +57,29 @@ export default function ShowDetail() {
     })
   }
 
+  const getDisabledSeat = async() =>{
+    if(getData.show_id !==0){
+      try {
+      const r = await fetch(GET_DISABLEDSEAT + '?'+ `show_id=${getData.show_id}`);
+      const d = await r.json();
+      console.log(d);
+      let seats = [];
+      d.rows.forEach((row) => {
+        // seats.concat(row.seat_number);
+        seats = [...seats, ...row.seat_number];
+        console.log(row.seat_number)
+      })
+      
+      console.log(seats)
+      console.log(...seats)
+      setDisabledSeat(seats);
+      // console.log(d)
+    } catch (ex) {
+      console.log(ex)
+    }
+    }
+    
+  }
 
   useEffect(() => {
     // 取得該筆表演的詳細資料
@@ -79,6 +102,8 @@ export default function ShowDetail() {
               // setFormdata({
               //   show_id:getData.show_id
               // })
+              // getDisabledSeat();
+              // console.log(disabledSeat)
             }
           })
 
@@ -87,11 +112,14 @@ export default function ShowDetail() {
     }
   }, [router.query.show_id]);
   
+  useEffect(()=>{
+    getDisabledSeat();
+  },[getData.show_id])
 
   const onSubmit = async (e) => {
     e.preventDefault();
     let ispass = true
-    if(!parkAuth.id || parkAuth.id ===0 ){
+    if(!parkAuth.id || parkAuth.id ===0){
       Alert.fire({ 
         didOpen: () => { 
             Alert.fire({
@@ -109,6 +137,36 @@ export default function ShowDetail() {
         })
         return ispass=false;
       }
+    if(parkAuth.id !==0 && getData.show_id !==0){
+      // const show_id = +router.query.show_id;
+      // const user_id = +router.query.user_id;
+      fetch(USER_RESERVATION  
+      + `?show_id=${getData.show_id}`
+      + '&' + `user_id=${parkAuth.id}`)
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.rows && data.rows.length > 0) {
+              Alert.fire({ 
+                didOpen: () => { 
+                    Alert.fire({
+                      titleText:'您先前已預約',
+                      text:'要前往修改預約座位嗎？',
+                      showCancelButton: true,
+                    }).then((check) => {
+                      if(check.isConfirmed){
+                        router.push('/show_reservation/`${show_id}`')
+                      }else{
+                        return
+                      }
+                    })
+                  }
+                })
+            }
+            return
+          })
+
+          .catch((ex) => console.log(ex));
+    }
     if(parkAuth && selectedSeat==[]){
       // formData['user_id'] = parkAuth.id;
       // setFormdata({
@@ -209,16 +267,23 @@ export default function ShowDetail() {
           :
           (
             <>
+              <div className={styles.flex_center} style={{width:400, margin:'auto' , marginTop:50, marginBottom:50}}>
+                <div className={styles.flex_center}><span className={styles.mini_seat}> </span>可預約</div>
+                <div className={styles.flex_center}><span className={styles.mini_disabled_seat}> </span>已被預約</div>
+              </div>
               <div style={{marginLeft:105,marginTop:50}} className={styles.seat_center}>
               <div>
                 {seat.map((row, i) => (
                   <div key={i}>
                     {row.map((cell, j) => (
                       <span 
-                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat}`} key={j} 
+                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat} ${disabledSeat.indexOf(cell)!==-1? styles.disabled_seat : styles.seat}`} key={j} 
                       style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
-                      id={cell} 
-                      onClick={()=>{toggleSelectedSeat(cell);
+                      id={cell}
+                      onClick={()=>{
+                        if(cell !=='' && !disabledSeat.includes(cell)){
+                          toggleSelectedSeat(cell);
+                        }
                         console.log("這是編號："+cell)
                         }}>{cell? cell : "0"}</span>
                     ))}

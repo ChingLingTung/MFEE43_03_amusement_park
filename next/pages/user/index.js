@@ -37,7 +37,7 @@ export default function UserInfo() {
   };
 
   useEffect(()=>{
-    if(parkAuth.email){
+    if(parkAuth.id!==0){
       getUserInfo();
     }
     if(!parkAuth.email && !data){

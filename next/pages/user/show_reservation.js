@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content'
 import { USER_RESERVATION, USER_RESERVATION_DELET } from '@/component/ride-const';
-import { FaFileLines } from "react-icons/fa6";
 
 export default function UserShowReservation() {
   // 會員中心查看表演預約表格
@@ -38,7 +37,7 @@ export default function UserShowReservation() {
       const d = await r.json();
       setData(d);
       // console.log(d)
-      if(!d.rows){
+      if(!d.rows || d.rows.length < 1){
         Alert.fire({  
           titleText:'您沒有預約紀錄',
           text:'要前往預約嗎？',

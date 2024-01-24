@@ -81,3 +81,10 @@
   left:360px;
   cursor: pointer;
 }
+.star2{
+  color:rgb(251, 86, 204);
+  position: absolute;
+  top:10px;
+  left:10px;
+  cursor: pointer;
+}
