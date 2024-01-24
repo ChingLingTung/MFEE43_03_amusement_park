@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '@/styles/show_detail.module.css'
 import Head from 'next/head';
-import {SHOW_GET_ONE, USER_RESERVATION,GET_DISABLEDSEAT,USER_RESERVATION_EDIT} from '@/component/ride-const'
+import {SHOW_GET_ONE, USER_RESERVATION,GET_OTHERDISABLEDSEAT,USER_RESERVATION_EDIT} from '@/component/ride-const'
 import { useState,useEffect, useContext } from 'react';
 import AuthContext from '@/context/auth-context';
 import { useRouter } from 'next/router'
@@ -11,7 +11,7 @@ import { Layout } from '@/component/ride-layout';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content' 
 
-export default function ShowInfo() {
+export default function ShowReservationEdit() {
   // 會員中心連過去的修改預約頁面
   const seat = [
     ["","","","A4","A5","","A7","A8","A9","","A11","A12","","",""],
@@ -33,7 +33,7 @@ export default function ShowInfo() {
     show_group:"", 
     show_day:"", 
   });
-  const [disabledSeat, setDisabledSeat] = useState([])
+
   const { parkAuth } = useContext(AuthContext);
   const Alert = withReactContent(Swal) ;
   const [toggle,setToggle]=useState(false)
@@ -41,6 +41,7 @@ export default function ShowInfo() {
     setToggle(true)
   }
 
+  const [disabledSeat, setDisabledSeat] = useState([])
   const [selectedSeat,setSelectedSeat]=useState([]);
   const router = useRouter();
 
@@ -56,6 +57,31 @@ export default function ShowInfo() {
       return nowSelected;
     })
   }
+
+const getOtherDisabledSeat = async() =>{
+  if(getData.show_id !==0 && parkAuth.id !==0){
+    const show_id = +router.query.show_id;
+    try {
+    const r = await fetch(GET_OTHERDISABLEDSEAT + '?'+ `show_id=${show_id}` + '&' + `user_id=${parkAuth.id}`);
+    const d = await r.json();
+    console.log(d);
+    let seats = [];
+    d.rows.forEach((row) => {
+      // seats.concat(row.seat_number);
+      seats = [...seats, ...row.seat_number];
+      console.log(row.seat_number)
+    })
+    
+    console.log(seats)
+    console.log(...seats)
+    setDisabledSeat(seats);
+    // console.log(d)
+  } catch (ex) {
+    console.log(ex)
+  }
+  }
+  
+}
 
   useEffect(() => {
     const show_id = +router.query.show_id;
@@ -73,8 +99,7 @@ export default function ShowInfo() {
               router.push("/show"); // 沒拿到資料, 跳到列表頁
             } else {
               setGetData({ ...data.row });
-              getListData();
-              disabled_seat();
+              
             }
           })
           .catch((ex) => console.log(ex));
@@ -82,25 +107,10 @@ export default function ShowInfo() {
     }
   }, [router.query.show_id]);
 
-  const disabled_seat = async () => {
-
-    // const usp = new URLSearchParams(router.query)
-    
-    let page = +router.query.page || 1
-
-    if (page < 1) page = 1;
-    const show_id = +router.query.show_id;
-      try {
-      const r = await fetch(GET_DISABLEDSEAT + '?'+ `show_id=${show_id}`);
-      const d = await r.json();
-      setDisabledSeat(d.rows.forEach((row)=>{
-        row.seat_number
-      }));
-      // console.log(d)
-    } catch (ex) {
-      console.log(ex)
-    }
-    };
+  useEffect(()=>{
+    getListData();
+    getOtherDisabledSeat();
+  },[getData.show_id])
 
   const getListData = async () => {
 
@@ -234,7 +244,6 @@ export default function ShowInfo() {
             <p>表演簡介：</p>
           </div>
           <p style={{marginTop:7}}>{getData.show_info}{getData.show_info2}</p>
-          <p>{disabledSeat}</p>
           {!toggle? (
             <>
               <button className={styles.button} onClick={handleToggle}>更改預約</button>
@@ -243,17 +252,22 @@ export default function ShowInfo() {
           :
           (
             <>
+              <div className={styles.flex_center} style={{width:400, margin:'auto' , marginTop:50, marginBottom:50}}>
+                <div className={styles.flex_center}><span className={styles.mini_seat}> </span>可預約</div>
+                <div className={styles.flex_center}><span className={styles.mini_disabled_seat}> </span>已被預約</div>
+                <div className={styles.flex_center}><span className={styles.mini_selected_seat}> </span>您的座位</div>
+              </div>
               <div style={{marginLeft:105,marginTop:50}} className={styles.seat_center}>
               <div>
                 {seat.map((row, i) => (
                   <div key={i}>
                     {row.map((cell, j) => (
                       <span 
-                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat}`} key={j} 
+                      className={`${selectedSeat.includes(cell)? styles.selected_seat : styles.seat} ${disabledSeat.indexOf(cell)!==-1? styles.disabled_seat : styles.seat}`} key={j} 
                       style={cell===''? {opacity:0, cursor:'not-allowed'} : {cursor:'pointer'}} 
                       id={cell} 
                       onClick={()=>{
-                        if(cell !==''){
+                        if(cell !=='' && !disabledSeat.includes(cell)){
                           toggleSelectedSeat(cell);
                         }
                         console.log("這是編號："+cell)
@@ -264,9 +278,9 @@ export default function ShowInfo() {
               </div>
               </div>
               <button onClick={onSubmit} style={{width:1200}} className={styles.button}>確定更改</button>
-              <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
+              {/* <p>您預約的表演為{getData.show_group}帶來的{getData.show_name}</p>
               <p>演出時間：{getData.show_day}的{getData.start} 至 {getData.finish}</p>
-              <p>預約座位：{selectedSeat.join('，')}</p>
+              <p>預約座位：{selectedSeat.join('，')}</p> */}
             </>
           )}
             <Head><title>預約表演資訊</title></Head>

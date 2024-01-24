@@ -39,9 +39,10 @@ export const USER_RESERVATION_ADD = API_SERVER + "/reservation/add/api";
 export const USER_RESERVATION_EDIT = API_SERVER + "/reservation/edit/api";
 // 會員在登入狀態時刪除某筆預約資料
 export const USER_RESERVATION_DELET = API_SERVER + "/reservation/delete";
-// 取得每筆表演被預約的座位
+// 取得單筆表演被預約的座位
 export const GET_DISABLEDSEAT = API_SERVER + "/reservation/get_seat/api";
-
+// 取得排除某使用者後單筆表演被預約的座位
+export const GET_OTHERDISABLEDSEAT = API_SERVER + "/reservation/get_seat/edit/api";
 
 
 
