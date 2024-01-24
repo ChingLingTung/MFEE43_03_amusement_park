@@ -3,6 +3,7 @@ import express from "express";
 import db from "../utils/connect-mysql.js";
 import upload from "./../utils/upload-imgs.js";
 import dayjs from "dayjs";
+import createOrder from "../utils/createOrder.js";
 
 const router = express.Router();
 
@@ -69,8 +70,9 @@ router.use((req, res, next) => {
 const getListData = async (req) => {
   // 取得會員ID
   const user_id = +req.body.user_id;
+  console.log("query user:", user_id);
 
-  const perPage = 5; // 每頁幾筆
+  const perPage = 20; // 每頁幾筆
   // 用戶決定要看第幾頁
   let page = +req.query.page || 1;
   // 關鍵字模糊搜尋(SQL語法%任意字元包變數)
@@ -119,6 +121,7 @@ const getListData = async (req) => {
     page,
     perPage,
     orders,
+    order_details,
     totalRows,
     totalPages,
     qs,
@@ -132,25 +135,26 @@ const getListData = async (req) => {
   //   output.info = `頁碼值小於 1`;
   //   return output;
   // }
-  const t_sql = `SELECT COUNT(1) totalRows FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user_list ON order_list.user_id = user_list.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where}`;
-  [[{ totalRows }]] = await db.query(t_sql);
-  totalPages = Math.ceil(totalRows / perPage);
-  if (totalRows > 0) {
-    if (page > totalPages) {
-      output.redirect = `?page=${totalPages}`;
-      output.info = `頁碼值大於總頁數`;
-      return { ...output, totalRows, totalPages };
-    }
-    // const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user ON order_list.user_id = user.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where} ORDER BY order_list.order_id
-    // LIMIT ${(page - 1) * perPage}, ${perPage}`;
+  // const t_sql = `SELECT COUNT(1) totalRows FROM ((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user ON order_list.user_id = user.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id `;
+  // [[{ totalRows }]] = await db.query(t_sql);
+  // totalPages = Math.ceil(totalRows / perPage);
+  // if (totalRows > 0) {
+  //   if (page > totalPages) {
+  //     output.redirect = `?page=${totalPages}`;
+  //     output.info = `頁碼值大於總頁數`;
+  //     return { ...output, totalRows, totalPages };
+  //   }
+  //   // const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user ON order_list.user_id = user.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id ${where} ORDER BY order_list.order_id
+  // LIMIT ${(page - 1) * perPage}, ${perPage}`;
 
-    // 訂單總表
-    const sql = `SELECT * FROM order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE user_id = ? ORDER BY order_id 
-    LIMIT ${(page - 1) * perPage}, ${perPage}`;
-    [orders] = await db.query(sql, [user_id]);
+  // 訂單總表
+  const sql = `SELECT * FROM order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id WHERE order_list.user_id=? ORDER BY order_list.order_id `;
+  [orders] = await db.query(sql, [user_id]);
 
-    output = { ...output, success: true, orders, totalRows, totalPages };
-  }
+  console.log("queried orders: ", orders.length);
+
+  output = { ...output, success: true, orders, totalRows, totalPages };
+  // }
 
   return output;
 };
@@ -166,7 +170,7 @@ const getDetailData = async (req) => {
   };
 
   // 訂單細節頁
-  const sql = `SELECT * FROM order_detail_list JOIN product_list ON order_detail_list.product_id = product_list.product_id JOIN order_list ON order_detail_list.order_id = order_list.order_id JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_detail_list.order_id = ? ORDER BY order_detail_id `;
+  const sql = `SELECT * FROM order_detail_list JOIN order_list ON order_detail_list.order_id = order_list.order_id JOIN product_list ON order_detail_list.product_id = product_list.product_id  JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_detail_list.order_detail_id ORDER BY order_list.order_id`;
   [order_details] = await db.query(sql, [order_id]);
 
   output = { ...output, success: true, order_details };
@@ -185,7 +189,7 @@ const getDetail2Data = async (req) => {
   };
 
   // 訂單細節頁2
-  const sql = `SELECT * FROM order_list JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN userpay_list ON order_list.userpay_id= userpay_list.userpay_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_detail_list.order_id = ? ORDER BY order_detail_list.order_id`;
+  const sql = `SELECT * FROM order_list JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN userpay_list ON order_list.userpay_id= userpay_list.userpay_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_list.order_id ORDER BY order_detail_list.order_id`;
 
   [order_details2] = await db.query(sql, [order_id]);
 
@@ -210,7 +214,6 @@ router.get("/", async (req, res) => {
   // }
 });
 
-
 router.post("/api", async (req, res) => {
   res.json(await getListData(req));
 });
@@ -227,7 +230,7 @@ router.post("/details2", async (req, res) => {
 router.get("/api/:order_id", async (req, res) => {
   const order_id = +req.params.order_id;
 
-  const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user_list ON order_list.user_id = user_list.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id WHERE order_list.order_id=?`;
+  const sql = `SELECT * FROM (((((((order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id) JOIN ibon_list ON order_list.ibon_id = ibon_list.ibon_id) JOIN recipient_address_list ON order_list.recipient_address_id=recipient_address_list.recipient_address_id)  JOIN user ON order_list.user_id = user.user_id) JOIN bill_list ON order_list.bill_id = bill_list.bill_id) JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id) JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id) JOIN product_list ON order_detail_list.product_id = product_list.product_id WHERE order_list.order_id`;
   const [rows] = await db.query(sql, [order_id]);
   if (!rows.length) {
     return res.json({ success: false });
@@ -249,30 +252,40 @@ router.post("/add", upload.none(), async (req, res) => {
     postData: req.body, // 除錯用
   };
 
-  const { user_id, recipient_name, recipient_email, recipient_phone, recipient_tel, bill_id, userpay_id, odstatus_id, ibon_id, recipient_address_id, address_detail, bill_detail } = req.body;
-  const sql =
-    "INSERT INTO `order_list`(`user_id`, `recipient_name`, `recipient_email`, `recipient_phone`, `recipient_tel`, `bill_id`, `userpay_id`, `odstatus_id`, `ibon_id`, `recipient_address_id`, `address_detail`, `bill_detail`, `order_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() )";
+  const [result, ex] = await createOrder(req.body);
 
-  try {
-    const [result] = await db.query(sql, [
-      user_id,
-      recipient_name,
-      recipient_email,
-      recipient_phone,
-      recipient_tel,
-      bill_id,
-      userpay_id,
-      odstatus_id,
-      ibon_id,
-      recipient_address_id,
-      address_detail,
-      bill_detail,
-    ]);
+  if (result) {
     output.result = result;
     output.success = !!result.affectedRows;
-  } catch (ex) {
+    console.log(result);
+  } else {
+    console.log(ex);
     output.exception = ex;
   }
+  // const { user_id, recipient_name, recipient_email, recipient_phone, recipient_tel, bill_id, userpay_id, odstatus_id, ibon_id, recipient_address_id, address_detail, bill_detail } = req.body;
+  // const sql =
+  //   "INSERT INTO `order_list`(`user_id`, `recipient_name`, `recipient_email`, `recipient_phone`, `recipient_tel`, `bill_id`, `userpay_id`, `odstatus_id`, `ibon_id`, `recipient_address_id`, `address_detail`, `bill_detail`, `order_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() )";
+
+  // try {
+  //   const [result] = await db.query(sql, [
+  //     user_id,
+  //     recipient_name,
+  //     recipient_email,
+  //     recipient_phone,
+  //     recipient_tel,
+  //     bill_id,
+  //     userpay_id,
+  //     odstatus_id,
+  //     ibon_id,
+  //     recipient_address_id,
+  //     address_detail,
+  //     bill_detail,
+  //   ]);
+  //   output.result = result;
+  //   output.success = !!result.affectedRows;
+  // } catch (ex) {
+  //   output.exception = ex;
+  // }
 
   res.json(output);
 });

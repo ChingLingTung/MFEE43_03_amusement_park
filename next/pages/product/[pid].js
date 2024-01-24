@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { AB_LIST } from "@/component/product-const";
+import { AB_GET_ONE, GET_SAME_TYPE_CATE } from "@/component/product-const";
 import { Layout } from "@/component/product-layout";
+import Icon from "@/component/Product/Icon/Icon";
 
 export default function Detail() {
   const [getData, setGetData] = useState({
@@ -14,39 +15,66 @@ export default function Detail() {
     product_pic: [],
     product_size: "",
     product_color: "",
-
     stock_quantity: "",
     product_description: "",
   });
-  const [mainPicIndex, setMainPicIndex] = useState(0);
-  const [cartQuantity, setCartQuantity] = useState(1);
 
+  const [mainPic, setMainPic] = useState(0);
+  const [cartQuantity, setCartQuantity] = useState(1);
+  const [getTypeData, setGetTypeData] = useState({});
   const router = useRouter();
+
+  // const photoArray =
+  //   typeof getData.product_pic === "string"
+  //     ? getData.product_pic.split(",")
+  //     : [];
+
+  // // 確認陣列至少有一張圖片
+  // const firstImage = photoArray.length > 0 ? photoArray[0] : "";
+
   useEffect(() => {
-    const product_id = +router.query.pid || 1;
-    console.log({ product_id, raw: router.query.pid });
+    const product_id = +router.query.pid;
+    console.log({ product_id, row: router.query.pid });
     // 有抓到值時
     if (router.query.pid !== undefined) {
-      if (!product_id) {
-        router.push("/product/list"); // product_id 是 NaN 就跳到列表頁
-      } else {
+      // if (!product_id) {
+      //   router.push("/product/list"); // product_id 是 NaN 就跳到列表頁
+      // } else {
         // 取得單筆資料
-        fetch(AB_LIST + "/" + product_id)
+        fetch(AB_GET_ONE + "/" + product_id)
           .then((r) => r.json())
           .then((data) => {
             if (!data.success) {
               router.push("/product/list"); // 沒拿到資料, 跳到列表頁
             } else {
               const photoArray = data.row.product_pic.split(",");
+              console.log('photoArray',photoArray);
               data.row.product_pic = photoArray;
               setGetData({ ...data.row });
-              // setMainPic(photoArray[0])
+              setMainPic(photoArray[0])
             }
           })
           .catch((ex) => console.log(ex));
       }
+    // }
+  }, [router.query.pid]);
+
+  const getTypeList = async () => {
+    try {
+      const r = await fetch(
+        `${GET_SAME_TYPE_CATE}?pdcate_id=${getData.pdcate_id}&pdstyle_id=${getData.pdstyle_id}&pdcolor_id=${getData.pdcolor_id}&pdsize_id=${getData.pdsize_id}`
+      );
+      const d = await r.json();
+      console.log(d);
+      setGetTypeData(d.rows);
+    } catch (ex) {
+      console.log(ex);
     }
-  }, [router]);
+  };
+
+  useEffect(() => {
+    getTypeList();
+  }, [getData.pdcate_id, getData.pdcolor_id, getData.pdstyle_id, getData.pdsize_id]);
 
   const decrementQuantity = () => {
     if (cartQuantity > 1) {
@@ -95,97 +123,116 @@ export default function Detail() {
     }
   };
   return (
-    <div className="">
-      <Layout key={getData.product_id}>
-        <main className={styles.container}>
-          <div className={styles.detailContainer}>
-            <div className={styles.detailPics}>
-              <div className={styles.w450}>
-                <img
-                  src={`/images/product/list/${getData.product_pic[mainPicIndex]}`}
-                  alt="..."
-                />
-              </div>
-
-              <div className={styles.w100}>
-                {getData.product_pic.map((v, i) => {
-                  return (
-                    <Image
-                      src={`/images/product/list/${v}`}
-                      alt="..."
-                      width={100}
-                      height={100}
-                      key={v.product_id}
-                      onClick={() => {
-                        setMainPicIndex(i);
-                      }}
-                    />
-                  );
-                })}
-              </div>
+    <Layout key={getData.product_id}>
+      <main className={styles.container}>
+        <div className={styles.detailContainer}>
+          <div className={styles.detailPics}>
+            <div className={styles.w450}>
+              <img
+                src={`/images/product/list/${mainPic}`}
+                alt="..."
+              />
             </div>
 
-            <div className={styles.detail_desc}>
-              <div className={styles.product_name}>{getData.product_name}</div>
-              <div className={styles.product_desc}>
-                {getData.product_description}
-              </div>
-              <div className={styles.desc_flex2}>
-                <div className={styles.desc_flex3}>
-                  <div className={styles.desc_title}>Size</div>
-                  <div className={styles.size_desc}>{getData.pdsize_name}</div>
-                </div>
-                <div className={styles.desc_flex3}>
-                  <div className={styles.desc_title}>Color</div>
-                  <div className={styles.color_desc}>
-                    {getData.pdcolor_name}
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.desc_flex}>
-                <div className={styles.desc_title}>Quantity</div>
-                <div className={styles.quantity_desc}>
-                  <div>
-                    <button onClick={decrementQuantity}>-</button>
-                  </div>
-                  <div>
-                    <button>{cartQuantity}</button>
-                  </div>
-                  <div>
-                    <button onClick={incrementQuantity}>+</button>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.desc_flex}>
-                <div className={styles.desc_title}>Price</div>
-                <div className={styles.price_desc}>
-                  <div>${getData.product_price}</div>
-                </div>
-              </div>
-              <div className={styles.icon_flex}>
-                <i className="fa-regular fa-heart icon-heart"></i>
-                <i
-                  className="fa-solid fa-cart-shopping icon-cart"
-                  onClick={() => {
-                    const firstProductPic = getData.product_pic[0];
-                    // 先抓取商品資料、使用者選的數量
-                    // 把這些資料加進localstorage
-                    setNewLocalS({
-                      product_pic: firstProductPic,
-                      product_id: getData.product_id,
-                      product_name: getData.product_name,
-                      product_price: getData.product_price,
-                      subTotalPrice: getData.product_price * cartQuantity,
-                      user_buy_qty: cartQuantity,
-                    });
-                  }}
-                ></i>
-              </div>
+            <div className={styles.w100}>
+              {getData.product_pic.map((v, i) => {
+                return (
+                  <Image
+                    src={`/images/product/list/${v}`}
+                    alt="..."
+                    width={100}
+                    height={100}
+                    key={v.product_id}
+                    onClick={() => {
+                      setMainPicIndex(i);
+                    }}
+                  />
+                );
+              })}
             </div>
           </div>
-        </main>
-      </Layout>
-    </div>
+
+          <div className={styles.detail_desc}>
+            <div className={styles.product_name}>{getData.product_name}</div>
+            <div className={styles.product_desc}>
+              {getData.product_description}
+            </div>
+            <div className={styles.desc_flex2}>
+              <div className={styles.desc_flex3}>
+                <div className={styles.desc_title}>Size</div>
+                <div className={styles.size_desc}>{getData.pdsize_name}</div>
+              </div>
+              <div className={styles.desc_flex3}>
+                <div className={styles.desc_title}>Color</div>
+                <div className={styles.color_desc}>{getData.pdcolor_name}</div>
+              </div>
+            </div>
+
+            <div className={styles.desc_flex}>
+              <div className={styles.desc_title}>Quantity</div>
+              <div className={styles.quantity_desc}>
+                <div>
+                  <button onClick={decrementQuantity}>-</button>
+                </div>
+                <div>
+                  <button>{cartQuantity}</button>
+                </div>
+                <div>
+                  <button onClick={incrementQuantity}>+</button>
+                </div>
+              </div>
+            </div>
+            <div className={styles.desc_flex}>
+              <div className={styles.desc_title}>Price</div>
+              <div className={styles.price_desc}>
+                <div>${getData.product_price}</div>
+              </div>
+            </div>
+            <div className={styles.icon_flex}>
+              <i className="fa-regular fa-heart icon-heart"></i>
+              <i
+                className="fa-solid fa-cart-shopping icon-cart"
+                onClick={() => {
+                  const firstProductPic = getData.product_pic[0];
+                  // 先抓取商品資料、使用者選的數量
+                  // 把這些資料加進localstorage
+                  setNewLocalS({
+                    product_pic: firstProductPic,
+                    product_id: getData.product_id,
+                    product_name: getData.product_name,
+                    product_price: getData.product_price,
+                    subTotalPrice: getData.product_price * cartQuantity,
+                    user_buy_qty: cartQuantity,
+                  });
+                }}
+              ></i>
+            </div>
+          </div>
+        </div>
+          <h2 className={styles.title}>推薦商品</h2>
+        <div className={styles.w80}>
+          {getTypeData?.length &&
+            getTypeData.map((v,i) => {
+              const pic = v.product_pic.split(',')[0]
+              return (
+                <div className={styles.w_262} key={v.product_id}>
+                  <Link href={`/product/details/${v.product_id}`}>
+                    <img
+                      src={`/images/product/list/${pic}`}
+                      className=""
+                      alt="..."
+                    />
+                    <p className={styles.card_text}>{v.product_name}</p>
+                    <span className={styles.price_text}>
+                      $ {v.product_price}
+                    </span>
+                  </Link>
+                  <Icon />
+                </div>
+              );
+            })}
+        </div>
+      </main>
+    </Layout>
   );
 }

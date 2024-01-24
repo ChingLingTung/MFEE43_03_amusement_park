@@ -27,15 +27,15 @@ export default function OrderADD() {
   //   order_date: "",
   // });
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("test@gmail.com");
   const [emailError, setEmailError] = useState("");
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("testuser");
   const [usernameError, setUsernameError] = useState("");
-  const [usertel, setUsertel] = useState("");
+  const [usertel, setUsertel] = useState("22334455");
   const [usertelError, setUsertelError] = useState("");
-  const [userphone, setUserphone] = useState("");
+  const [userphone, setUserphone] = useState("0923456783");
   const [userphoneError, setUserphoneError] = useState("");
-  const [useraddress, setUseraddress] = useState("");
+  const [useraddress, setUseraddress] = useState("asdf");
   const [useraddressError, setUseraddressError] = useState("");
   const [bill, setBill] = useState(false);
   const [billError, setBillError] = useState(false);
@@ -120,6 +120,11 @@ export default function OrderADD() {
     }
   };
 
+  const onSelect711 = (e) => {
+    e.preventDefault();
+    openWindow();
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault(); // 不要讓表單以傳統的方式送出
     // console.log(e);
@@ -183,26 +188,76 @@ export default function OrderADD() {
 
     const formElements = e.target.elements;
 
-    console.log(formElements);
-    
+    console.log(e.target, formElements);
+
     try {
+      const rawData = window.localStorage.getItem("cartData");
+      const items = JSON.parse(rawData);
+
+      // product_id: 1
+      // product_name: "米奇短袖衣服 顏色:白色 尺寸:XS"
+      // product_pic: "mickyw1.png"
+      // product_price: 1500
+      // subTotalPrice: 4500
+      // user_buy_qty: 3
+
+      let totalAmount = 0;
+      items.forEach((item) => (totalAmount += item.subTotalPrice));
+
+      const itemName = items
+        .map((item) => `${item.product_name} x ${item.user_buy_qty}`)
+        .join("#");
+
+        const orderDetail = {
+          product_id: items[0].product_id,
+          product_price: items[0].product_price,
+          order_quantity: items[0].user_buy_qty
+        }
+
       fetch(AB_ECPAY, {
         method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          totalAmount,
+          itemName,
+          user_id: authContext?.parkAuth?.id || 1,
+          recipient_name: username,
+          recipient_email: email,
+          recipient_phone: userphone,
+          recipient_tel: usertel,
+          bill_id: formElements.bill.value,
+          userpay_id: formElements.pay.value,
+          odstatus_id: 1,
+          ibon_id: null,
+          recipient_address_id: formElements.address.value,
+          address_detail: useraddress,
+          bill_detail: "asdf",
+          orderDetail,
+        }),
       })
         .then((data) => data.json())
         .then(({ data }) => {
           const ele = document.createElement("div");
           ele.innerHTML = data;
           document.body.appendChild(ele);
-          // if (
-          //   (setEmailError("") &&
-          //   setUsernameError("") &&
-          //   setUserphoneError("") &&
-          //   setUsertelError("") &&
-          //   setUseraddressError(""))
-          // ) {
+          console.log(
+            emailError,
+            usernameError,
+            userphoneError,
+            usertelError,
+            useraddressError
+          );
+          if (
+            emailError === "" &&
+            usernameError === "" &&
+            userphoneError === "" &&
+            usertelError === ""
+            // useraddressError === ""
+          ) {
             ele.getElementsByTagName("form")[0].submit();
-          // }
+          }
         });
       // const r = await fetch(AB_ORDER_ADD, {
       //   method: "POST",
@@ -333,7 +388,7 @@ export default function OrderADD() {
               <div className={styles.logistics_title}>發票類型</div>
               <div className={styles.logistics_descs}>
                 <div>
-                  <input type="radio" name="bill" value="1" /> 雲端發票
+                  <input type="radio" name="bill" value="3" /> 雲端發票
                 </div>
                 <div>
                   <input type="radio" name="bill" value="2" /> 公司發票
@@ -404,7 +459,7 @@ export default function OrderADD() {
               </div>
             ) : (
               <>
-                <button onClick={openWindow}>門市選擇</button>
+                <button onClick={onSelect711}>門市選擇</button>
                 <div>
                   {store711.storeaddress} {store711.storename}
                 </div>
@@ -416,7 +471,9 @@ export default function OrderADD() {
                 <div>總計</div>
                 <div>$1800</div>
                 <div className={styles.pay_button}>
-                  <button className={styles.pay_button_word}>結帳</button>
+                  <button className={styles.pay_button_word}>
+                    結帳
+                  </button>
                 </div>
               </div>
             </div>

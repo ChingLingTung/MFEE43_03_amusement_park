@@ -20,10 +20,10 @@ export default function Icon() {
   const router = useRouter();
 
   useEffect(() => {
-    const product_id = +router.query.pid || 1;
-    console.log({ product_id, raw: router.query.pid });
+    const product_id = +router.query.product_id || 1;
+    // console.log({ product_id, row: router.query.product_id });
     // 有抓到值時
-    if (router.query.pid !== undefined) {
+    if (router.query.product_id !== undefined) {
       if (!product_id) {
         router.push("/product/list"); // product_id 是 NaN 就跳到列表頁
       } else {
