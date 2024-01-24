@@ -154,7 +154,7 @@ export default function TicketCartList() {
             })}
 
             <button className={styles.btn_checkout}>
-              <a href="../userpay/list">去買單</a>
+              <a href="../userpay/ticketUserPayList">去買單</a>
             </button>
           </div>
         </div>

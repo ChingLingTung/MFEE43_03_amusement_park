@@ -76,7 +76,7 @@ export default function TicketDetail() {
       router.push("/cart/ticketCart");
 
       setNewLocalS({
-        tc1_id: getData.tc1_d,
+        tc1_id: getData.tc1_id,
         tc1_name: getData.tc1_name,
         tc2_name: getData.tc2_name,
         tc_amount: getData.tc_amount,

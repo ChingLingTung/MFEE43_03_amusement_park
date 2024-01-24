@@ -173,7 +173,7 @@ export default function CartList() {
             {cartLS.map((v, i) => {
               const productTotalPrice =
                 v.product_price * cartQuantities[v.product_id];
-              {/* return <div key={v.product_id}></div>;
+              return <div key={v.product_id}></div>;
             })}
 
             <div className={styles.productTotalPrice}>
@@ -182,20 +182,10 @@ export default function CartList() {
                   v.product_price * cartQuantities[v.product_id];
                 return total + productTotalPrice;
               }, 0) - (applyCoupon ? 100 : 0)}{" "}
-            </div> */}
+            </div>
 
-              return (
-                <div key={v.product_id}>
-                  <div className={styles.productTotalPrice}>
-                    {applyCoupon ? productTotalPrice - 100 : productTotalPrice}
-                  </div>
-                </div>
-              );
-            })}
-
-            
             <button className={styles.btn_checkout}>
-              <a href="../order/list">去買單</a>
+              <a href="../userpay/list">去買單</a>
             </button>
           </div>
         </div>
