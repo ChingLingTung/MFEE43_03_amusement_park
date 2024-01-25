@@ -161,16 +161,32 @@ const getListData = async (req) => {
 
 const getDetailData = async (req) => {
   // 取得會員ID
-  const order_id = +req.body.order_id;
+  const order_id = req.body.order_id;
   let order_details = [];
 
   let output = {
     success: false,
     order_details: [],
   };
-
+console.log(order_id)
   // 訂單細節頁
-  const sql = `SELECT * FROM order_detail_list JOIN order_list ON order_detail_list.order_id = order_list.order_id JOIN product_list ON order_detail_list.product_id = product_list.product_id  JOIN userpay_list ON order_list.userpay_id = userpay_list.userpay_id JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_detail_list.order_detail_id ORDER BY order_list.order_id`;
+  const sql = `SELECT * FROM order_detail_list JOIN product_list ON order_detail_list.product_id = product_list.product_id WHERE order_detail_list.order_id =? ORDER BY order_detail_list.order_id`;
+  // const sql = `SELECT * FROM order_detail_list
+  // JOIN order_list
+  // ON order_detail_list.order_id = order_list.order_id
+  // JOIN product_list
+  // ON order_detail_list.product_id = product_list.product_id
+  // JOIN userpay_list
+  // ON order_list.userpay_id = userpay_list.userpay_id
+  // JOIN bill_list
+  // ON order_list.bill_id = bill_list.bill_id
+  // JOIN recipient_address_list
+  // ON order_list.recipient_address_id = recipient_address_list.recipient_address_id
+  // JOIN order_status
+  // ON order_list.odstatus_id = order_status.odstatus_id
+  // WHERE order_detail_list.order_detail_id
+  // ORDER BY order_list.order_id`;
+
   [order_details] = await db.query(sql, [order_id]);
 
   output = { ...output, success: true, order_details };
@@ -180,7 +196,7 @@ const getDetailData = async (req) => {
 
 const getDetail2Data = async (req) => {
   // 取得會員ID
-  const order_id = +req.body.order_id;
+  const order_id = req.body.order_id;
   let order_details2 = [];
 
   let output = {
@@ -189,7 +205,7 @@ const getDetail2Data = async (req) => {
   };
 
   // 訂單細節頁2
-  const sql = `SELECT * FROM order_list JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN userpay_list ON order_list.userpay_id= userpay_list.userpay_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_list.order_id ORDER BY order_detail_list.order_id`;
+  const sql = `SELECT * FROM order_list JOIN bill_list ON order_list.bill_id = bill_list.bill_id JOIN userpay_list ON order_list.userpay_id= userpay_list.userpay_id JOIN recipient_address_list ON order_list.recipient_address_id = recipient_address_list.recipient_address_id JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id WHERE order_list.order_id =? ORDER BY order_list.order_id`;
 
   [order_details2] = await db.query(sql, [order_id]);
 

@@ -136,6 +136,7 @@ export default function Detail() {
 
             <div className={styles.w100}>
               {getData.product_pic.map((v, i) => {
+                console.log(v)
                 return (
                   <Image
                     src={`/images/product/list/${v}`}
@@ -144,7 +145,7 @@ export default function Detail() {
                     height={100}
                     key={v.product_id}
                     onClick={() => {
-                      setMainPicIndex(i);
+                      setMainPic(v);
                     }}
                   />
                 );

@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "@/component/Icon-nav/Icon-nav.module.css";
 
+const ALL = 0;
+const CLOTHES = 1;
+const DOLLS = 3;
+const BAGS = 4;
+
 export default function SearchCateType(props) {
-  const [searchCateType, setSearchCateType] = useState(0);
+  const [searchCateType, setSearchCateType] = useState(ALL);
 
   useEffect(() => {
     // 由props得到父母元件傳來的方法，傳入自己本身的內部狀態並呼叫(回送資料給父母)
@@ -14,8 +19,7 @@ export default function SearchCateType(props) {
       <div className={styles.icon_nav}>
         <button
           onClick={() => {
-            setSearchCateType(searchCateType === 3 || 4 ? 1 : 0);
-            setSearchCateType(searchCateType === 1 ? 0 : 1);
+            setSearchCateType(CLOTHES);
           }}
         >
           <img src="\images\icon-button\iconshirt.png" classname="" alt="..." />
@@ -23,8 +27,7 @@ export default function SearchCateType(props) {
 
         <button
           onClick={() => {
-            setSearchCateType(searchCateType === 1 || 3 ? 4 : 0);
-            setSearchCateType(searchCateType === 4 ? 0 : 4);
+            setSearchCateType(BAGS);
           }}
         >
           <img src="\images\icon-button\iconbag.png" classname="" alt="..." />
@@ -32,11 +35,18 @@ export default function SearchCateType(props) {
 
         <button
           onClick={() => {
-            setSearchCateType(searchCateType === 1 || 4 ? 3 : 0);
-            setSearchCateType(searchCateType === 3 ? 0 : 3);
+            setSearchCateType(DOLLS);
           }}
         >
           <img src="\images\icon-button\icontoy.png" classname="" alt="..." />
+        </button>
+
+        <button
+          onClick={() => {
+            setSearchCateType(ALL);
+          }}
+        >
+         X
         </button>
       </div>
     </>
