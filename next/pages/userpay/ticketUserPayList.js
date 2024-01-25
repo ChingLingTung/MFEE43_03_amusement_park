@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { Layout } from "@/component/product-layout";
 import { AB_ORDER_ADD, AB_711, AB_ECPAY } from "@/component/product-const";
 import { useRouter } from "next/router";
-import Paystep from "@/component/Userpay/Paystep/Paystep";
+import TicketPayStep from "@/component/Userpay/Paystep/ticketPaystep";
 import styles from "@/component/Userpay/ticketUserPay.module.css";
 import Link from "next/link";
 import { useShip711StoreOpener } from "@/hooks/use-ship-711-store";
@@ -10,7 +10,6 @@ import AuthContext from "@/context/auth-context";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import Head from "next/head";
-import { IconName } from "react-icons/hi";
 import { HiChevronDown } from "react-icons/hi";
 import { HiPlusSm } from "react-icons/hi";
 
@@ -222,7 +221,7 @@ export default function OrderADD() {
   return (
     <div className={styles.w100}>
       <Layout>
-        <Paystep />
+        <TicketPayStep />
 
         {!toggle1 ? (
           <>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { FaChevronRight } from "react-icons/fa";
-import styles from "@/component/Cart/cart_withing.module.css";
+import styles from "@/component/Cart/ticketCart_withing.module.css";
 
 export default function TicketCartList() {
   // const [data, setData] = useState({});
@@ -82,7 +82,7 @@ export default function TicketCartList() {
   return (
     <>
       <container className={styles.cartContainer}>
-        <div className={styles.title}>購物車</div>
+        <div className={styles.title}>票券</div>
         <div className={styles.productDes}>
           <div>票券種類</div>
           <div className={styles.p_name}>票券名稱</div>
@@ -101,13 +101,13 @@ export default function TicketCartList() {
                 <div className={styles.p_price}>{v.tc_amount}</div>
                 <div className={styles.p_amount}>
                   <div>
-                    <button onClick={() => decrementQuantity(v.sid)}>-</button>
+                    <button className={styles.changeNumber} onClick={() => decrementQuantity(v.sid)}>-</button>
                   </div>
                   <div>
-                    <button>{cartQuantities[v.sid]}</button>
+                    <button className={styles.cartNumber}>{cartQuantities[v.sid]}</button>
                   </div>
                   <div>
-                    <button onClick={() => incrementQuantity(v.sid)}>+</button>
+                    <button className={styles.changeNumber} onClick={() => incrementQuantity(v.sid)}>+</button>
                   </div>
                 </div>
                 <div className={styles.p_totalPrice}>

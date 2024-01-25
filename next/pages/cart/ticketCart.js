@@ -2,13 +2,13 @@ import CartList from "@/component/Cart/ticketCartList";
 import styles from "@/component/Cart/cart_withing.module.css";
 import { Layout } from "@/component/ride-layout";
 import Head from "next/head";
-import CartPayStep from "@/component/Cart/cartPayStep";
+import TicketCartPayStep from "@/component/Cart/ticketCartPayStep";
 
 export default function Cart() {
   return (
     <>
       <Layout>
-        <CartPayStep />
+        <TicketCartPayStep />
         <div className={styles["container"]}>
           <div className={styles["cart"]}>
             <CartList />
