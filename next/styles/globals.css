@@ -112,8 +112,20 @@ a {
 } */
 /* ------------ */
 body{
-font-family:'Zen Maru Gothic',sans-serif ;
+/* font-family:'Zen Maru Gothic',sans-serif ; */
+font-family:'jf open 粉圓',sans-serif ;
+/* font-family: "cwTeXYen", sans-serif ;*/
+font-weight: 500; 
 background-image: url("../public/images/back-pattern-1920x1080.png");
+}
+
+@font-face {
+  font-family: 'jf open 粉圓';
+
+  font-style: initial;
+  src:url('.././public/font/jf-openhuninn-2.0.woff2')format('woff2'),
+      url('.././public/font/jf-openhuninn-2.0.ttf')format('TrueType')
+  ;
 }
 /* @font-face {
   font-family: 'Zen Maru Gothic';

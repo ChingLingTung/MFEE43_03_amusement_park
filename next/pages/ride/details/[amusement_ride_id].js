@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from '@/styles/ride_detail.module.css'
-import { FaRegCalendarDays } from "react-icons/fa6";
+import { FaPersonWalkingArrowRight, FaRegCalendarDays } from "react-icons/fa6";
 import { FaTicketAlt } from "react-icons/fa";
 import { FaStar } from "react-icons/fa";
 import Link from 'next/link'
@@ -97,24 +97,26 @@ useEffect(()=>{
             <div className={styles.flex_center}>
               <img className={styles.img} src={`/images/ride/${getData.amusement_ride_img}`}/>
               <div style={{width:600, lineHeight:2}}>
-                <p>設施簡介：</p>
+                <p style={{fontWeight:600}}>設施簡介：</p>
                 <p>{getData.amusement_ride_description}</p>
-                <p>主題名稱：{getData.theme_name}</p>
-                <p>刺激程度：{new Array(getData.thriller_rating).fill(<FaStar />)}</p>
-                <p>類型：{getData.ride_category_name}</p>
-                <p>身高限制：{getData.height_requirement}</p>
-                <p>特殊支援：{getData.ride_support_name}</p>
-                <p>設備維護狀況：目前開放中，可正常使用。</p>
+                <span style={{fontWeight:600}}>主題名稱：</span><span>{getData.theme_name}</span>
+                <p style={{fontWeight:600}}>刺激程度：{new Array(getData.thriller_rating).fill(<FaStar />)}</p>
+                <span style={{fontWeight:600}}>類型：</span><span>{getData.ride_category_name}</span><br/>
+                <span style={{fontWeight:600}}>身高限制：</span><span>{getData.height_requirement}</span><br/>
+                <span style={{fontWeight:600}}>特殊支援：</span><span>{getData.ride_support_name}</span><br/>
+                <span style={{fontWeight:600}}>設備維護狀況：</span><span>目前開放中，可正常使用。</span><br/>
                 {getMaintain.rows && getMaintain.rows.map((i)=>{
                 return(
-                  <p key= {i.amusement_ride_name}>
-                  下次維護時間：{i.maintenance_begin} - {i.maintenance_end}
-                  </p>
+                  <>
+                  <span key= {i.amusement_ride_name}  style={{fontWeight:600}}>
+                  下次維護時間：</span><span>{i.maintenance_begin} - {i.maintenance_end}
+                  </span><br/>
+                  </>
                   )
                 })
                 }
                 <Link href={'/maintain'}>
-                  <p style={{color:'#d7627b'}}><FaRegCalendarDays />完整維護排程</p>
+                  <p style={{color:'#d7627b', fontWeight:600}}><FaRegCalendarDays />完整維護排程</p>
                 </Link>
                 {/* <p style={{color:"red"}}>快速通關：本設施為快速通關套票可選擇的設施之一</p>
                 <p style={{color:"red"}}><FaTicketAlt />適用的快速通關票券</p> */}
@@ -148,7 +150,7 @@ useEffect(()=>{
                   <div key= {i.amusement_ride_id} className={styles.card}>
                   <Link href={`/ride/details/${i.amusement_ride_id}`}>
                     <img className={styles.card_img} src={`/images/ride/${i.amusement_ride_img}`}/>
-                    <div style={{padding:5}}>
+                    <div style={{padding:15}}>
                       <div className={styles.card_title}>{i.amusement_ride_name}</div>
                       <div>{i.amusement_ride_description}</div>
                     </div>
