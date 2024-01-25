@@ -3,7 +3,7 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 200px 0px 0px 0px;
+  margin: 100px 0px 100px 0px;
 }
 
 .icon_nav img{
@@ -25,4 +25,19 @@
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
+}
+
+.clean{
+  width: 200px;
+  height: 110px;
+  border: 1px black solid;
+  border-radius: 20px;
+  font-size: 30px;
+  font-weight: bold;
+  background-color: #F29BA5 ;
+  
+}
+
+.icon_button{
+  
 }

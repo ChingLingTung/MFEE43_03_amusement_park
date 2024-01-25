@@ -1,4 +1,3 @@
-import React, { useEffect } from "react";
 import styles from "@/styles/user.module.css";
 import Head from "next/head";
 import AuthContext from "@/context/auth-context";
@@ -105,7 +104,7 @@ export default function UserShowReservation() {
               <Link href="/user">
                 <button className={styles.button}>會員資料</button>
               </Link>
-              <Link href="/order/list">
+              <Link href="/user/userorder">
                 <button className={styles.button}>會員訂單</button>
               </Link>
 

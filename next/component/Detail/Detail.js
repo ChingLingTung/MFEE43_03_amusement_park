@@ -19,7 +19,7 @@ export default function Detail({
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
         />
       </div>
-      <div className={styles.order_details}>
+      <div className={styles.order_details1}>
         <div>{name}</div>
         <div>{quantity}</div>
         <div>{price}</div>

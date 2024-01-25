@@ -7,6 +7,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import { IoIosArrowUp } from "react-icons/io";
 import Detail from "@/component/Detail/Detail";
 import Detail2 from "../Detail/Detail2";
+import dayjs from "dayjs";
 
 export default function Card(v) {
   const [details, setDetails] = useState({});
@@ -63,7 +64,7 @@ export default function Card(v) {
         <div className={styles.order_nav}>
           <div className={styles.order_nav_code}>{v.data.order_id}</div>
           <div className={styles.order_nav_titles}>
-            <div>{v.data.order_date}</div>
+            <div>{dayjs(v.data.order_date).format('YYYY/MM/DD HH:mm')}</div>
             <div>{v.data.odstatus_name}</div>
             <div>
               {showDetails ? (
@@ -100,7 +101,7 @@ export default function Card(v) {
         </div>
         {details.order_details?.length && showDetails && (
           <div className={styles.order_detail_nav1}>
-            <div className={styles.order_detail_nav_title}>商品圖片</div>
+            <div className={styles.order_detail_nav_title1}>商品圖片</div>
             <div className={styles.order_details}>
               <div>商品名稱</div>
               <div>數量</div>
