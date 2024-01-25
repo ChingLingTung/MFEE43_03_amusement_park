@@ -69,13 +69,12 @@ export default function UserInfo() {
               <p>{data.user_email}</p>
             </div>
             <div className={styles.column}>
-              <Link href="/user">
-                <button className={styles.selected_button}>會員資料</button>
-              </Link>
-              <button className={styles.button}>會員訂單</button>
-              <Link href='/user/userBuyTicket'>
-                <button className={styles.button}>入園票券</button>
-              </Link>
+            <Link href='/user'>
+              <button className={styles.selected_button}>會員資料</button>
+            </Link>
+              <Link href='/order/list'><button className={styles.button}>會員訂單</button></Link>
+              <button className={styles.button}>優惠券</button>
+              <button className={styles.button}>我的收藏</button>
               <button className={styles.button} onClick={()=>{
                 if(data.user_id){
                   router.push(`/user/edit/${data.user_id}`)

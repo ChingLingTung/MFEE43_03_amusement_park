@@ -16,7 +16,7 @@ router.post("/payment", function (req, res, next) {
   console.log('payment')
   const baseParam = {
     MerchantID: "3002607",
-    MerchantTradeNo: "test3345678901",
+    MerchantTradeNo: "test334567890123",
     MerchantTradeDate: "2023/01/21 15:30:13",
     PaymentType: "aio",
     TotalAmount: 8787,
