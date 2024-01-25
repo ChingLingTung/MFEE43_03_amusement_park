@@ -18,10 +18,10 @@ export default function Home() {
             <div>
               <Image className={styles.img} src={'/images/valentine.jpg'} width={500} height={350}/>
             </div>
-            <div className={styles.column} style={{width:500,height:250,padding:5}}>
+            <div className={styles.column} style={{width:500,height:250}}>
             <div>
-                <h4 style={{paddingLeft:5}}>情人節優惠活動</h4>
-                <p style={{paddingLeft:5, fontSize:12}}>情人節要到啦！還不知道該去哪裡約會的朋友們來遊樂園兩人同行打8折唷</p>
+                <h3 style={{padding:10}}>情人節優惠活動</h3>
+                <p style={{padding:10, fontSize:16}}>情人節要到啦！還不知道該去哪裡約會的朋友們來遊樂園兩人同行打8折唷</p>
               </div>
               <div className={styles.flex_spacebetween} style={{height:25}}>
                 <p>112/01/17</p>
@@ -36,10 +36,10 @@ export default function Home() {
               </div>
               <div style={{width:380,height:130}} className={styles.column}>
               <div>
-                <h4 style={{paddingLeft:5}}>元宵猜謎趣</h4>
-                <p style={{paddingLeft:5, fontSize:12}}>在元宵節的這週天天都有猜燈謎的遊戲喔，喜歡猜謎的朋友千萬不能錯過！</p>
+                <h4 style={{padding:5}}>元宵猜謎趣</h4>
+                <p style={{padding:5, fontSize:12}}>在元宵節的這週天天都有猜燈謎的遊戲喔，喜歡猜謎的朋友千萬不能錯過！</p>
               </div>
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
+                <div className={styles.flex_spacebetween} style={{width:375,height:25, padding:5}}>
                   <p>112/01/03</p>
                   <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
                 </div>
@@ -51,10 +51,10 @@ export default function Home() {
               </div>
               <div style={{width:380,height:130}} className={styles.column}>
               <div>
-                <h4 style={{paddingLeft:5}}>跨年煙火宴</h4>
-                <p style={{paddingLeft:5, fontSize:12}}>即將迎來嶄新的一年，在遊樂園欣賞煙火度過2023最後一天吧~</p>
+                <h4 style={{padding:5}}>跨年煙火宴</h4>
+                <p style={{padding:5, fontSize:12}}>即將迎來嶄新的一年，在遊樂園欣賞煙火度過2023最後一天吧~</p>
               </div>
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
+                <div className={styles.flex_spacebetween} style={{width:375,height:25,padding:5}}>
                   <p>112/12/11</p>
                   <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
                 </div>
@@ -66,11 +66,11 @@ export default function Home() {
               </div>
               <div style={{width:380,height:130}} className={styles.column}>
               <div>
-                <h4 style={{paddingLeft:5}}>聖誕活動</h4>
-                <p style={{paddingLeft:5, fontSize:12}}>聖誕節即將到來，想好要怎麼和親愛的他一起度過了嗎？來遊樂園度過一場甜蜜的約會吧~</p>
+                <h4 style={{padding:5}}>聖誕活動</h4>
+                <p style={{padding:5, fontSize:12}}>聖誕節即將到來，想好要怎麼和親愛的他一起度過了嗎？來遊樂園度過一場甜蜜的約會吧~</p>
               </div>
                 
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
+                <div className={styles.flex_spacebetween} style={{width:375,height:25,padding:5}}>
                   <p>112/12/5</p>
                   <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
                 </div>
@@ -82,10 +82,10 @@ export default function Home() {
               </div>
               <div style={{width:380,height:130}} className={styles.column}>
               <div>
-                <h4 style={{paddingLeft:5}}>春節早鳥優惠</h4>
-                <p style={{paddingLeft:5, fontSize:12}}>想利用春節假期到遊樂園放鬆嗎？趕緊手刀訂票訂起來~</p>
+                <h4 style={{padding:5}}>春節早鳥優惠</h4>
+                <p style={{padding:5, fontSize:12}}>想利用春節假期到遊樂園放鬆嗎？趕緊手刀訂票訂起來~</p>
               </div>
-                <div className={styles.flex_spacebetween} style={{width:380,height:25,paddingLeft:5}}>
+                <div className={styles.flex_spacebetween} style={{width:375,height:25,padding:5}}>
                   <p>112/12/2</p>
                   <button type='button' className={styles.button}>看更多<FaChevronRight style={{height:15,width:15}}/></button>
                 </div>
