@@ -97,74 +97,6 @@ export default function TicketUserBuy() {
     window.localStorage.setItem("ticketCartData", JSON.stringify(updatedCart));
   };
 
-  // const getListData = async () => {
-  //   // const usp = new URLSearchParams(router.query)
-
-  //   let page = +router.query.page || 1;
-
-  //   if (page < 1) page = 1;
-
-  //   if (parkAuth.id) {
-  //     try {
-  //       const r = await fetch(
-  //         USER_RESERVATION + "?" + `user_id=${parkAuth.id}`
-  //       );
-  //       const d = await r.json();
-  //       setData(d);
-  //       // console.log(d)
-  //       if (!d.rows) {
-  //         Alert.fire({
-  //           titleText: "您沒有預約紀錄",
-  //           text: "要前往預約嗎？",
-  //           showCancelButton: true,
-  //         }).then((check) => {
-  //           if (check.isConfirmed) {
-  //             router.push("/show");
-  //           }
-  //         });
-  //       }
-  //     } catch (ex) {
-  //       console.log(ex);
-  //     }
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   getListData();
-  // }, [parkAuth]);
-
-  // const checkRemove = (show_reserve_id) => {
-  //   Alert.fire({
-  //     titleText: "確定要刪除預約嗎？",
-  //     showCancelButton: true,
-  //   }).then((check) => {
-  //     if (check.isConfirmed) {
-  //       removeItemAndReload(show_reserve_id);
-  //     }
-  //   });
-  // };
-  // const removeItemAndReload = async (show_reserve_id) => {
-  //   console.log({ show_reserve_id });
-  //   const r = await fetch(USER_RESERVATION_DELET + "/" + show_reserve_id, {
-  //     method: "DELETE",
-  //   });
-  //   const result = await r.json();
-  //   console.log(result);
-  //   if (result.success) {
-  //     getListData();
-  //     Alert.fire({
-  //       titleText: "成功刪除預約",
-  //       text: "去看看其他表演？",
-  //       showCancelButton: true,
-  //     }).then((check) => {
-  //       if (check.isConfirmed) {
-  //         router.push("/show");
-  //       }
-  //     });
-  //     // router.reload(); 避免重載
-  //   }
-  // };
-
   return (
     <>
       <Layout>
@@ -246,20 +178,42 @@ export default function TicketUserBuy() {
                     <th className={styles.th}>票券數量</th>
                     <th className={styles.th}>刪除票券</th>
                   </tr>
+                  <td className={styles.td}>入園票</td>
+                  <td className={styles.td}>成人票</td>
+                  <td className={styles.td}>1000</td>
+                  <td className={styles.td}>3</td>
+                  <td className={styles.td}>
+                    <button
+                      className={styles.reservation_delete_button}
+                      onClick={() => {
+                        Alert.fire({
+                          titleText: "確定要刪除預約嗎？",
+                          showCancelButton: true,
+                        }).then(() => {
+                          removeItem(v.sid);
+                        });
+                      }}
+                    >
+                      取消票券
+                    </button>
+                  </td>
                   {cartLS.map((v, i) => {
                     return (
                       <tr key={v.sid}>
                         <td className={styles.td}>{v.tc1_name}</td>
                         <td className={styles.td}>{v.tc2_name}</td>
                         <td className={styles.td}>{v.tc_amount}</td>
-                        <td className={styles.td}>
-                          {v.user_buy_qty}
-                        </td>
+                        <td className={styles.td}>{v.user_buy_qty}</td>
                         <td className={styles.td}>
                           <button
                             className={styles.reservation_delete_button}
                             onClick={() => {
-                              removeItem(v.sid);
+                              Alert.fire({
+                                titleText: "確定要刪除預約嗎？",
+                                showCancelButton: true,
+                              }).then(() => {
+                                removeItem(v.sid);
+                              });
                             }}
                           >
                             取消票券
