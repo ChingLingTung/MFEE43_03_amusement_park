@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 // import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaTicketAlt } from "react-icons/fa";
 import styles from "@/component/Cart/cartPayStep.module.css";
 
 export default function TicketCartPayStep() {
@@ -10,7 +10,10 @@ export default function TicketCartPayStep() {
     <>
       <div className={styles.shopping_step}>
         <div>
-          <i class="fa-solid fa-ticket">票券選購</i>
+          <span>
+            <FaTicketAlt />
+          </span>
+          &nbsp; 票券選購
         </div>
         <div>
           <FaChevronRight />
