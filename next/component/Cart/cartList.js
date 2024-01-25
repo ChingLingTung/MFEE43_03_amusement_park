@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { AB_LIST } from "@/component/cartConst";
 import { FaChevronRight } from "react-icons/fa";
 import styles from "@/component/Cart/cart_withing.module.css";
+import Paystep1 from "../Userpay/Paystep/Paystep1";
 
 export default function CartList() {
   // const [data, setData] = useState({});
@@ -58,17 +59,7 @@ export default function CartList() {
 
   return (
     <>
-      <div className={styles.pageChange}>
-        <div>1.購物車</div>
-        <div>
-          <FaChevronRight />
-        </div>
-        <div>2.填寫付款資料</div>
-        <div>
-          <FaChevronRight />
-        </div>
-        <div>3.成立訂單</div>
-      </div>
+      <Paystep1 />
       <container className={styles.cartContainer}>
         <div className={styles.title}>購物車</div>
         <div className={styles.productDes}>
