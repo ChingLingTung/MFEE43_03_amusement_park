@@ -37,9 +37,9 @@ export default function OrderADD() {
   const [userphoneError, setUserphoneError] = useState("");
   const [useraddress, setUseraddress] = useState("asdf");
   const [useraddressError, setUseraddressError] = useState("");
-  const [bill, setBill] = useState(false);
+  const [bill, setBill] = useState("3");
   const [billError, setBillError] = useState(false);
-  const [pay, setPay] = useState(false);
+  const [pay, setPay] = useState("1");
   const [payError, setPayError] = useState(false);
   const [address, setAddress] = useState("1");
   const [addressError, setAddressError] = useState(false);
@@ -208,11 +208,11 @@ export default function OrderADD() {
         .map((item) => `${item.product_name} x ${item.user_buy_qty}`)
         .join("#");
 
-        const orderDetail = {
-          product_id: items[0].product_id,
-          product_price: items[0].product_price,
-          order_quantity: items[0].user_buy_qty
-        }
+      const orderDetail = {
+        product_id: items[0].product_id,
+        product_price: items[0].product_price,
+        order_quantity: items[0].user_buy_qty,
+      };
 
       fetch(AB_ECPAY, {
         method: "POST",
@@ -231,7 +231,11 @@ export default function OrderADD() {
           userpay_id: formElements.pay.value,
           ibon_id: null,
           recipient_address_id: formElements.address.value,
-          address_detail: formElements.address.value==='2'?store711.storename:useraddress,
+          address_detail:
+            formElements.address.value === "2"
+              ? store711.storename
+              : store711.storeaddress,
+          useraddress,
           bill_detail: "asdf",
           orderDetail,
         }),
@@ -387,13 +391,34 @@ export default function OrderADD() {
               <div className={styles.logistics_title}>發票類型</div>
               <div className={styles.logistics_descs}>
                 <div>
-                  <input type="radio" name="bill" value="3" /> 雲端發票
+                  <input
+                    type="radio"
+                    name="bill"
+                    value="3"
+                    checked={bill === "3"}
+                    onClick={() => setBill("3")}
+                  />{" "}
+                  雲端發票
                 </div>
                 <div>
-                  <input type="radio" name="bill" value="2" /> 公司發票
+                  <input
+                    type="radio"
+                    name="bill"
+                    value="2"
+                    checked={bill === "2"}
+                    onClick={() => setBill("2")}
+                  />{" "}
+                  公司發票
                 </div>
                 <div className={styles.ml30}>
-                  <input type="radio" name="bill" value="1" /> 發票捐贈
+                  <input
+                    type="radio"
+                    name="bill"
+                    value="1"
+                    checked={bill === "1"}
+                    onClick={() => setBill("1")}
+                  />{" "}
+                  發票捐贈
                 </div>
               </div>
             </div>
@@ -402,10 +427,24 @@ export default function OrderADD() {
               <div className={styles.logistics_title}>付款方式</div>
               <div className={styles.logistics_descs}>
                 <div>
-                  <input type="radio" name="pay" value="1" /> 行動支付
+                  <input
+                    type="radio"
+                    name="pay"
+                    value="1"
+                    checked={pay === "1"}
+                    onClick={() => setPay("1")}
+                  />{" "}
+                  行動支付
                 </div>
                 <div>
-                  <input type="radio" name="pay" value="2" /> 信用卡支付
+                  <input
+                    type="radio"
+                    name="pay"
+                    value="2"
+                    checked={pay === "2"}
+                    onClick={() => setPay("2")}
+                  />{" "}
+                  信用卡支付
                 </div>
               </div>
             </div>
@@ -458,9 +497,9 @@ export default function OrderADD() {
               </div>
             ) : (
               <>
-                <button onClick={onSelect711}>門市選擇</button>
-                <div>
-                  {store711.storeaddress} {store711.storename}
+                <button onClick={onSelect711} className={styles.store}>門市選擇</button>
+                <div className={styles.address}>
+                  {store711.storeaddress}-{store711.storename}
                 </div>
               </>
             )}
@@ -468,11 +507,9 @@ export default function OrderADD() {
             <div className={styles.total_container}>
               <div className={styles.total_info}>
                 <div>總計</div>
-                <div>$1800</div>
+                <div>$4500</div>
                 <div className={styles.pay_button}>
-                  <button className={styles.pay_button_word}>
-                    結帳
-                  </button>
+                  <button className={styles.pay_button_word}>結帳</button>
                 </div>
               </div>
             </div>

@@ -148,7 +148,7 @@ const getListData = async (req) => {
   // LIMIT ${(page - 1) * perPage}, ${perPage}`;
 
   // 訂單總表
-  const sql = `SELECT * FROM order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id WHERE order_list.user_id=? ORDER BY order_list.order_id `;
+  const sql = `SELECT * FROM order_list JOIN order_status ON order_list.odstatus_id = order_status.odstatus_id JOIN order_detail_list ON order_list.order_id = order_detail_list.order_id WHERE order_list.user_id=? ORDER BY order_list.order_date DESC`;
   [orders] = await db.query(sql, [user_id]);
 
   console.log("queried orders: ", orders.length);

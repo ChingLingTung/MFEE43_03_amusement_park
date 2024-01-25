@@ -42,11 +42,12 @@ export default function SearchCateType(props) {
         </button>
 
         <button
+          className={styles.clean}
           onClick={() => {
             setSearchCateType(ALL);
           }}
         >
-         X
+          重新篩選
         </button>
       </div>
     </>

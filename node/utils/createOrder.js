@@ -31,7 +31,7 @@ export default async function createOrder(order) {
       recipient_address_id,
       address_detail,
     ]);
-    
+
     return [result[0]];
   } catch (ex) {
     return [, ex];
