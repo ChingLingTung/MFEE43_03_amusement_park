@@ -86,10 +86,11 @@ export default function Icon({ data }) {
         <IoCart
           size={30}
           onClick={() => {
+            const firstProductPic = data.product_pic.split(",")[0];
             // 先抓取商品資料、使用者選的數量
             // 把這些資料加進localstorage
             setNewLocalS({
-              product_pic: data.product_pic,
+              product_pic: firstProductPic,
               product_id: data.product_id,
               product_name: data.product_name,
               product_price: data.product_price,

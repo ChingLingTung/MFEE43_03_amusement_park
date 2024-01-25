@@ -23,8 +23,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: 5%;
-  margin-top: 20px;
+  margin-top: 30px;
+  margin-bottom: 10px;
 }
 
 .recipient_information_title2 {
@@ -137,6 +137,7 @@
   margin-top: 10px;
   font-size: 24px;
   padding-left: 15px;
+  margin-right: 15px;
 }
 
 .recipient_descs_dateInput {

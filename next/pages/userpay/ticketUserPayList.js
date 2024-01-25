@@ -514,8 +514,8 @@ export default function OrderADD() {
                         有效年月
                       </div>
                       <div className={styles.recipient_descs_dateInput}>
-                        <input type="text" value={month} placeholder="MM∇" />
-                        <input type="text" value={year} placeholder="YYYY∇" />
+                        <input type="text" value={month} placeholder="MM" />
+                        <input type="text" value={year} placeholder="YYYY" />
                       </div>
                     </div>
 
