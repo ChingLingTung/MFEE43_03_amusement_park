@@ -183,8 +183,71 @@ const getTypeData = async (req) => {
   output = { ...output, success: true, rows, totalRows, totalPages };
   return output;
 };
+
 router.get("/type/api", async (req, res) => {
   res.json(await getTypeData(req));
+});
+
+const getStyleData = async (req) => {
+  const perPage = 20; // 每頁幾筆
+  // 用戶決定要看第幾頁
+  let page = +req.query.page || 1;
+  let qs = {}; // 用來把 query string 的設定傳給 template
+  let pdstyle_id = req.query.pdstyle_id ? req.query.pdstyle_id : "";
+  let pdcate_id = req.query.pdcate_id ? req.query.pdcate_id : "";
+  let pdsize_id = req.query.pdsize_id ? req.query.pdsize_id : "";
+  let pdcolor_id = req.query.pdcolor_id ? req.query.pdcolor_id : "";
+
+  // 設定綜合的where子句
+  let where = `WHERE 1 `;
+  // // 關鍵字搜尋只有一欄的情況下要用符合任一的or
+  // if (product_id !== 0 && product_id !== "") {
+  //   qs.product_id = product_id;
+  //   where += ` AND product_list.product_id != '${product_id}' `;
+  // }
+  // if (pdcate_id !== 0 && pdcate_id !== "") {
+  //   qs.pdcate_id = pdcate_id;
+  //   where += ` AND product_category.pdcate_id = '${pdcate_id}' `;
+  // }
+
+  let totalRows = 0;
+  let totalPages = 0;
+  let rows = [];
+
+  let output = {
+    success: false,
+    page,
+    perPage,
+    rows,
+    totalRows,
+    totalPages,
+    qs,
+    redirect: "",
+    info: "",
+  };
+
+  const t_sql = `SELECT COUNT(1) totalRows FROM (product_list JOIN pdacate_list ON product_list.product_id = pdacate_list.product_id) JOIN product_category ON pdacate_list.pdcate_id = product_category.pdcate_id  ${where} ORDER BY product_list.product_id `;
+  [[{ totalRows }]] = await db.query(t_sql);
+  totalPages = Math.ceil(totalRows / perPage);
+  if (totalRows > 0) {
+    if (page > totalPages) {
+      output.redirect = `?page=${totalPages}`;
+      output.info = `頁碼值大於總頁數`;
+      return { ...output, totalRows, totalPages };
+    }
+  }
+
+  const sql = `SELECT * FROM product_list WHERE pdcate_id = ? AND NOT pdstyle_id = ? AND pdsize_id = ? AND pdcolor_id = ?  ORDER BY product_list.product_id LIMIT 4`;
+  [rows] = await db.query(sql, [pdcate_id, pdstyle_id, pdsize_id, pdcolor_id]);
+  // if (rows.length) {
+  //   // return res.json({ success: false });
+  // }
+  output = { ...output, success: true, rows, totalRows, totalPages };
+  return output;
+};
+
+router.get("/style/api", async (req, res) => {
+  res.json(await getStyleData(req));
 });
 
 export default router;
