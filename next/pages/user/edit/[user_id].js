@@ -189,9 +189,9 @@ export default function UserEditInfo() {
             <Link href="/order/list">
               <button className={styles.button}>會員訂單</button>
             </Link>
-
-            <button className={styles.button}>優惠券</button>
-            <button className={styles.button}>我的收藏</button>
+            <Link href='/user/userBuyTicket'>
+                <button className={styles.button}>入園票券</button>
+              </Link>
             <button className={styles.selected_button}>修改資料</button>
             <button
               className={styles.button}
