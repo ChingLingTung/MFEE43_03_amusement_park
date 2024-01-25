@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { AB_GET_ONE, GET_SAME_TYPE_CATE } from "@/component/product-const";
 import { Layout } from "@/component/product-layout";
 import Icon from "@/component/Product/Icon/Icon";
+import Head from "next/head";
 
 export default function Detail() {
   const [getData, setGetData] = useState({
@@ -40,22 +41,22 @@ export default function Detail() {
       // if (!product_id) {
       //   router.push("/product/list"); // product_id 是 NaN 就跳到列表頁
       // } else {
-        // 取得單筆資料
-        fetch(AB_GET_ONE + "/" + product_id)
-          .then((r) => r.json())
-          .then((data) => {
-            if (!data.success) {
-              router.push("/product/list"); // 沒拿到資料, 跳到列表頁
-            } else {
-              const photoArray = data.row.product_pic.split(",");
-              console.log('photoArray',photoArray);
-              data.row.product_pic = photoArray;
-              setGetData({ ...data.row });
-              setMainPic(photoArray[0])
-            }
-          })
-          .catch((ex) => console.log(ex));
-      }
+      // 取得單筆資料
+      fetch(AB_GET_ONE + "/" + product_id)
+        .then((r) => r.json())
+        .then((data) => {
+          if (!data.success) {
+            router.push("/product/list"); // 沒拿到資料, 跳到列表頁
+          } else {
+            const photoArray = data.row.product_pic.split(",");
+            console.log("photoArray", photoArray);
+            data.row.product_pic = photoArray;
+            setGetData({ ...data.row });
+            setMainPic(photoArray[0]);
+          }
+        })
+        .catch((ex) => console.log(ex));
+    }
     // }
   }, [router.query.pid]);
 
@@ -74,7 +75,12 @@ export default function Detail() {
 
   useEffect(() => {
     getTypeList();
-  }, [getData.pdcate_id, getData.pdcolor_id, getData.pdstyle_id, getData.pdsize_id]);
+  }, [
+    getData.pdcate_id,
+    getData.pdcolor_id,
+    getData.pdstyle_id,
+    getData.pdsize_id,
+  ]);
 
   const decrementQuantity = () => {
     if (cartQuantity > 1) {
@@ -124,19 +130,19 @@ export default function Detail() {
   };
   return (
     <Layout key={getData.product_id}>
+      <Head>
+        <title>產品詳細頁面</title>
+      </Head>
       <main className={styles.container}>
         <div className={styles.detailContainer}>
           <div className={styles.detailPics}>
             <div className={styles.w450}>
-              <img
-                src={`/images/product/list/${mainPic}`}
-                alt="..."
-              />
+              <img src={`/images/product/list/${mainPic}`} alt="..." />
             </div>
 
             <div className={styles.w100}>
               {getData.product_pic.map((v, i) => {
-                console.log(v)
+                console.log(v);
                 return (
                   <Image
                     src={`/images/product/list/${v}`}
@@ -210,11 +216,11 @@ export default function Detail() {
             </div>
           </div>
         </div>
-          <h2 className={styles.title}>推薦商品</h2>
+        <h2 className={styles.title}>推薦商品</h2>
         <div className={styles.w80}>
           {getTypeData?.length &&
-            getTypeData.map((v,i) => {
-              const pic = v.product_pic.split(',')[0]
+            getTypeData.map((v, i) => {
+              const pic = v.product_pic.split(",")[0];
               return (
                 <div className={styles.w_262} key={v.product_id}>
                   <Link href={`/product/details/${v.product_id}`}>

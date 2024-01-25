@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Layout } from "@/component/product-layout";
 import { AB_ORDER_ADD, AB_711, AB_ECPAY } from "@/component/product-const";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import Paystep from "@/component/Userpay/Paystep/Paystep";
 import styles from "@/component/Userpay/Userpay.module.css";
@@ -67,12 +68,10 @@ export default function OrderADD() {
   };
 
   const checkUsername = (username) => {
-    const nameRule = /^[a-zA-Z0-9\s,.-]+$/;
+    // const nameRule = /^[\u4e00-\u9fa5a-zA-Z\s,.-]{2,}$/;
     if (username === "") {
       setUsernameError(".收件人名稱為必填");
-    } else if (username !== "" && username.search(nameRule) === -1) {
-      setUsernameError("收件人名稱必須符合格式");
-    } else {
+    }  else {
       setUsernameError("");
     }
   };
@@ -142,13 +141,10 @@ export default function OrderADD() {
       setEmailError("");
     }
 
-    const nameRule = /^[a-zA-Z0-9\s,.-]+$/;
+    // const nameRule = /^[a-zA-Z0-9\s,.-]{2,}$/;
     if (username === "") {
       isPass = false;
       setUsernameError("收件人名稱為必填");
-    } else if (username !== "" && username.search(nameRule) === -1) {
-      isPass = false;
-      setUsernameError("收件人名稱必須符合格式");
     } else {
       setUsernameError("");
     }
@@ -295,6 +291,9 @@ export default function OrderADD() {
   return (
     <div className={styles.w100}>
       <Layout>
+        <Head>
+          <title>付款頁面</title>
+        </Head>
         <Paystep />
         <main className={styles.form_container}>
           <div className={styles.recipient_information}>
@@ -497,7 +496,9 @@ export default function OrderADD() {
               </div>
             ) : (
               <>
-                <button onClick={onSelect711} className={styles.store}>門市選擇</button>
+                <button onClick={onSelect711} className={styles.store}>
+                  門市選擇
+                </button>
                 <div className={styles.address}>
                   {store711.storeaddress}-{store711.storename}
                 </div>
@@ -506,8 +507,8 @@ export default function OrderADD() {
 
             <div className={styles.total_container}>
               <div className={styles.total_info}>
-                <div>總計</div>
-                <div>$4500</div>
+                <div></div>
+                <div></div>
                 <div className={styles.pay_button}>
                   <button className={styles.pay_button_word}>結帳</button>
                 </div>

@@ -1,4 +1,3 @@
-import React from 'react'
 import Link from 'next/link';
 import styles from '@/styles/user.module.css'
 import Head from 'next/head'
@@ -75,7 +74,7 @@ export default function UserInfo() {
             <Link href='/user'>
               <button className={styles.selected_button}>會員資料</button>
             </Link>
-              <Link href='/order/list'><button className={styles.button}>會員訂單</button></Link>
+              <Link href='/user/userorder'><button className={styles.button}>會員訂單</button></Link>
               <button className={styles.button}>優惠券</button>
               <button className={styles.button}>我的收藏</button>
               <button className={styles.button} onClick={()=>{

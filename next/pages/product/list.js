@@ -8,6 +8,7 @@ import Card from "@/component/Product/Card";
 // import Slider from "@/component/Slider/Slider";
 import styles from "@/component/Page-select/Page-select.module.css";
 import SearchCateType from "@/component/Icon-nav/search_type";
+import Head from "next/head";
 
 export default function List() {
   const [data, setData] = useState({});
@@ -20,25 +21,27 @@ export default function List() {
     if (page < 1) page = 1;
 
     try {
-        const r = await fetch(
-            `${AB_LIST}?page=${page}` +
-            (dataFromCateType === 0 ? "" : `&pdcate_id=${dataFromCateType}`)
-        );
-        const d = await r.json();
-        setData(d);
+      const r = await fetch(
+        `${AB_LIST}?page=${page}` +
+          (dataFromCateType === 0 ? "" : `&pdcate_id=${dataFromCateType}`)
+      );
+      const d = await r.json();
+      setData(d);
     } catch (ex) {
-        console.log(ex);
+      console.log(ex);
     }
-};
+  };
 
-useEffect(() => {
+  useEffect(() => {
     getListData();
-}, [router.query.page, dataFromCateType]);
-
+  }, [router.query.page, dataFromCateType]);
 
   return (
     <>
       <Layout>
+        <Head>
+          <title>產品頁面</title>
+        </Head>
         <SearchCateType setDataFromCateType={setDataFromCateType} />
         <div className={styles.product_container}>
           {data.rows?.length &&

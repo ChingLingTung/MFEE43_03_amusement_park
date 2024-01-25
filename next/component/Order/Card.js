@@ -101,7 +101,7 @@ export default function Card(v) {
         </div>
         {details.order_details?.length && showDetails && (
           <div className={styles.order_detail_nav1}>
-            <div className={styles.order_detail_nav_title}>商品圖片</div>
+            <div className={styles.order_detail_nav_title1}>商品圖片</div>
             <div className={styles.order_details}>
               <div>商品名稱</div>
               <div>數量</div>
