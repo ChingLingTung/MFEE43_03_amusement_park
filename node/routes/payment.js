@@ -73,7 +73,7 @@ router.post("/payment", async function (req, res, next) {
     TradeDesc: tradeDesc,
     ItemName: itemName,
     ReturnURL: "http://localhost:3002/payment/callback",
-    ClientBackURL: "http://localhost:3000/user/userorder",
+    ClientBackURL: "http://localhost:3000/order/list",
     ChoosePayment: "Credit",
     EncryptType: 1,
   };

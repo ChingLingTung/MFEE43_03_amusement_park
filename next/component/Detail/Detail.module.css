@@ -271,3 +271,17 @@
   justify-content: center;
   align-items: center;
 }
+
+.gocart{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #F29BA5;
+  border: none;
+  border-radius: 20px;
+  height: 80px;
+  margin: auto;
+  margin-top: 50px;
+  font-size: 28px;
+}

@@ -73,6 +73,10 @@
   width: 60%;
 }
 
+.recipient_descs_input input{
+  padding: 0px 5px;
+}
+
 .recipient_descs div span {
   color: red;
 }
@@ -280,3 +284,4 @@
 .address{
   font-size: 28px;
 }
+

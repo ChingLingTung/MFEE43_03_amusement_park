@@ -99,7 +99,7 @@ export default function OrderADD() {
   };
 
   const checkUseraddress = (useraddress) => {
-    const addressRule = /^[a-zA-Z0-9\s,.-]+$/;
+    const addressRule = /^[a-zA-Z0-9\u4e00-\u9fa5\s,.\-#]+$/;
     if (useraddress === "") {
       setUseraddressError(".收件人地址為必填");
     } else if (useraddress !== "" && useraddress.search(addressRule) === -1) {

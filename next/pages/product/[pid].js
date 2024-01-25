@@ -166,12 +166,12 @@ export default function Detail() {
             </div>
             <div className={styles.desc_flex2}>
               <div className={styles.desc_flex3}>
-                <div className={styles.desc_title}>Size</div>
-                <div className={styles.size_desc}>{getData.pdsize_name}</div>
+                <div className={styles.desc_title}></div>
+                <div className={styles.size_desc}></div>
               </div>
               <div className={styles.desc_flex3}>
-                <div className={styles.desc_title}>Color</div>
-                <div className={styles.color_desc}>{getData.pdcolor_name}</div>
+                <div className={styles.desc_title}></div>
+                <div className={styles.color_desc}></div>
               </div>
             </div>
 
@@ -214,6 +214,7 @@ export default function Detail() {
                 }}
               ></i>
             </div>
+            <Link href='/cart/cart'><div className={styles.gocart}>前往購物車頁面</div></Link>
           </div>
         </div>
         <h2 className={styles.title}>推薦商品</h2>
@@ -223,7 +224,7 @@ export default function Detail() {
               const pic = v.product_pic.split(",")[0];
               return (
                 <div className={styles.w_262} key={v.product_id}>
-                  <Link href={`/product/details/${v.product_id}`}>
+                  <Link href={`/product/${v.product_id}`}>
                     <img
                       src={`/images/product/list/${pic}`}
                       className=""
