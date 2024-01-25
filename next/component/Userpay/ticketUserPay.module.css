@@ -15,11 +15,14 @@
   margin: auto;
   font-size: 40px;
   font-weight: bold;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 
 
 .recipient_information_title1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin-left: 5%;
 }
 
@@ -52,16 +55,46 @@
 
 .recipient_descs {
   width: 50%;
-  height: 150px;
+  height: 100px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 30px;
   font-weight: bold;
-  margin-top: 50px;
   padding-left: 50px;
   padding-right: 30px;
   border-radius: 20px;
+}
+
+.recipient_descs_ticketTitle {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.recipient_descs_ticketList {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.recipient_descs_ticketContent {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
 }
 
 .recipient_descs_title {
@@ -69,9 +102,45 @@
   margin-bottom: 16px;
 }
 
+.recipient_descs_inputTitle {
+  width: 80%;
+  margin-bottom: 16px;
+}
+
 .recipient_descs_input {
+  width: 50%;
+  height: 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 30px;
+  font-weight: bold;
+  padding-left: 50px;
+  padding-right: 30px;
+  border-radius: 20px;
+}
+
+.recipient_descs_input {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.recipient_descs_input div input {
+  width: 25%;
+  height: 45px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 5px gray;
+  margin-top: 10px;
+  font-size: 24px;
+}
+
+.recipient_descs_dateInput {
   width: 60%;
 }
+
 
 .recipient_descs div span {
   color: red;
@@ -145,6 +214,13 @@
   width: 70%;
   display: flex;
   justify-content: start;
+  align-items: center;
+}
+
+.mobilePayment {
+  margin-right: 100px;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 
