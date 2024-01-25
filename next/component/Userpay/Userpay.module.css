@@ -213,13 +213,23 @@
   justify-content: end;
 }
 
-.total_info div{
+
+.total_info p{
   width: 30%;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 48px;
   margin-top: 100px;
+}
+
+.totalPrice {
+  width: 40%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 48px;
+  margin: 115px 50px 0 0;
 }
 
 .total_info div:nth-child(2){

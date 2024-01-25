@@ -9,6 +9,7 @@ import { useShip711StoreOpener } from "@/hooks/use-ship-711-store";
 import AuthContext from "@/context/auth-context";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Head from "next/head";
 
 export default function OrderADD() {
   const [getData, setGetData] = useState({
@@ -451,6 +452,7 @@ export default function OrderADD() {
             </div>
           </main>
         </form>
+        <Head><title>入園票券購買</title></Head>
       </Layout>
     </div>
   );
